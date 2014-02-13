@@ -670,607 +670,574 @@ public class NIODevice
    */
   public ProcessID[] init(String args[]) throws XDevException {
 
-    /*
-     *
-     * The init method reads names/ports/ranks from a config file. It finds
-     * its own entry in the config file (by comparing ranks), and creates
-     * a server socket at the port specified for that entry. Also, it creates
-     * another server socket at (portspecified+1). It connects to server
-     * sockets (not one, two server sockets) of processes with rank higher
-     * than its own.
-     *
-     * At the end of this process, each process is connected to every
-     * other process with two socketChannels. The reason for two
-     * channels is that every process has writable and reable channel.
-     * The writable channel is in blocking mode, whereas, the readable
-     * channel is in non-blocking mode. In terms of datastructures,
-     * 'writableChannels' (Vector) contains all writable channels, and
-     * 'readableChannels' (Vector) contains all readable channels for
-     * every process. The next step is that each process send its own rank,
-     * ProcessID to all the other processes. At the end of this, each process
-     * knows about all the peers and have ProcessID (key), SocketChannel (val)
-     * in 'worldWritableTable' and 'worldReadableTable'.
-     *
-     * As the name suggests, worldWritableTable is used for writing messages
-     * into channels, and worldReadableTable is used for receiving. The
-     * selector-thread would generate events for worldReadableTable
-     * SocketChannels whereas, the ones (SocketChannels) in
-     * worldWritableTable have nothing to do with selector thread as they
-     * are in blocking mode.
-     *
-     */
-
-    if (args.length < 3) {
-
-      throw new XDevException("Usage: " +
-        "java NIODevice <myrank> <conf_file> <device_name>"+
-           "conf_file can be, ../conf/xdev.conf <Local>"+
-           "OR http://holly.dsg.port.ac.uk:15000/xdev.conf <Remote>");
-
-    }
-
-    rank = Integer.parseInt(args[0]);
-    UUID myuuid = UUID.randomUUID();
-    id = new ProcessID(myuuid); //, rank);
-    Map<String,String> map = System.getenv() ;
-    mpjHomeDir = map.get("MPJ_HOME");
-
-    try {
-
-      localaddr = InetAddress.getLocalHost();
-      localHostName = localaddr.getHostName();
-
-      if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
-        logger.info("--init method of niodev is called--");
-        logger.info("Address: " + localaddr);
-        logger.info("Name :" + localHostName);
-        logger.info("rank :" + rank);
-      }
-
-    }
-    catch (UnknownHostException unkhe) {
-      throw new XDevException(unkhe);
-    }
-
-    ConfigReader reader = null;
-
-    try {
-      reader = new ConfigReader(args[1]); 
-      nprocs = (new Integer(reader.readNoOfProc())).intValue();
-      psl = (new Integer(reader.readIntAsString())).intValue();
-      if(psl < 12) {
-        logger.debug("lowest possible psl is 12 bytes"); 	      
-        psl = 12;  	      
-      }
-    }
-    catch (Exception config_error) {
-      throw new XDevException(config_error);
-    }
-
-    pids = new ProcessID[nprocs];
-
-    if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
-      logger.info("total processes:<" + nprocs);
-      logger.info("protocolSwitchLimit :<" + psl);
-    }
-
-    String[] nodeList = new String[nprocs];
-    int[] pList = new int[nprocs];
-    int[] rankList = new int[nprocs];
-    int count = 0;
-
-    while (count < nprocs) {
-
-      String line = null;
-
-      try {
-        line = reader.readLine();
-      }
-      catch (IOException ioe) {
-        throw new XDevException(ioe);
-      }
-
-      if (line == null || line.equals("") || line.equals("#")) {
-        continue;
-      }
-
-      line = line.trim();
-      StringTokenizer tokenizer = new StringTokenizer(line, "@");
-      nodeList[count] = tokenizer.nextToken();
-      pList[count] = (new Integer(tokenizer.nextToken())).intValue();
-      rankList[count] = (new Integer(tokenizer.nextToken())).intValue();
-      count++;
-
-    }
-
-    reader.close();
-
-    /* Open the selector */
-    try {
-      selector = Selector.open();
-    }
-    catch (IOException ioe) {
-      throw new XDevException(ioe);
-    }
-
-    /* Create server socket */
-    SocketChannel[] rChannels = new SocketChannel[nodeList.length - 1];
-    /* Create control server socket */
-    SocketChannel[] wChannels = new SocketChannel[nodeList.length - 1];
-
-    
-    /* Checking for the java.net.BindException. This
-     * Exception is thrown when the port on which
-     * we want to bind is already in use */
-    boolean isOK = false; 
-    boolean isError = false ;
-
-    while(isOK != true) { 
-
-      isOK = false ; 
-      isError = false;
-
-      try {
-        writableServerChannel = ServerSocketChannel.open();
-        writableServerChannel.configureBlocking(false);
-        writableServerChannel.socket().bind(new InetSocketAddress(pList[rank]));
-
-        if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
-          logger.debug("created writableServerChannel on port " + pList[rank]);
-        }
-        writableServerChannel.register(selector, SelectionKey.OP_ACCEPT);
-
-        my_server_port = pList[rank];
-
-        readableServerChannel = ServerSocketChannel.open();
-        readableServerChannel.configureBlocking(false);
-        readableServerChannel.socket().bind(
-            new InetSocketAddress( (pList[rank] + 1)));
-        readableServerChannel.register(selector, SelectionKey.OP_ACCEPT);
-
-        if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
-          logger.debug("created readableServerChannel on port " +
-                       (pList[rank] + 1));
-        }
-
-      }
-      catch (IOException ioe) {
-        isError = true;
-        if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
-          logger.debug("NIODevice threw an exception "+
-             "while starting the server on ports "+pList[rank]+
-             " or "+(pList[rank]+1)+ 
-             ". We'll try starting servers on next two consecutive ports") ;
-        }
-        try { Thread.sleep(500); } catch(Exception e){}
-      }
-      finally {
-        if(isError == true)
-          isOK = false;
-        else if(isError == false)
-          isOK = true;
-      }
-    }
-
-    /* This is connection-code for data-channels. */
-    boolean connected = false;
-    int temp = 0, index = 0;
-    /*
-     * This while loop is connecting to server sockets of other
-     * peers. If there are 4 processes, process 0 will not connect
-     * to any process, process 1 will connect to process 0, process
-     * 2 will connect to pro 0&1, and process 3 will connect to pro
-     * 0&1&2
-     */
-
-    while (temp < nprocs - 1) {
-
-      if (rank == rankList[temp]) {
-        temp++;
-        continue;
-      }
-
-      if (rankList[temp] < rank) {
-
-        while (!connected) {
-
-          try {
-            rChannels[index] = SocketChannel.open();
-            rChannels[index].configureBlocking(true);
-          }
-          catch (Exception e) {
-            throw new XDevException(e);
-          }
-
-          if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
-            logger.debug("Connecting to " + nodeList[temp] + "@" + pList[temp]);
-          }
-
-          try {
-            connected = rChannels[index].connect(
-                new InetSocketAddress(nodeList[temp], pList[temp]));
-          }
-          catch (AlreadyConnectedException ace) {
-            throw new XDevException(ace);
-          }
-          catch (ConnectionPendingException cpe) {
-            throw new XDevException(cpe);
-          }
-          catch (ClosedChannelException cce) {
-            throw new XDevException(cce);
-          }
-          catch (UnresolvedAddressException uae) {
-            throw new XDevException(uae);
-          }
-          catch (UnsupportedAddressTypeException uate) {
-            throw new XDevException(uate);
-          }
-          catch (SecurityException se) {
-            throw new XDevException(se);
-          }
-          catch (IOException ioe) {
-            // this is continuing coz process 1 alwayz connect to process 0
-            // server socket. If process 0 is not up, then this exception
-            connected = false;
-
-            if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
-              logger.debug("connecting error ->" + ioe.getMessage());
-            }
-
-            continue;
-          }
-
-          try {
-            rChannels[index].configureBlocking(false);
-            rChannels[index].register(selector,
-                                      SelectionKey.OP_READ);
-            rChannels[index].socket().setTcpNoDelay(true);
-	    //these are useful if running MPJ on gigabit ethernet.
-            rChannels[index].socket().setSendBufferSize(524288);
-            rChannels[index].socket().setReceiveBufferSize(524288);
-          }
-          catch (Exception e) {
-            throw new XDevException(e);
-          }
-
-          synchronized (readableChannels) {
-            readableChannels.add(rChannels[index]);
-            if (readableChannels.size() == nprocs - 1) {
-              readableChannels.notify();
-            }
-          } //end synch
-
-          connected = true;
-        } //end while
-
-        connected = false;
-      } //end if
-
-      index++;
-      temp++;
-
-    } //end while
-
-    /* This is connection-code for control-channels. */
-    connected = false;
-    temp = 0;
-    index = 0;
-
-    /*
-     * This while loop is connecting to server sockets of other
-     * peers. If there are 4 processes, process 0 will not connect
-     * to any process, process 1 will connect to process 0, process
-     * 2 will connect to pro 0&1, and process 3 will connect to pro
-     * 0&1&2
-     */
-
-    while (temp < nprocs - 1) {
-
-      if (rank == rankList[temp]) {
-
-        if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
-          logger.debug("Dont connect to itself, so contine;");
-        }
-
-        temp++;
-        continue;
-      }
-
-      if (rankList[temp] < rank) {
-
-        while (!connected) {
-
-          try {
-            wChannels[index] = SocketChannel.open();
-            wChannels[index].configureBlocking(true);
-
-            if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
-              logger.debug("Connecting to " + nodeList[temp] +
-                           "@" + (pList[temp] + 1));
-            }
-
-          }
-          catch (Exception e) {
-            throw new XDevException(e);
-          }
-
-          try {
-
-            connected = wChannels[index].connect(
-                new InetSocketAddress(nodeList[temp], (pList[temp] + 1)));
-
-          }
-          catch (AlreadyConnectedException ace) {
-            throw new XDevException(ace);
-          }
-          catch (ConnectionPendingException cpe) {
-            throw new XDevException(cpe);
-          }
-          catch (ClosedChannelException cce) {
-            throw new XDevException(cce);
-          }
-          catch (UnresolvedAddressException uae) {
-            throw new XDevException(uae);
-          }
-          catch (UnsupportedAddressTypeException uate) {
-            throw new XDevException(uate);
-          }
-          catch (SecurityException se) {
-            throw new XDevException(se);
-          }
-          catch (IOException ioe) {
-            // this is continuing coz process 1 alwayz connect to process 0
-            // server socket. If process 0 is not up, then this exception
-            connected = false;
-
-            if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
-              logger.debug("connecting error ->" + ioe.getMessage());
-            }
-
-            continue;
-          }
-
-          try {
-            wChannels[index].configureBlocking(true);
-            wChannels[index].socket().setTcpNoDelay(true);
-	    //these are useful if running MPJ on gigabit ethernet
-            wChannels[index].socket().setSendBufferSize(524288);
-            wChannels[index].socket().setReceiveBufferSize(524288);
-          }
-          catch (Exception e) {
-            throw new XDevException(e);
-          }
-
-          synchronized (writableChannels) {
-
-            writableChannels.add(wChannels[index]);
-
-            if (writableChannels.size() == nprocs - 1) {
-              writableChannels.notify();
-            }
-
-          } //end synch
-
-          connected = true;
-        } //end while
-
-        connected = false;
-      } //end if
-
-      index++;
-      temp++;
-
-    } //end while
-
-    index = rank;
-    root = 0;
-    procTree = new ProcTree();
-    extent = nprocs;
-    places = ProcTree.PROCTREE_A * index;
-
-    for (int i = 1; i <= ProcTree.PROCTREE_A; i++) {
-      ++places;
-      int ch = (ProcTree.PROCTREE_A * index) + i + root;
-      ch %= extent;
-
-      if (places < extent) {
-        procTree.child[i - 1] = ch;
-        procTree.numChildren++;
-      }
-    }
-
-    if (index == root) {
-      procTree.isRoot = true;
-    }
-    else {
-      procTree.isRoot = false;
-      int pr = (index - 1) / ProcTree.PROCTREE_A;
-      procTree.parent = pr;
-    }
-
-    procTree.root = root;
-
-    selectorThreadStarter = new Thread(selectorThread);
-
-    if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
-      logger.debug("Starting the selector thread ");
-    }
-
-    selectorThreadStarter.start();
-
-    //addShutdownHook();
-
-    if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
-      logger.debug("testing if all peers are connected?");
-    }
-
-    count = 0;
-
-    /* doAccept() and/or while
-     * loop above adds SocketChannels to writableChannels
-     * so access to writableChannels should be synchronized.
-     */
-    synchronized (writableChannels) {
-
-      if (writableChannels.size() != nprocs - 1) {
-        try {
-          writableChannels.wait();
-        }
-        catch (Exception e) {
-          throw new XDevException(e);
-        }
-      }
-
-    } //end sync.
-
-    /* This is for control-channels. */
-    synchronized (readableChannels) {
-
-      if (readableChannels.size() != nprocs - 1) {
-        try {
-          readableChannels.wait();
-        }
-        catch (Exception e) {
-          throw new XDevException(e);
-        }
-      }
-
-    } //end sync.
-
-    if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
-      logger.info(" Yes all nodes are connected to each other ");
-    }
-
-    /*
-     * At this point, all-to-all connectivity has been acheived. Each process
-     * has all SocketChannels (for peers) in writableChannels (Vector object). Now
-     * each process will send rank(this rank is the one read from config-file),
-     * msb (most significant bits), lsb(least significant bits) to all the
-     * other processes. After receiving this info, all processes will have
-     * constructed worldTable (Hashtable object), which contains <k,v>, where
-     * k=UUID of a process, and v=SocketChannel object. This worldTable
-     * is used extensively throughout the niodev.
-     */
-
-    SocketChannel socketChannel = null;
-    ByteBuffer initMsgBuffer = ByteBuffer.allocate(24);
-    long msb = myuuid.getMostSignificantBits();
-    long lsb = myuuid.getLeastSignificantBits();
-    initMsgBuffer.putInt(INIT_MSG_HEADER_DATA_CHANNEL);
-    initMsgBuffer.putInt(rank);
-    initMsgBuffer.putLong(msb);
-    initMsgBuffer.putLong(lsb);
-
-    if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
-      logger.debug("rank<" + rank +
-                   ">is sending its rank,msb,lsb, to all data channels");
-    }
-
-    /* Writing stuff into writable-channels */
-    for (int i = 0; i < writableChannels.size(); i++) {
-      socketChannel = writableChannels.get(i);
-      initMsgBuffer.flip();
-
-      /* Do we need to iterate here? */
-      while (initMsgBuffer.hasRemaining()) {
-        try {
-          if (socketChannel.write(initMsgBuffer) == -1) {
-            throw new XDevException(new ClosedChannelException());
-          }
-        }
-        catch (Exception e) {
-          throw new XDevException(e);
-        }
-      } //end while.
-      _wcb.clear();
-    } //end for.
-
-    if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
-      logger.debug("rank<" + rank + "> testing if everything is received? ");
-    }
-
-    /* worldTable is accessed from doBarrierRead or here, so their access
-     * should be synchronized */
-    synchronized (worldReadableTable) {
-      if ( (worldReadableTable.size() != nprocs - 1)) {
-        try {
-          worldReadableTable.wait();
-        }
-        catch (Exception e) {
-          throw new XDevException(e);
-        }
-      }
-    } //end sync
-
-    if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
-      logger.debug("worldReadableTable is filled ");
-    }
-
-    /* Writing stuff into readable-channels */
-    for (int i = 0; i < readableChannels.size(); i++) {
-      socketChannel = readableChannels.get(i);
-      initMsgBuffer.flip();
-
-      /* Do we need to iterate here? */
-      while (initMsgBuffer.hasRemaining()) {
-        try {
-          if (socketChannel.write(initMsgBuffer) == -1) {
-            throw new XDevException(new ClosedChannelException());
-          }
-        }
-        catch (Exception e) {
-          throw new XDevException(e);
-        }
-      } //end while.
-    } //end for.
-
-    /* Do blocking-reads, is this correct? will work but wont scale i think.
-     */
-    for (int i = 0; i < writableChannels.size(); i++) {
-      socketChannel = writableChannels.get(i);
-      try {
-        doBarrierRead(socketChannel, worldWritableTable, true);
-      }
-      catch (XDevException xde) {
-        throw xde;
-      }
-    }
-
-    synchronized (worldWritableTable) {
-      if ( (worldWritableTable.size() != nprocs - 1)) {
-        try {
-          worldWritableTable.wait();
-        }
-        catch (Exception e) {
-          throw new XDevException(e);
-        }
-      }
-    } //end sync
-
-    if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
-      logger.debug("worldWritable is filled ");
-    }
-
-    //writableServerChannel.close();
-    //readableServerChannel.close();
-    pids[rank] = id;
-
-    for (int k = 0; k < writableChannels.size(); k++) {
-      writeLockTable.put(writableChannels.elementAt(k),
-                         new CustomSemaphore(1));
-    }
-
-    try {
-      writableServerChannel.close();
-      readableServerChannel.close();
-    }
-    catch (Exception e) {
-      throw new XDevException(e);
-    }
-//System.out.println(" init "+rank);
-    return pids;
-
-  } //end init
+	    /*
+	     * 
+	     * The init method reads names/ports/ranks from a config file. It finds its
+	     * own entry in the config file (by comparing ranks), and creates a server
+	     * socket at the port specified for that entry. Also, it creates another
+	     * server socket at (portspecified+1). It connects to server sockets (not
+	     * one, two server sockets) of processes with rank higher than its own.
+	     * 
+	     * At the end of this process, each process is connected to every other
+	     * process with two socketChannels. The reason for two channels is that
+	     * every process has writable and reable channel. The writable channel is in
+	     * blocking mode, whereas, the readable channel is in non-blocking mode. In
+	     * terms of datastructures, 'writableChannels' (Vector) contains all
+	     * writable channels, and 'readableChannels' (Vector) contains all readable
+	     * channels for every process. The next step is that each process send its
+	     * own rank, ProcessID to all the other processes. At the end of this, each
+	     * process knows about all the peers and have ProcessID (key), SocketChannel
+	     * (val) in 'worldWritableTable' and 'worldReadableTable'.
+	     * 
+	     * As the name suggests, worldWritableTable is used for writing messages
+	     * into channels, and worldReadableTable is used for receiving. The
+	     * selector-thread would generate events for worldReadableTable
+	     * SocketChannels whereas, the ones (SocketChannels) in worldWritableTable
+	     * have nothing to do with selector thread as they are in blocking mode.
+	     */
+
+	    if (args.length < 3) {
+
+	      throw new XDevException("Usage: "
+	          + "java NIODevice <myrank> <conf_file> <device_name>"
+	          + "conf_file can be, ../conf/xdev.conf <Local>"
+	          + "OR http://holly.dsg.port.ac.uk:15000/xdev.conf <Remote>");
+
+	    }
+	  
+	    rank = Integer.parseInt(args[0]);
+	    UUID myuuid = UUID.randomUUID();
+	    id = new ProcessID(myuuid); // , rank);
+	    Map<String, String> map = System.getenv();
+	    mpjHomeDir = map.get("MPJ_HOME");
+
+	    try {
+
+	      localaddr = InetAddress.getLocalHost();
+	      localHostName = localaddr.getHostName();
+
+	      if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
+	        logger.info("--init method of niodev is called--");
+	        logger.info("Address: " + localaddr);
+	        logger.info("Name :" + localHostName);
+	        logger.info("rank :" + rank);
+	      }
+
+	    } catch (UnknownHostException unkhe) {
+	      throw new XDevException(unkhe);
+	    }
+
+	    ConfigReader reader = null;
+
+	    try {
+	      reader = new ConfigReader(args[1]);
+	      nprocs = (new Integer(reader.readNoOfProc())).intValue();
+	      psl = (new Integer(reader.readIntAsString())).intValue();
+	      if (psl < 12) {
+	        logger.debug("lowest possible psl is 12 bytes");
+	        psl = 12;
+	      }
+	    } catch (Exception config_error) {
+	      throw new XDevException(config_error);
+	    }
+
+	    pids = new ProcessID[nprocs];
+
+	    if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
+	      logger.info("total processes:<" + nprocs);
+	      logger.info("protocolSwitchLimit :<" + psl);
+	    }
+
+	    String[] nodeList = new String[nprocs];
+	    int[] rPortList = new int[nprocs];
+	    int[] wPortList = new int[nprocs];
+	    int[] rankList = new int[nprocs];
+	    int count = 0;
+
+	    while (count < nprocs) {
+
+	      String line = null;
+
+	      try {
+	        line = reader.readLine();
+	      } catch (IOException ioe) {
+	        throw new XDevException(ioe);
+	      }
+
+	      if (line == null || line.equals("") || line.equals("#")) {
+	        continue;
+	      }
+
+	      line = line.trim();
+	      StringTokenizer tokenizer = new StringTokenizer(line, "@");
+	      nodeList[count] = tokenizer.nextToken();
+	      wPortList[count] = (new Integer(tokenizer.nextToken())).intValue();
+	      rPortList[count] = (new Integer(tokenizer.nextToken())).intValue();     
+	      rankList[count] = (new Integer(tokenizer.nextToken())).intValue();
+	      count++;
+
+	    }
+
+	    reader.close();
+
+	    /* Open the selector */
+	    try {
+	      selector = Selector.open();
+	    } catch (IOException ioe) {
+	      throw new XDevException(ioe);
+	    }
+
+	    /* Create server socket */
+	    SocketChannel[] rChannels = new SocketChannel[nodeList.length - 1];
+	    /* Create control server socket */
+	    SocketChannel[] wChannels = new SocketChannel[nodeList.length - 1];
+
+	    /*
+	     * Checking for the java.net.BindException. This Exception is thrown when
+	     * the port on which we want to bind is already in use
+	     */
+	    boolean isOK = false;
+	    boolean isError = false;
+
+	    while (isOK != true) {
+
+	      isOK = false;
+	      isError = false;
+
+	      try {
+	        writableServerChannel = ServerSocketChannel.open();
+	        writableServerChannel.configureBlocking(false);
+	        writableServerChannel.socket().bind(new InetSocketAddress(wPortList[rank]));
+
+	        if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
+	          logger.debug("created writableServerChannel on port " + wPortList[rank]);
+	        }
+	        writableServerChannel.register(selector, SelectionKey.OP_ACCEPT);
+
+	        my_server_port = rPortList[rank];
+
+	        readableServerChannel = ServerSocketChannel.open();
+	        readableServerChannel.configureBlocking(false);
+	        readableServerChannel.socket().bind(
+	            new InetSocketAddress( rPortList[rank] ));
+	        readableServerChannel.register(selector, SelectionKey.OP_ACCEPT);
+
+	        if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
+	          logger.debug("created readableServerChannel on port " +
+	                        rPortList[rank] );
+	        }
+
+	      } catch (IOException ioe) {
+	        isError = true;
+	        if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
+	          logger.debug("NIODevice threw an exception "+
+	             "while starting the server on ports "+rPortList[rank]+
+	             " or "+(wPortList[rank])+ 
+	             ". We'll try starting servers on next two consecutive ports") ;
+	        }
+	        try { Thread.sleep(500); } catch(Exception e){}
+	      }
+	      finally {
+	        if(isError == true)
+	          isOK = false;
+	        else if(isError == false)
+	          isOK = true;
+	      }
+	    }
+
+	    /* This is connection-code for data-channels. */
+	    boolean connected = false;
+	    int temp = 0, index = 0;
+	    /*
+	     * This while loop is connecting to server sockets of other peers. If there
+	     * are 4 processes, process 0 will not connect to any process, process 1
+	     * will connect to process 0, process 2 will connect to pro 0&1, and process
+	     * 3 will connect to pro 0&1&2
+	     */
+
+	    while (temp < nprocs - 1) {
+
+	      if (rank == rankList[temp]) {
+	        temp++;
+	        continue;
+	      }
+
+	      if (rankList[temp] < rank) {
+
+	        while (!connected) {
+
+	          try {
+	            rChannels[index] = SocketChannel.open();
+	            rChannels[index].configureBlocking(true);
+	          } catch (Exception e) {
+	            throw new XDevException(e);
+	          }
+
+	          if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
+	            logger.debug("Connecting to " + nodeList[temp] + "@" +  rPortList[temp] );
+	          }
+
+	          try {
+	            connected = rChannels[index].connect(
+	                new InetSocketAddress(nodeList[temp], rPortList[temp]));
+	          }
+	          catch (AlreadyConnectedException ace) {
+	            throw new XDevException(ace);
+	          } catch (ConnectionPendingException cpe) {
+	            throw new XDevException(cpe);
+	          } catch (ClosedChannelException cce) {
+	            throw new XDevException(cce);
+	          } catch (UnresolvedAddressException uae) {
+	            throw new XDevException(uae);
+	          } catch (UnsupportedAddressTypeException uate) {
+	            throw new XDevException(uate);
+	          } catch (SecurityException se) {
+	            throw new XDevException(se);
+	          } catch (IOException ioe) {
+	            // this is continuing coz process 1 alwayz connect to process 0
+	            // server socket. If process 0 is not up, then this exception
+	            connected = false;
+
+	            if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
+	              logger.debug("connecting error ->" + ioe.getMessage());
+	            }
+
+	            continue;
+	          }
+
+	          try {
+	            rChannels[index].configureBlocking(false);
+	            rChannels[index].register(selector,
+	                                      SelectionKey.OP_READ);
+	            rChannels[index].socket().setTcpNoDelay(true);
+		    //these are useful if running MPJ on gigabit ethernet.
+	            rChannels[index].socket().setSendBufferSize(524288);
+	            rChannels[index].socket().setReceiveBufferSize(524288);
+	          } catch (Exception e) {
+	            throw new XDevException(e);
+	          }
+
+	          synchronized (readableChannels) {
+	            readableChannels.add(rChannels[index]);
+	            if (readableChannels.size() == nprocs - 1) {
+	              readableChannels.notify();
+	            }
+	          } // end synch
+
+	          connected = true;
+	        } // end while
+
+	        connected = false;
+	      } // end if
+
+	      index++;
+	      temp++;
+
+	    } // end while
+
+	    /* This is connection-code for control-channels. */
+	    connected = false;
+	    temp = 0;
+	    index = 0;
+
+	    /*
+	     * This while loop is connecting to server sockets of other peers. If there
+	     * are 4 processes, process 0 will not connect to any process, process 1
+	     * will connect to process 0, process 2 will connect to pro 0&1, and process
+	     * 3 will connect to pro 0&1&2
+	     */
+
+	    while (temp < nprocs - 1) {
+
+	      if (rank == rankList[temp]) {
+
+	        if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
+	          logger.debug("Dont connect to itself, so contine;");
+	        }
+
+	        temp++;
+	        continue;
+	      }
+
+	      if (rankList[temp] < rank) {
+
+	        while (!connected) {
+
+	          try {
+	            wChannels[index] = SocketChannel.open();
+	            wChannels[index].configureBlocking(true);
+
+	            if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
+	              logger.debug("Connecting to " + nodeList[temp] +
+	                           "@" + wPortList[temp]);
+	            }
+
+	          } catch (Exception e) {
+	            throw new XDevException(e);
+	          }
+
+	          try {
+
+	            connected = wChannels[index].connect(
+	                new InetSocketAddress(nodeList[temp], wPortList[temp]));
+
+	          } catch (AlreadyConnectedException ace) {
+	            throw new XDevException(ace);
+	          } catch (ConnectionPendingException cpe) {
+	            throw new XDevException(cpe);
+	          } catch (ClosedChannelException cce) {
+	            throw new XDevException(cce);
+	          } catch (UnresolvedAddressException uae) {
+	            throw new XDevException(uae);
+	          } catch (UnsupportedAddressTypeException uate) {
+	            throw new XDevException(uate);
+	          } catch (SecurityException se) {
+	            throw new XDevException(se);
+	          } catch (IOException ioe) {
+	            // this is continuing coz process 1 alwayz connect to process 0
+	            // server socket. If process 0 is not up, then this exception
+	            connected = false;
+
+	            if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
+	              logger.debug("connecting error ->" + ioe.getMessage());
+	            }
+
+	            continue;
+	          }
+
+	          try {
+	            wChannels[index].configureBlocking(true);
+	            wChannels[index].socket().setTcpNoDelay(true);
+		    //these are useful if running MPJ on gigabit ethernet
+	            wChannels[index].socket().setSendBufferSize(524288);
+	            wChannels[index].socket().setReceiveBufferSize(524288);
+	          } catch (Exception e) {
+	            throw new XDevException(e);
+	          }
+
+	          synchronized (writableChannels) {
+
+	            writableChannels.add(wChannels[index]);
+
+	            if (writableChannels.size() == nprocs - 1) {
+	              writableChannels.notify();
+	            }
+
+	          } // end synch
+
+	          connected = true;
+	        } // end while
+
+	        connected = false;
+	      } // end if
+
+	      index++;
+	      temp++;
+
+	    } // end while
+
+	    index = rank;
+	    root = 0;
+	    procTree = new ProcTree();
+	    extent = nprocs;
+	    places = ProcTree.PROCTREE_A * index;
+
+	    for (int i = 1; i <= ProcTree.PROCTREE_A; i++) {
+	      ++places;
+	      int ch = (ProcTree.PROCTREE_A * index) + i + root;
+	      ch %= extent;
+
+	      if (places < extent) {
+	        procTree.child[i - 1] = ch;
+	        procTree.numChildren++;
+	      }
+	    }
+
+	    if (index == root) {
+	      procTree.isRoot = true;
+	    } else {
+	      procTree.isRoot = false;
+	      int pr = (index - 1) / ProcTree.PROCTREE_A;
+	      procTree.parent = pr;
+	    }
+
+	    procTree.root = root;
+
+	    selectorThreadStarter = new Thread(selectorThread);
+
+	    if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
+	      logger.debug("Starting the selector thread ");
+	    }
+
+	    selectorThreadStarter.start();
+
+	    // addShutdownHook();
+
+	    if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
+	      logger.debug("testing if all peers are connected?");
+	    }
+
+	    count = 0;
+
+	    /*
+	     * doAccept() and/or while loop above adds SocketChannels to
+	     * writableChannels so access to writableChannels should be synchronized.
+	     */
+	    synchronized (writableChannels) {
+
+	      if (writableChannels.size() != nprocs - 1) {
+	        try {
+	          writableChannels.wait();
+	        } catch (Exception e) {
+	          throw new XDevException(e);
+	        }
+	      }
+
+	    } // end sync.
+
+	    /* This is for control-channels. */
+	    synchronized (readableChannels) {
+
+	      if (readableChannels.size() != nprocs - 1) {
+	        try {
+	          readableChannels.wait();
+	        } catch (Exception e) {
+	          throw new XDevException(e);
+	        }
+	      }
+
+	    } // end sync.
+
+	    if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
+	      logger.info(" Yes all nodes are connected to each other ");
+	    }
+
+	    /*
+	     * At this point, all-to-all connectivity has been acheived. Each process
+	     * has all SocketChannels (for peers) in writableChannels (Vector object).
+	     * Now each process will send rank(this rank is the one read from
+	     * config-file), msb (most significant bits), lsb(least significant bits) to
+	     * all the other processes. After receiving this info, all processes will
+	     * have constructed worldTable (Hashtable object), which contains <k,v>,
+	     * where k=UUID of a process, and v=SocketChannel object. This worldTable is
+	     * used extensively throughout the niodev.
+	     */
+
+	    SocketChannel socketChannel = null;
+	    ByteBuffer initMsgBuffer = ByteBuffer.allocate(24);
+	    long msb = myuuid.getMostSignificantBits();
+	    long lsb = myuuid.getLeastSignificantBits();
+	    initMsgBuffer.putInt(INIT_MSG_HEADER_DATA_CHANNEL);
+	    initMsgBuffer.putInt(rank);
+	    initMsgBuffer.putLong(msb);
+	    initMsgBuffer.putLong(lsb);
+
+	    if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
+	      logger.debug("rank<" + rank
+	          + ">is sending its rank,msb,lsb, to all data channels");
+	    }
+
+	    /* Writing stuff into writable-channels */
+	    for (int i = 0; i < writableChannels.size(); i++) {
+	      socketChannel = writableChannels.get(i);
+	      initMsgBuffer.flip();
+
+	      /* Do we need to iterate here? */
+	      while (initMsgBuffer.hasRemaining()) {
+	        try {
+	          if (socketChannel.write(initMsgBuffer) == -1) {
+	            throw new XDevException(new ClosedChannelException());
+	          }
+	        } catch (Exception e) {
+	          throw new XDevException(e);
+	        }
+	      } // end while.
+	      _wcb.clear();
+	    } // end for.
+
+	    if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
+	      logger.debug("rank<" + rank + "> testing if everything is received? ");
+	    }
+
+	    /*
+	     * worldTable is accessed from doBarrierRead or here, so their access should
+	     * be synchronized
+	     */
+	    synchronized (worldReadableTable) {
+	      if ((worldReadableTable.size() != nprocs - 1)) {
+	        try {
+	          worldReadableTable.wait();
+	        } catch (Exception e) {
+	          throw new XDevException(e);
+	        }
+	      }
+	    } // end sync
+
+	    if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
+	      logger.debug("worldReadableTable is filled ");
+	    }
+
+	    /* Writing stuff into readable-channels */
+	    for (int i = 0; i < readableChannels.size(); i++) {
+	      socketChannel = readableChannels.get(i);
+	      initMsgBuffer.flip();
+
+	      /* Do we need to iterate here? */
+	      while (initMsgBuffer.hasRemaining()) {
+	        try {
+	          if (socketChannel.write(initMsgBuffer) == -1) {
+	            throw new XDevException(new ClosedChannelException());
+	          }
+	        } catch (Exception e) {
+	          throw new XDevException(e);
+	        }
+	      } // end while.
+	    } // end for.
+
+	    /*
+	     * Do blocking-reads, is this correct? will work but wont scale i think.
+	     */
+	    for (int i = 0; i < writableChannels.size(); i++) {
+	      socketChannel = writableChannels.get(i);
+	      try {
+	        doBarrierRead(socketChannel, worldWritableTable, true);
+	      } catch (XDevException xde) {
+	        throw xde;
+	      }
+	    }
+
+	    synchronized (worldWritableTable) {
+	      if ((worldWritableTable.size() != nprocs - 1)) {
+	        try {
+	          worldWritableTable.wait();
+	        } catch (Exception e) {
+	          throw new XDevException(e);
+	        }
+	      }
+	    } // end sync
+
+	    if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
+	      logger.debug("worldWritable is filled ");
+	    }
+
+	    // writableServerChannel.close();
+	    // readableServerChannel.close();
+	    pids[rank] = id;
+
+	    for (int k = 0; k < writableChannels.size(); k++) {
+	      writeLockTable.put(writableChannels.elementAt(k), new CustomSemaphore(1));
+	    }
+
+	    try {
+	      writableServerChannel.close();
+	      readableServerChannel.close();
+	    } catch (Exception e) {
+	      throw new XDevException(e);
+	    }
+	 
+	    return pids;
+
+	  } // end init
 
   /**
    * Returns the id of this process.
