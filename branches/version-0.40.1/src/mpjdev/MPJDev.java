@@ -41,8 +41,6 @@ import xdev.Device;
 import xdev.ProcessID;
 import org.apache.log4j.Logger ; 
 
-import java.net.*;
-
 public class MPJDev {
 
   public static Comm WORLD = null;
@@ -70,37 +68,44 @@ public class MPJDev {
 
         if (device.equals("niodev")) {
           dev = new xdev.niodev.NIODevice();
-        }else if (device.equals("hybdev")) {
-          dev = new xdev.hybdev.HYBDevice();
         } else if (device.equals("mxdev")) {
           dev = new xdev.mxdev.MXDevice();
         } else if (device.equals("smpdev")) {
           dev = new xdev.smpdev.SMPDevice();
-        } else {
+        } 
+        else if (device.equals("hybdev")) {
+            dev = new xdev.hybdev.HYBDevice();
+        }else {
           throw new MPJDevException("No matching device found for <" 
                + dev + ">");
         }
+				
       }
     }
-
+	
     if (dev == null) {
       System.out.println("Specified device: " + args[2]);
       System.out.println("Available devices, niodev, smpdev, hybdev, mxdev");
-      System.out.println("Error, cant execute, correct the device first");
+      System.out.println("Error, cant execute, correct the device first ");
       return dev ;
     }
 
     ProcessID[] ids = dev.init(args);
     ProcessID myID = dev.id();
     int myRank = -1;
-    for(int i=0 ; i<ids.length ; i++) { 
+    
+		for(int i=0 ; i<ids.length ; i++) { 
       if(myID.uuid().equals(ids[i].uuid())) {
-        myRank = i ; 	      
-	break; 
+        //System.out.println("MPJDev my rank="+i);
+				myRank = i ; 	      
+				break; 
       }
     }
+	 
     WORLD = new Comm(dev, new Group(ids, myID, myRank ));
-    return dev ; 
+		
+
+		return dev ; 
   }
 
   /**
@@ -130,13 +135,15 @@ public class MPJDev {
   }
 
   public static void finish() throws MPJDevException {
+   // System.out.println ( " clled mpjdev finish");
     try { 
       dev.finish();
+    //  System.out.println ( " mpjdev.MPJDev: Returned form  Hybrid Device" ) ;
     }catch( xdev.XDevException xde) {
       throw new MPJDevException ( xde); 	    
     }
 
     dev = null;
   }
-
+  
 }

@@ -1,0 +1,419 @@
+package runtime.daemon;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.StringTokenizer;
+
+import org.apache.commons.codec.binary.Base64;
+
+import runtime.processinfo.MPJProcessTicket;
+import runtime.utils.io.IOHelper;
+
+public class ProcessArgumentsManager {
+
+	ArrayList<Integer> ports = new ArrayList<Integer>();
+	String sourceFolder ="";
+	MPJProcessTicket pTicket;
+	String configFilePath ="";
+	String ticketDir ="";
+	int rankArgumentIndex;
+
+	
+	public ProcessArgumentsManager(MPJProcessTicket pTicket) {		
+		this.pTicket = pTicket;		
+	}
+	
+	public ArrayList<Integer> getProcessesPorts()
+	{
+		return ports;		
+	}
+	
+	public int getRankArgumentIndex() {
+		return rankArgumentIndex;
+	}
+
+	public void setRankArgumentIndex(int rankArgumentIndex) {
+		this.rankArgumentIndex = rankArgumentIndex;
+	}
+
+	public  String[] GetArguments(MPJProcessTicket pTicket) {
+		if (pTicket.getDeviceName().equals("niodev")) {
+			return GetNIODeviceArguments();
+		} else if (pTicket.getDeviceName().equals("hybdev")) {
+			return GetHybridDeviceArguments();
+		}
+		return null;
+
+	}
+
+	public  String[] GetNIODeviceArguments() {
+
+		WriteSourceFile();
+		WriteConfigFile();
+
+		Map<String, String> map = System.getenv();
+		String mpjHomeDir = map.get("MPJ_HOME");
+
+		boolean now = false;
+		boolean noSwitch = true;
+		for (int e = 0; e < pTicket.getJvmArgs().size(); e++) {
+
+			if (MPJDaemon.DEBUG && MPJDaemon.logger.isDebugEnabled()) {
+				MPJDaemon.logger.debug("jArgs[" + e + "]="
+						+ pTicket.getJvmArgs().get(e));
+			}
+
+			if (now) {
+				String cp = pTicket.getJvmArgs().remove(e);
+				cp = "." + File.pathSeparator + "" + mpjHomeDir
+				+ "/lib/loader1.jar" + File.pathSeparator + ""
+				+ mpjHomeDir + "/lib/mpj.jar" + File.pathSeparator + ""
+				+ mpjHomeDir + "/lib/log4j-1.2.11.jar"
+				+ File.pathSeparator + "" + mpjHomeDir
+				+ "/lib/wrapper.jar" + File.pathSeparator
+				+ pTicket.getClassPath() + File.pathSeparator
+				+ sourceFolder + File.pathSeparator + cp;
+
+				pTicket.getJvmArgs().add(e, cp);
+				now = false;
+			}
+
+			if (pTicket.getJvmArgs().get(e).equals("-cp")) {
+				now = true;
+				noSwitch = false;
+			}
+		}
+
+		if (noSwitch) {
+			pTicket.getJvmArgs().add("-cp");
+			pTicket.getJvmArgs().add(
+					"." + File.pathSeparator + "" + mpjHomeDir
+					+ "/lib/loader1.jar" + File.pathSeparator + ""
+					+ mpjHomeDir + "/lib/mpj.jar" + File.pathSeparator
+					+ "" + mpjHomeDir + "/lib/log4j-1.2.11.jar"
+					+ File.pathSeparator + "" + mpjHomeDir
+					+ "/lib/wrapper.jar" + File.pathSeparator
+					+ pTicket.getClassPath() + File.pathSeparator
+					+ sourceFolder);
+		}
+
+		for (int e = 0; e < pTicket.getJvmArgs().size(); e++) {
+			if (MPJDaemon.DEBUG && MPJDaemon.logger.isDebugEnabled()) {
+				MPJDaemon.logger.debug("modified: jArgs[" + e + "]="
+						+ pTicket.getJvmArgs().get(e));
+			}
+		}
+
+		/* ends Here */
+		/*
+		 * FIX ME BY RIZWAN HANIF : making arguments to launch MPI Processes
+		 */
+		int N_ARG_COUNT = 7;
+	
+		int nArgumentIncrement = 0;
+		if(pTicket.isProfiler())
+			nArgumentIncrement++;
+		if(pTicket.isDebug())
+			nArgumentIncrement++;
+	        
+		String[] arguments = new String[(N_ARG_COUNT + pTicket.getJvmArgs().size() + pTicket
+				.getAppArgs().size()) + nArgumentIncrement];
+		if( pTicket.isProfiler())					
+			arguments[0] = "tau_java";				
+		else
+			arguments[0] = "java";
+		// System.arraycopy ... can be used ..here ...
+		for (int i = 0; i < pTicket.getJvmArgs().size(); i++) {
+			arguments[i + 1] = pTicket.getJvmArgs().get(i);
+		}
+
+		int indx = pTicket.getJvmArgs().size() + 1;
+		
+		arguments[indx] = "runtime.daemon.Wrapper";
+		indx++;
+		arguments[indx] = configFilePath;
+		indx++;
+		arguments[indx] = Integer.toString(pTicket.getProcessCount());
+		indx++;
+		arguments[indx] = pTicket.getDeviceName();
+		indx++;
+		arguments[indx] = "" + (-1);
+		/*
+		 * FIX ME BY RIZWAN HANIF : This index value is actually the rank of
+		 * each MPI Processes
+		 */
+		 rankArgumentIndex = indx;
+		indx++;
+		arguments[indx] = pTicket.getMainClass();
+		// System.arraycopy ... can be used ..here ...
+		for (int i = 0; i < pTicket.getAppArgs().size(); i++) {
+			arguments[i + N_ARG_COUNT + pTicket.getJvmArgs().size()] = pTicket
+			.getAppArgs().get(i);
+		}
+		return arguments;
+
+	}
+
+	public  String[] GetHybridDeviceArguments() {
+		WriteSourceFile();
+		WriteConfigFile();
+
+		Map<String, String> map = System.getenv();
+		String mpjHomeDir = map.get("MPJ_HOME");
+		boolean now = false;
+		boolean noSwitch = true;
+		String cmdClassPath = " ";
+
+		String[] jArgs = pTicket.getJvmArgs().toArray(new String[0]);
+		for (int e = 0; e < jArgs.length; e++) {
+
+			if (MPJDaemon.DEBUG && MPJDaemon.logger.isDebugEnabled()) {
+				MPJDaemon.logger.debug("jArgs[" + e + "]=" + jArgs[e]);
+			}
+
+			if (now) {
+				cmdClassPath = pTicket.getJvmArgs().remove(e);
+
+				if (cmdClassPath.matches("(?i).*mpj.jar.*")) {
+					// System.out.println("before <"+cmdClassPath+">");
+					// System.out.println("mpj.jar is present ...") ;
+					cmdClassPath = cmdClassPath.replaceAll("mpj\\.jar",
+							"mpi.jar");
+					// cmdClassPath.replaceAll(Pattern.quote("mpj.jar"),
+					// Matcher.quoteReplacement("mpi.jar")) ;
+					// System.out.println("after <"+cmdClassPath+">");
+					// System.exit(0) ;
+				}
+				// adding hybdev.jar and niodev.jar
+				String cp = mpjHomeDir + "/lib/hybdev.jar" + File.pathSeparator
+						+ "" + mpjHomeDir + "/lib/xdev.jar"
+						+ File.pathSeparator + "" + mpjHomeDir
+						+ "/lib/smpdev.jar" + File.pathSeparator + ""
+						+ mpjHomeDir + "/lib/niodev.jar" + File.pathSeparator
+						+ "" + mpjHomeDir + "/lib/mpjbuf.jar"
+						+ File.pathSeparator + "" + mpjHomeDir
+						+ "/lib/loader2.jar" + File.pathSeparator + ""
+						+ mpjHomeDir + "/lib/starter.jar" + File.pathSeparator
+						+ "" + mpjHomeDir + "/lib/mpiExp.jar";
+
+				if (MPJDaemon.DEBUG && MPJDaemon.logger.isDebugEnabled()) {
+					MPJDaemon.logger.debug("cp = " + cp);
+				}
+
+				pTicket.getJvmArgs().add(e, cp);
+				now = false;
+			}
+
+			if (jArgs[e].equals("-cp")) {
+				now = true;
+				noSwitch = false;
+			}
+
+		}
+
+		if (noSwitch) {
+			pTicket.getJvmArgs().add("-cp");
+
+			// adding hybdev.jar and niodev.jar
+			String cp = mpjHomeDir + "/lib/hybdev.jar" + File.pathSeparator
+					+ "" + mpjHomeDir + "/lib/xdev.jar" + File.pathSeparator
+					+ "" + mpjHomeDir + "/lib/smpdev.jar" + File.pathSeparator
+					+ "" + mpjHomeDir + "/lib/niodev.jar" + File.pathSeparator
+					+ "" + mpjHomeDir + "/lib/mpjbuf.jar" + File.pathSeparator
+					+ "" + mpjHomeDir + "/lib/loader2.jar" + File.pathSeparator
+					+ "" + mpjHomeDir + "/lib/starter.jar" + File.pathSeparator
+					+ "" + mpjHomeDir + "/lib/mpiExp.jar";
+
+			pTicket.getJvmArgs().add(cp);
+
+			if (MPJDaemon.DEBUG && MPJDaemon.logger.isDebugEnabled()) {
+				MPJDaemon.logger.debug("cp = " + cp);
+			}
+		}		
+		
+
+		jArgs = pTicket.getJvmArgs().toArray(new String[0]);
+
+		for (int e = 0; e < jArgs.length; e++) {
+			if (MPJDaemon.DEBUG && MPJDaemon.logger.isDebugEnabled()) {
+				MPJDaemon.logger
+						.debug("modified: jArgs[" + e + "]=" + jArgs[e]);
+			}
+		}
+
+		int CMD_WORDS = 8;
+		int HYB_ARGS = 5;
+
+		String[] aArgs = pTicket.getAppArgs().toArray(new String[0]);
+		int nArgumentIncrement = 0;
+		if(pTicket.isProfiler())
+			nArgumentIncrement++;
+		if(pTicket.isDebug())
+			nArgumentIncrement++;
+		
+		String[] arguments = new String[(CMD_WORDS + jArgs.length + HYB_ARGS + aArgs.length)+ nArgumentIncrement];
+		if( pTicket.isProfiler())					
+			arguments[0] = "tau_java";				
+		else
+			arguments[0] = "java";
+
+		for (int i = 0; i < jArgs.length; i++) {
+			arguments[i + 1] = jArgs[i];
+		}
+
+		int indx = jArgs.length + 1;
+
+		arguments[indx] = "runtime.daemon.HybridStarter";
+		indx++;
+		arguments[indx] = pTicket.getWorkingDirectory();
+		indx++;	
+		int threadPerHost = getThreadsPerHost(pTicket.getTotalProcessCount(),  pTicket.getNetworkProcessCount(),  pTicket.getStartingRank());
+		arguments[indx] = Integer.toString(threadPerHost);
+		indx++;
+		arguments[indx] = pTicket.getDeviceName();
+		indx++;
+		arguments[indx] = "useLocalLoader";
+		indx++;
+		arguments[indx] = cmdClassPath;
+		indx++;
+
+		arguments[indx] = pTicket.getMainClass();
+		
+		if (MPJDaemon.DEBUG && MPJDaemon.logger.isDebugEnabled()) {
+			MPJDaemon.logger.debug("HybridDaemon: Value of Indx: " + indx
+					+ " Count of args till now: " + (CMD_WORDS + jArgs.length));
+		}
+		indx = CMD_WORDS + jArgs.length;
+		// args for hybrid device
+		arguments[indx + 0] =   Integer.toString(pTicket.getTotalProcessCount());
+		arguments[indx + 1] = Integer.toString(pTicket.getNetworkProcessCount());
+		arguments[indx + 2] = Integer.toString(pTicket.getStartingRank());
+		arguments[indx + 3] = configFilePath;
+		arguments[indx + 4] = "niodev";
+
+		for (int i = 0; i < aArgs.length; i++) {
+			arguments[i + CMD_WORDS + jArgs.length + HYB_ARGS] = aArgs[i];
+		}
+
+		if (MPJDaemon.DEBUG && MPJDaemon.logger.isDebugEnabled()) {
+			MPJDaemon.logger
+					.debug("HybridDaemon: Command for process-builder object index: value ");
+		}
+
+		for (int i = 0; i < arguments.length; i++) {
+			if (MPJDaemon.DEBUG && MPJDaemon.logger.isDebugEnabled()) {
+				MPJDaemon.logger.debug(i + ": " + arguments[i]);
+			}
+		}
+
+		if (MPJDaemon.DEBUG && MPJDaemon.logger.isDebugEnabled()) {
+			MPJDaemon.logger
+					.debug("HybridDaemon: creating process-builder object ");
+		}
+
+		
+		return arguments;
+	}
+
+	public  ArrayList<Integer> WriteConfigFile() {
+		{
+			String CONF_FILE_NAME = "mpjdev.conf";
+			configFilePath = ticketDir + File.separator + CONF_FILE_NAME;
+			if (MPJDaemon.DEBUG && MPJDaemon.logger.isDebugEnabled()) {
+				MPJDaemon.logger
+						.debug("configFilePath");
+			}
+		
+			
+			File configFile = new File(configFilePath);
+			try {
+				configFile.createNewFile();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				System.out.println("Unable to create config file ");
+				System.out.println(e1.getMessage() +"\r\n"  +e1.getStackTrace());
+				MPJDaemon.logger
+				.debug(e1.getMessage());
+			}
+			
+			configFilePath = ticketDir + File.separator + CONF_FILE_NAME;
+			if (MPJDaemon.DEBUG && MPJDaemon.logger.isDebugEnabled()) {
+				MPJDaemon.logger
+						.debug("Config file created :");
+			}
+
+			StringTokenizer conf_file_tokenizer = new StringTokenizer(
+					pTicket.getConfFileContents(), ";");
+			PrintStream cout;
+			FileOutputStream cfos = null;
+
+			try {
+				cfos = new FileOutputStream(configFile);
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			cout = new PrintStream(cfos);
+
+			while (conf_file_tokenizer.hasMoreTokens()) {
+				String token = conf_file_tokenizer.nextToken();
+				if (token.contains("@") && !token.startsWith("#")) {
+					String[] tokens = token.split("@");
+					ports.add(Integer.parseInt(tokens[1]));
+					ports.add(Integer.parseInt(tokens[2]));
+				}
+				cout.println(token);
+			}
+
+			cout.close();
+			try {
+				cfos.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			return ports;
+
+		}
+	}
+	private void WriteSourceFile()
+	{
+		String USERS = "users";	
+		String SRC_DIR = "src";
+		String SRC_ZIP = "src.zip";		
+		Map<String, String> map = System.getenv();
+		String mpjHomeDir = map.get("MPJ_HOME");
+		String usersDir = mpjHomeDir + File.separator + USERS;		
+		IOHelper.CreateDirectory(usersDir);		
+		String userDir = usersDir + File.separator + pTicket.getUserID();
+		IOHelper.CreateDirectory(userDir);			
+		ticketDir =  userDir + File.separator 
+		+ pTicket.getTicketID().toString();
+		IOHelper.CreateDirectory(ticketDir);
+	
+		sourceFolder = ticketDir + File.separator + SRC_DIR;
+		String sourceZip = ticketDir + File.separator + SRC_ZIP;
+
+		if (pTicket.isZippedSource()) {
+			byte[] contents = Base64.decodeBase64(pTicket.getSourceCode());
+			IOHelper.writeFile(sourceZip, contents);
+			IOHelper.ExtractZip(sourceZip, sourceFolder);
+		}
+		
+	}
+	public int getThreadsPerHost(int pro, int boxes, int netRank) {
+		int proPerHost = pro / boxes;
+		int rem = pro % boxes;
+		if ((netRank + 1) <= rem) {
+			proPerHost++;
+		}
+		return proPerHost;
+	}
+
+
+}
