@@ -605,12 +605,28 @@ public class Comm {
     int[] contextArray = new int[1];
     contextArray[0] = nextContext ; //(new Random()).nextInt(1024);
     int i;
+    
+    
     mpjdev.Request[] req = new mpjdev.Request[mySize];
+    
+    //non-blocking
+    mpjdev.Request[] recvReq = new mpjdev.Request[mySize];
+    mpjdev.Status [] status = new mpjdev.Status [mySize] ;
+
+    
     int sendOverhead = MPJDev.getSendOverhead () ;
     int recvOverhead = MPJDev.getRecvOverhead () ;
     int cap = sendOverhead+23; //FIXME: What's this magic number?
 
     mpjbuf.Buffer wBuffer [] = new mpjbuf.Buffer[mySize] ; 
+    
+    //NB
+   	mpjbuf.Buffer rBuffer [] = new mpjbuf.Buffer[mySize] ; 
+
+
+	/*for(i=0;i<ids.length;i++){
+		System.out.println("rank "+myRank+ " index "+i+" ids "+ids[i].uuid() );
+	}*/
 
     for (i = 0; i < mySize; i++) {
       if (i == myRank) {
@@ -619,7 +635,7 @@ public class Comm {
       //System.out.println("process <"+group.rank()+"> sending to <"+i );
       try { 
         wBuffer[i] = new mpjbuf.Buffer(
-	    BufferFactory.create(cap), sendOverhead, cap);
+        BufferFactory.create(cap), sendOverhead, cap);
         wBuffer[i].putSectionHeader(mpjbuf.Type.INT);
         wBuffer[i].write(contextArray, 0, 1);
         wBuffer[i].commit();
@@ -628,13 +644,15 @@ public class Comm {
       catch(Exception e) {
         throw new MPJDevException( e );
       }
-      //System.out.println("process <"+group.rank()+"> sent to "+i );
+    //  System.out.println(" process <"+group.rank()+"> sent to <"+i+"> tag <"+(calContextTag+i)+">" );
     }
+//    System.out.println("mpjdev.Comm.calculateContext: isend Done for all, iwait() to go " );
 
-    mpjbuf.Buffer rBuffer = new mpjbuf.Buffer(
-		    BufferFactory.create(recvOverhead+16), 
-		    recvOverhead , recvOverhead+16); 
-    //FIXME: What's this magic number? 
+  //  mpjbuf.Buffer rBuffer = new mpjbuf.Buffer(
+	//	    BufferFactory.create(recvOverhead+16), 
+	//	    recvOverhead , recvOverhead+16); 
+  
+  //FIXME: What's this magic number? 
     int highestContext = contextArray[0];
 
     for (i = 0; i < mySize; i++) {
@@ -643,26 +661,59 @@ public class Comm {
       }
 
       try {
-        //System.out.println("rank<"+myRank+"> recving from"+i);
-        device.recv(rBuffer, ids[i], (calContextTag+myRank), context);
+      //  System.out.println(" rank <"+myRank+"> receiving from <"+i+"> tag <"+(calContextTag+myRank)+">") ;
+      rBuffer[i] = new mpjbuf.Buffer(
+		    BufferFactory.create(recvOverhead+16), 
+		    recvOverhead , recvOverhead+16) ; 
+
+      status[i] = new mpjdev.Status(ids[i].uuid(), (calContextTag+myRank), -1) ;
+			recvReq[i] = device.irecv(rBuffer[i], ids[i], (calContextTag+myRank), context, status[i] ) ;
+      
+      //device.recv(rBuffer, ids[i], (calContextTag+myRank), context);
+      
+      //  System.out.println(" rank <"+myRank+"> Recvd from <"+i+"> tag <"+(calContextTag+myRank)+">" ) ;
         //System.out.println("rank<"+myRank+"> recved from"+i);
-        rBuffer.commit();
+      /*  rBuffer.commit();
         Type type = rBuffer.getSectionHeader();
-	rBuffer.getSectionSize() ;
+        rBuffer.getSectionSize() ;
         rBuffer.read(contextArray, 0, 1);
         rBuffer.clear();
+        */
       }
       catch (Exception e) {
         throw new MPJDevException ( e );
       }
-
-      if (contextArray[0] > highestContext) {
+    } //NB
+    /*  if (contextArray[0] > highestContext) {
         highestContext = contextArray[0];
       }
 
     }
+    */ //NB
+    
+    
+    for (i = 0; i < mySize; i++) {
+        if (i == myRank) {
+          continue;
+        }
+        recvReq[i].iwait();
+        try {
+          rBuffer[i].commit ();
+          Type type = rBuffer[i].getSectionHeader();
+          rBuffer[i].getSectionSize() ;
+          rBuffer[i].read(contextArray, 0, 1);
+        } catch(Exception e) { 
+          e.printStackTrace() ; 
+        } 
+      //}
 
-    //System.out.println("rank<"+myRank+"> recv completed ");
+      if (contextArray[0] > highestContext) {
+        highestContext = contextArray[0];
+      }
+    }
+    
+
+    //System.out.println(" mpjdev.Comm.calculateContext: rank<"+myRank+"> recv completed ");
     //System.out.println("rank<"+myRank+"> is last loop");
 
     for (i = 0; i < mySize; i++) {
@@ -670,8 +721,13 @@ public class Comm {
         continue;
       }
       req[i].iwait();
+      // System.out.println(" mpjdev.Comm.calculateContext: send req.iwait() done for "+ i );
       try { 
         wBuffer[i].clear();
+        
+        //NB
+        rBuffer[i].clear();
+        
       } catch(Exception e) { 
         e.printStackTrace() ; 
       } 
@@ -681,9 +737,10 @@ public class Comm {
       if (i == myRank)
         continue;
       BufferFactory.destroy(wBuffer[i].getStaticBuffer());
+      BufferFactory.destroy(rBuffer[i].getStaticBuffer());
     }
 
-    BufferFactory.destroy(rBuffer.getStaticBuffer());
+  //  BufferFactory.destroy(rBuffer.getStaticBuffer());
     return highestContext;
   }
 

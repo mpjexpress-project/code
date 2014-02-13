@@ -119,7 +119,7 @@ public class JarClassLoader
   }
 
   public static void main(String args[]) {
-
+/*
     //if (args.length < 2) {
     //  System.out.println("Usage: java JarClassLoader <URL> <rank>");
     //  System.exit(0);
