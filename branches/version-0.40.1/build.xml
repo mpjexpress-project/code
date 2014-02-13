@@ -80,7 +80,7 @@
             depends="generateJava">
         
 	<javac srcdir="${src.dir}" 
-	classpath="lib/wrapper.jar:lib/org.mortbay.jetty.jar:lib/log4j-1.2.11.jar" 
+	classpath="lib/wrapper.jar:lib/org.mortbay.jetty.jar:lib/log4j-1.2.11.jar:lib/commons-cli-1.2.jar:lib\commons-codec-1.8.jar" 
 	sourcepath="${src.dir}"
 	debug="true"
 	/>
@@ -93,7 +93,7 @@
 	  	    xdev/niodev/*.class xdev/mxdev/*.class xdev/hybdev/*.class ">
 			<manifest>
             <attribute name="Class-path" value="log4j-1.2.11.jar"/>
-          </manifest>
+      </manifest>
     </jar>
 
     <jar destfile="${lib.dir}/mpiExp.jar" basedir="src"
@@ -164,12 +164,12 @@
      </jar>
 
      <jar destfile="${lib.dir}/daemon.jar" basedir="src"
-          includes="runtime/daemon/*.class runtime/*.class">
+          includes="runtime/daemon/*.class runtime/*.class runtime/portmanager/*.class runtime/processinfo/*.class runtime/utils/io/*.class runtime/utils/xml/*.class runtime/constants/*.class">
 	  <manifest>
             <attribute name="Main-class" 
-	               value="runtime.daemon.WrapperSimpleApp" /> 
+	               value="runtime.daemon.MPJDaemon" /> 
             <attribute name="Class-path" 
-	    value="wrapper.jar log4j-1.2.11.jar"/> 
+	    value="wrapper.jar log4j-1.2.11.jar commons-codec-1.8.jar"/> 
           </manifest>  
      </jar>
 
@@ -194,14 +194,25 @@
      </jar>
 
      <jar destfile="${lib.dir}/starter.jar" basedir="src"
-          includes="runtime/starter/*.class runtime/*.class">
+          includes="runtime/starter/*.class runtime/*.class runtime/processinfo/*.class runtime/utils/xml/*.class runtime/utils/io/*.class runtime/constants/*.class"  >
 	  <manifest>
 	   <attribute name="Main-class" value="runtime.starter.MPJRun" />
            <attribute name="Class-path" 
-	   value="org.mortbay.jetty.jar log4j-1.2.11.jar javax.servlet.jar"/> 
+	   value="org.mortbay.jetty.jar log4j-1.2.11.jar javax.servlet.jar daemonmanager.jar commons-codec-1.8.jar"/> 
 	  </manifest>  
      </jar>
+    	
+    	  <jar destfile="${lib.dir}/daemonmanager.jar" basedir="src"
+    	          includes="*.class **/*.class">
+    		  <manifest>
+    		   <attribute name="Main-class" value="daemonmanager.MPJDaemonManager" />    
+    		  	 <attribute name="Class-path" 
+    		  		   value="commons-cli-1.2.jar"/> 
+    		  </manifest>  
+    	     </jar>	
     </target>
+	
+	
 
     <target name="mxlib" description="generates native MX code">
 
@@ -247,6 +258,8 @@
 	 <fileset dir="${mpjbuf.dir}" includes="**/*.class"/>
 	 <fileset dir="src/runtime" includes="**/*.class"/>
 	 <fileset dir="src/runtime" includes="*.class"/>
+	 <fileset dir="src/daemonmanager" includes="*.class"/>
+	<fileset dir="src/daemonmanager" includes="**/*.class"/>
 	</delete>
     </target>
 
@@ -281,7 +294,7 @@
     <target name="java-docs" depends="figures">
       <javadoc
         destdir="${doc.dir}/javadocs"
-	classpath="${lib.dir}/org.mortbay.jetty.jar:${lib.dir}/javax.servlet.jar:${lib.dir}/wrapper.jar:${lib.dir}/log4j-1.2.11.jar">
+	classpath="${lib.dir}/org.mortbay.jetty.jar:${lib.dir}/javax.servlet.jar:${lib.dir}/wrapper.jar:${lib.dir}/log4j-1.2.11.jar;{lib.dir}/commons-cli-1.2	.jar">
         <fileset dir="${mpi.dir}" defaultexcludes="yes">
           <include name="**/Cartcomm.java"/>
           <include name="**/CartParms.java"/>

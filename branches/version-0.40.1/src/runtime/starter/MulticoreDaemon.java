@@ -80,12 +80,18 @@ public class MulticoreDaemon {
   private static Logger logger = null ; 
   private String mpjHomeDir = null ;  
   private String loader = null;
+  private boolean ADEBUG = false;
+	private boolean APROFILE = false;
+	private int DEBUG_PORT = 24500;
 
   public MulticoreDaemon (String mcClassName, String mcJarName,
                           int classOrJar, int numOfProcessors, 
                           String workingDirectory,
                           ArrayList<String> jvmArgs,
-                          ArrayList<String> appArgs) throws Exception { 
+                          ArrayList<String> appArgs,
+                          boolean ADEBUG,
+                          boolean APROFILE,
+                          int DEBUG_PORT ) throws Exception { 
 
     this.jvmArgs = jvmArgs ; 
     this.appArgs = appArgs ; 
@@ -99,7 +105,11 @@ public class MulticoreDaemon {
     this.processes = numOfProcessors ; 
     this.deviceName = "smpdev" ;
     this.loader = "useLocalLoader" ; //don't need this
-
+    
+    this.ADEBUG = ADEBUG;
+    this.APROFILE = APROFILE;
+    this.DEBUG_PORT = DEBUG_PORT;
+    
     if(workingDirectory == null) { 
       this.wdir = System.getProperty("user.dir") ; 
     } else { 
@@ -211,12 +221,12 @@ public class MulticoreDaemon {
     int CMD_WORDS = 8 ; 
 	/* FIX ME BY AMJAD AZIZ : 
 	    When launched in Debug Mode */
-    if(MPJRun.ADEBUG)
+    if(ADEBUG)
       CMD_WORDS++;
     String[] aArgs = appArgs.toArray(new String[0]);
     String[] ex =
             new String[ (CMD_WORDS+jArgs.length+aArgs.length) ];
-    if(MPJRun.APROFILE)
+    if(APROFILE)
     ex[0] = "tau_java";
     else	
     ex[0] = "java";
@@ -228,8 +238,8 @@ public class MulticoreDaemon {
     int indx = jArgs.length+1;
 	/* FIX ME BY AMJAD AZIZ : 
 	    When launched in Debug Mode */
-    if(MPJRun.ADEBUG)
-    ex[indx++] = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address="+MPJRun.DEBUG_PORT;
+    if(ADEBUG)
+    ex[indx++] = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address="+DEBUG_PORT;
     ex[indx] = "runtime.starter.MulticoreStarter" ; indx++ ; 
     ex[indx] = wdir; indx++ ; 
     ex[indx] = Integer.toString(processes); indx++ ; 
