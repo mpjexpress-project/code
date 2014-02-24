@@ -416,8 +416,7 @@ public class MPJRun {
 			}
 
 			int nProcesses = nProcessesInt.intValue();
-			logger.debug("Machine Name :" + hName + " Assigned Process Count: "
-					+ nProcesses);
+			
 			if (deviceName.equals("hybdev")) {
 				pack(nProcesses, j, peerSock); // starting NETID of hybrid
 				// device should be adjusted
@@ -551,10 +550,12 @@ public class MPJRun {
 			out.writeInt(length);
 			// logger.info(length);
 			// logger.info(ticketString);
+			if (DEBUG && logger.isDebugEnabled()) {
 			logger.info("Machine Name: "
 					+ sockClient.getInetAddress().getHostName()
 					+ " Startting Rank: " + ticket.getStartingRank()
 					+ " Process Count: " + ticket.getProcessCount());
+			}
 			out.write(ticketString.getBytes(), 0, length);
 			out.flush();
 		} catch (IOException e) {
@@ -800,8 +801,7 @@ public class MPJRun {
 			ports[1] = din.readInt();
 			out.writeInt(2);
 			out.flush();
-			logger.debug("Assigned Ports are " + ports[0] + ":" + ports[1]
-					+ " from " + machineName);
+		
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
