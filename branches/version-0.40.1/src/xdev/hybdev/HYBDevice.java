@@ -209,12 +209,7 @@ public class HYBDevice implements Device {
      *  Args[6] = NIO Config file path
      *  Args[7] = niodev
      * */
-	  int g=0;
-	  for ( String arg :args)
-	  {
-		 logger.info("Argument[" +g +"]  " + arg);
-		 g++;
-	  }
+    
     xdev.niodev.NIODevice.isHybrid = true;
     smpHybDev=nioHybDev = null ;     //just to make sure device is clean if repeat init.
     ProcessID[] Spids = null;
