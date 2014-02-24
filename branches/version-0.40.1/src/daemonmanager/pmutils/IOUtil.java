@@ -65,9 +65,10 @@ public class IOUtil {
 				line=line.trim();
 				if (line != "" && !machineList.contains(line))	
 				{
-					 InetAddress address = InetAddress.getByName(line);
-				     String machineIP = address.getHostAddress();
-				     machineList.add(machineIP);
+//					 InetAddress address = InetAddress.getByName(line);
+//				     String machineIP = address.getHostAddress();
+//				     machineList.add(machineIP);
+					 machineList.add(line);
 				}
 			}
 

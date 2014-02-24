@@ -67,12 +67,11 @@ public class IOMessagesThread extends Thread {
 			link =servSock.accept();  
 			input = new Scanner(link.getInputStream()); 	
 			output = new PrintWriter(link.getOutputStream(),true);
-			String message = input.nextLine();  
-			System.out.println(message);
+			String message = input.nextLine();  	
 			while (!(message.endsWith("EXIT")))
-			{				
-				message = input.nextLine();			
+			{
 				System.out.println(message);
+				message = input.nextLine();					
 			}
 
 		} catch (Exception cce) {
