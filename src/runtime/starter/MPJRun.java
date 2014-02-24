@@ -99,8 +99,8 @@ public class MPJRun {
 	String className = null;
 	String applicationClassPathEntry = null;
 
-	static final boolean DEBUG = true;
-	static final String VERSION = "0.38";
+	static final boolean DEBUG = false;
+	static final String VERSION = "0.40.1";
 	private static int RUNNING_JAR_FILE = 2;
 	private static int RUNNING_CLASS_FILE = 1;
 	private boolean zippedSource = false;
@@ -638,15 +638,15 @@ public class MPJRun {
 			for (int i = 0; i < nprocs; i++) {
 				procsPerMachineTable.put((String) machineList.get(i),
 						new Integer(1));
-				UUID myuuid = UUID.randomUUID();
+				
 				if (deviceName.equals("niodev")) {
 					Integer[] ports = getNextAvialablePorts((String) machineList
 							.get(i));
 					int readPort = ports[0];
 					int writePort = ports[1];
 					CONF_FILE_CONTENTS += ";" + (String) machineList.get(i)
-							+ "@" + readPort + "@" + writePort + "@" + (rank++)
-							+ "@" + myuuid;
+							+ "@" + readPort + "@" + writePort + "@" + (rank++);
+							
 				} else if (deviceName.equals("mxdev")) {
 					CONF_FILE_CONTENTS += ";" + (String) machineList.get(i)
 							+ "@" + mxBoardNum + "@" + (rank++);
@@ -693,7 +693,7 @@ public class MPJRun {
 					}
 
 					for (int j = 0; j < (divisor + 1); j++) {
-						UUID myuuid = UUID.randomUUID();
+						
 						if (deviceName.equals("niodev")) {
 
 							Integer[] ports = getNextAvialablePorts((String) machineList
@@ -704,7 +704,7 @@ public class MPJRun {
 							CONF_FILE_CONTENTS += ";"
 									+ (String) machineList.get(i) + "@"
 									+ readPort + "@" + writePort + "@"
-									+ (rank++) + "@" + myuuid;
+									+ (rank++);
 
 						} else if (deviceName.equals("mxdev")) {
 							CONF_FILE_CONTENTS += ";"
@@ -723,7 +723,7 @@ public class MPJRun {
 					}
 
 					for (int j = 0; j < divisor; j++) {
-						UUID myuuid = UUID.randomUUID();
+						
 						if (deviceName.equals("niodev")) {
 							Integer[] ports = getNextAvialablePorts((String) machineList
 									.get(i));
@@ -733,7 +733,7 @@ public class MPJRun {
 							CONF_FILE_CONTENTS += ";"
 									+ (String) machineList.get(i) + "@"
 									+ readPort + "@" + writePort + "@"
-									+ (rank++) + "@" + myuuid;
+									+ (rank++);
 						} else if (deviceName.equals("mxdev")) {
 							CONF_FILE_CONTENTS += ";"
 									+ (String) machineList.get(i) + "@"
