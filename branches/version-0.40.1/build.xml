@@ -203,7 +203,7 @@
      </jar>
     	
     	  <jar destfile="${lib.dir}/daemonmanager.jar" basedir="src"
-    	          includes="*.class **/*.class">
+    	          includes="daemonmanager/*.class daemonmanager/*/*.class">
     		  <manifest>
     		   <attribute name="Main-class" value="daemonmanager.MPJDaemonManager" />    
     		  	 <attribute name="Class-path" 
