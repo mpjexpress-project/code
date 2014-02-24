@@ -117,11 +117,11 @@ public class ProcessLauncher extends Thread {
 				String rank = new String("" + (pTicket.getStartingRank() + j));
 				arguments[argManager.getRankArgumentIndex()] = rank;
 				if(pTicket.isProfiler())
-					arguments[arguments.length + 1] = "-tau:node=" + rank;			
+					arguments[arguments.length-1] = "-tau:node=" + rank;			
 			}
 			if(pTicket.isDebug())
 			{
-				arguments[arguments.length + 1] = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=" + (pTicket.getDebugPort() + j * 2);
+				arguments[arguments.length-1] = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=" + (pTicket.getDebugPort() + j * 2);
 			}
 			
 			if (MPJDaemon.DEBUG && logger.isDebugEnabled()) {
