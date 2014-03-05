@@ -117,19 +117,24 @@ public class ProcessLauncher extends Thread {
 				String rank = new String("" + (pTicket.getStartingRank() + j));
 				arguments[argManager.getRankArgumentIndex()] = rank;
 				if(pTicket.isProfiler())
-					arguments[arguments.length-1] = "-tau:node=" + rank;			
+					arguments[1] = "-tau:node=" + rank;		
 			}
-			if(pTicket.isDebug())
+			if(pTicket.isDebug() && pTicket.getDeviceName().equals("niodev"))
 			{
-				arguments[arguments.length-1] = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=" + (pTicket.getDebugPort() + j * 2);
+				arguments[argManager.getDebugArgumentIndex()] = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=" + 					(pTicket.getDebugPort() + j * 2);
+			}
+
+			else if(pTicket.isDebug() && pTicket.getDeviceName().equals("hybdev"))
+			{
+				arguments[argManager.getDebugArgumentIndex()] = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=" + 					(pTicket.getDebugPort());
 			}
 			
 			if (MPJDaemon.DEBUG && logger.isDebugEnabled()) {
 				String args = "";
 				for (int i = 0; i < arguments.length; i++) {
-					args += arguments[i] + " ";		
+					logger.debug("arguments["+i+"] = "+ arguments[i]);		
 				}
-				logger.debug(args);
+				//logger.debug(args);
 			}		
 		
 			ProcessBuilder pb = new ProcessBuilder(arguments);
