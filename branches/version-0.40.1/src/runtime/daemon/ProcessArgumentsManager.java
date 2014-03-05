@@ -22,7 +22,7 @@ public class ProcessArgumentsManager {
 	String configFilePath ="";
 	String ticketDir ="";
 	int rankArgumentIndex;
-
+	int debug_argument_index;
 	
 	public ProcessArgumentsManager(MPJProcessTicket pTicket) {		
 		this.pTicket = pTicket;		
@@ -41,6 +41,13 @@ public class ProcessArgumentsManager {
 		this.rankArgumentIndex = rankArgumentIndex;
 	}
 
+	public int getDebugArgumentIndex() {
+		return debug_argument_index;
+	}
+
+	public void setDebugArgumentIndex(int debug_argument_index) {
+		this.debug_argument_index = debug_argument_index;
+	}
 	public  String[] GetArguments(MPJProcessTicket pTicket) {
 		if (pTicket.getDeviceName().equals("niodev")) {
 			return GetNIODeviceArguments();
@@ -77,6 +84,7 @@ public class ProcessArgumentsManager {
 				+ File.pathSeparator + "" + mpjHomeDir
 				+ "/lib/wrapper.jar" + File.pathSeparator
 				+ pTicket.getClassPath() + File.pathSeparator
+				+ pTicket.getWorkingDirectory() +File.pathSeparator
 				+ sourceFolder + File.pathSeparator + cp;
 
 				pTicket.getJvmArgs().add(e, cp);
@@ -99,6 +107,7 @@ public class ProcessArgumentsManager {
 					+ File.pathSeparator + "" + mpjHomeDir
 					+ "/lib/wrapper.jar" + File.pathSeparator
 					+ pTicket.getClassPath() + File.pathSeparator
+					+ pTicket.getWorkingDirectory() +File.pathSeparator
 					+ sourceFolder);
 		}
 
@@ -114,7 +123,8 @@ public class ProcessArgumentsManager {
 		 * FIX ME BY RIZWAN HANIF : making arguments to launch MPI Processes
 		 */
 		int N_ARG_COUNT = 7;
-	
+		int increment = 1;
+
 		int nArgumentIncrement = 0;
 		if(pTicket.isProfiler())
 			nArgumentIncrement++;
@@ -123,17 +133,24 @@ public class ProcessArgumentsManager {
 	        
 		String[] arguments = new String[(N_ARG_COUNT + pTicket.getJvmArgs().size() + pTicket
 				.getAppArgs().size()) + nArgumentIncrement];
-		if( pTicket.isProfiler())					
-			arguments[0] = "tau_java";				
+		if( pTicket.isProfiler()) {					
+			arguments[0] = "tau_java";
+			increment++;
+		}				
 		else
 			arguments[0] = "java";
 		// System.arraycopy ... can be used ..here ...
 		for (int i = 0; i < pTicket.getJvmArgs().size(); i++) {
-			arguments[i + 1] = pTicket.getJvmArgs().get(i);
+			arguments[i + increment] = pTicket.getJvmArgs().get(i);
 		}
 
-		int indx = pTicket.getJvmArgs().size() + 1;
+		int indx = pTicket.getJvmArgs().size() + increment;
 		
+		if (pTicket.isDebug()) {
+          		setDebugArgumentIndex(indx);
+          		indx++;
+        	}
+
 		arguments[indx] = "runtime.daemon.Wrapper";
 		indx++;
 		arguments[indx] = configFilePath;
@@ -152,7 +169,7 @@ public class ProcessArgumentsManager {
 		arguments[indx] = pTicket.getMainClass();
 		// System.arraycopy ... can be used ..here ...
 		for (int i = 0; i < pTicket.getAppArgs().size(); i++) {
-			arguments[i + N_ARG_COUNT + pTicket.getJvmArgs().size()] = pTicket
+			arguments[i + N_ARG_COUNT + pTicket.getJvmArgs().size() + nArgumentIncrement] = pTicket
 			.getAppArgs().get(i);
 		}
 		return arguments;
@@ -199,6 +216,7 @@ public class ProcessArgumentsManager {
 						+ File.pathSeparator + "" + mpjHomeDir
 						+ "/lib/loader2.jar" + File.pathSeparator + ""
 						+ mpjHomeDir + "/lib/starter.jar" + File.pathSeparator
+					//	+ ""+ pTicket.getWorkingDirectory() +File.pathSeparator
 						+ "" + mpjHomeDir + "/lib/mpiExp.jar";
 
 				if (MPJDaemon.DEBUG && MPJDaemon.logger.isDebugEnabled()) {
@@ -227,7 +245,9 @@ public class ProcessArgumentsManager {
 					+ "" + mpjHomeDir + "/lib/mpjbuf.jar" + File.pathSeparator
 					+ "" + mpjHomeDir + "/lib/loader2.jar" + File.pathSeparator
 					+ "" + mpjHomeDir + "/lib/starter.jar" + File.pathSeparator
+				//	+ "" + pTicket.getWorkingDirectory() +File.pathSeparator
 					+ "" + mpjHomeDir + "/lib/mpiExp.jar";
+					
 
 			pTicket.getJvmArgs().add(cp);
 
@@ -248,6 +268,7 @@ public class ProcessArgumentsManager {
 
 		int CMD_WORDS = 8;
 		int HYB_ARGS = 5;
+		int increment = 1;
 
 		String[] aArgs = pTicket.getAppArgs().toArray(new String[0]);
 		int nArgumentIncrement = 0;
@@ -257,16 +278,24 @@ public class ProcessArgumentsManager {
 			nArgumentIncrement++;
 		
 		String[] arguments = new String[(CMD_WORDS + jArgs.length + HYB_ARGS + aArgs.length)+ nArgumentIncrement];
-		if( pTicket.isProfiler())					
-			arguments[0] = "tau_java";				
+		if( pTicket.isProfiler()) {					
+			arguments[0] = "tau_java";
+			arguments[1] = "-tau:node=" + Integer.toString(pTicket.getStartingRank());
+			increment++;
+		}				
 		else
 			arguments[0] = "java";
 
 		for (int i = 0; i < jArgs.length; i++) {
-			arguments[i + 1] = jArgs[i];
+			arguments[i + increment] = jArgs[i];
 		}
 
-		int indx = jArgs.length + 1;
+		int indx = jArgs.length + increment;
+
+		if (pTicket.isDebug()) {
+          		setDebugArgumentIndex(indx);
+          		indx++;
+        	}
 
 		arguments[indx] = "runtime.daemon.HybridStarter";
 		indx++;
@@ -286,9 +315,9 @@ public class ProcessArgumentsManager {
 		
 		if (MPJDaemon.DEBUG && MPJDaemon.logger.isDebugEnabled()) {
 			MPJDaemon.logger.debug("HybridDaemon: Value of Indx: " + indx
-					+ " Count of args till now: " + (CMD_WORDS + jArgs.length));
+					+ " Count of args till now: " + (CMD_WORDS + jArgs.length + nArgumentIncrement));
 		}
-		indx = CMD_WORDS + jArgs.length;
+		indx = CMD_WORDS + jArgs.length + nArgumentIncrement;
 		// args for hybrid device
 		arguments[indx + 0] =   Integer.toString(pTicket.getTotalProcessCount());
 		arguments[indx + 1] = Integer.toString(pTicket.getNetworkProcessCount());
@@ -297,7 +326,7 @@ public class ProcessArgumentsManager {
 		arguments[indx + 4] = "niodev";
 
 		for (int i = 0; i < aArgs.length; i++) {
-			arguments[i + CMD_WORDS + jArgs.length + HYB_ARGS] = aArgs[i];
+			arguments[i + CMD_WORDS + jArgs.length + HYB_ARGS + nArgumentIncrement] = aArgs[i];
 		}
 
 		if (MPJDaemon.DEBUG && MPJDaemon.logger.isDebugEnabled()) {
