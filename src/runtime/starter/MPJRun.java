@@ -99,7 +99,7 @@ public class MPJRun {
 	String className = null;
 	String applicationClassPathEntry = null;
 
-	static final boolean DEBUG = false;
+	static final boolean DEBUG = true;
 	static final String VERSION = "0.40.1";
 	private static int RUNNING_JAR_FILE = 2;
 	private static int RUNNING_CLASS_FILE = 1;
@@ -232,10 +232,7 @@ public class MPJRun {
 		        // i++;
 		        APROFILE = true;
 		      }
-			else if (args[i].equals("-profile")) {
-		        // i++;
-		        APROFILE = true;
-		      }
+			
 			else {
 
 				// these are JVM options ..
@@ -637,19 +634,20 @@ public class MPJRun {
 			}
 
 			for (int i = 0; i < nprocs; i++) {
-				procsPerMachineTable.put((String) machineList.get(i),
-						new Integer(1));
+				procsPerMachineTable.put(
+        			   InetAddress.getByName((String) machineList.get(i))
+              			  .getHostAddress(), new Integer(1));
 				
 				if (deviceName.equals("niodev")) {
 					Integer[] ports = getNextAvialablePorts((String) machineList
 							.get(i));
 					int readPort = ports[0];
 					int writePort = ports[1];
-					CONF_FILE_CONTENTS += ";" + (String) machineList.get(i)
+					CONF_FILE_CONTENTS += ";" + InetAddress.getByName((String) machineList.get(i)).getHostAddress() 
 							+ "@" + readPort + "@" + writePort + "@" + (rank++);
 							
 				} else if (deviceName.equals("mxdev")) {
-					CONF_FILE_CONTENTS += ";" + (String) machineList.get(i)
+					CONF_FILE_CONTENTS += ";" + InetAddress.getByName((String) machineList.get(i)).getHostAddress()
 							+ "@" + mxBoardNum + "@" + (rank++);
 				}
 				CONF_FILE_CONTENTS += "@"  + (DEBUG_PORT);
@@ -686,8 +684,8 @@ public class MPJRun {
 
 				if (i < remainder) {
 
-					procsPerMachineTable.put((String) machineList.get(i),
-							new Integer(divisor + 1));
+					procsPerMachineTable.put(InetAddress.getByName((String) machineList.get(i))
+                 						 .getHostAddress(), new Integer(divisor + 1));
 					if (DEBUG && logger.isDebugEnabled()) {
 						logger.debug("procPerMachineTable==>"
 								+ procsPerMachineTable);
@@ -703,20 +701,21 @@ public class MPJRun {
 							int writePort = ports[1];
 
 							CONF_FILE_CONTENTS += ";"
-									+ (String) machineList.get(i) + "@"
-									+ readPort + "@" + writePort + "@"
+									+ InetAddress.getByName((String) machineList.get(i)).getHostAddress() 
+									+ "@" + readPort + "@" + writePort + "@"
 									+ (rank++);
 
 						} else if (deviceName.equals("mxdev")) {
 							CONF_FILE_CONTENTS += ";"
-									+ (String) machineList.get(i) + "@"
+									+ InetAddress.getByName((String) machineList.get(i)).getHostAddress() + "@"
 									+ (mxBoardNum + j) + "@" + (rank++);
 						}
 						CONF_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
 					}
 				} else if (divisor > 0) {
-					procsPerMachineTable.put((String) machineList.get(i),
-							new Integer(divisor));
+					procsPerMachineTable.put(
+             					 InetAddress.getByName((String) machineList.get(i))
+                 				 .getHostAddress(), new Integer(divisor));
 
 					if (DEBUG && logger.isDebugEnabled()) {
 						logger.debug("procPerMachineTable==>"
@@ -732,12 +731,12 @@ public class MPJRun {
 							int writePort = ports[1];
 
 							CONF_FILE_CONTENTS += ";"
-									+ (String) machineList.get(i) + "@"
+									+ InetAddress.getByName((String) machineList.get(i)).getHostAddress() + "@"
 									+ readPort + "@" + writePort + "@"
 									+ (rank++);
 						} else if (deviceName.equals("mxdev")) {
 							CONF_FILE_CONTENTS += ";"
-									+ (String) machineList.get(i) + "@"
+									+ InetAddress.getByName((String) machineList.get(i)).getHostAddress() + "@"
 									+ (mxBoardNum + j) + "@" + (rank++);
 						}
 						CONF_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
@@ -770,14 +769,15 @@ public class MPJRun {
 		// One NIO Process per machine is being implemented, SMP Threads per
 		// node will be decided in SMPDev
 		for (int i = 0; i < networkProcesscount; i++) {
-			procsPerMachineTable.put((String) machineList.get(i), 1);
+			procsPerMachineTable.put(InetAddress.getByName((String) machineList.get(i)).getHostAddress(), new Integer(1));
 			Integer[] ports = getNextAvialablePorts((String) machineList.get(i));
 			int readPort = ports[0];
 			int writePort = ports[1];
-			CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
+			CONF_FILE_CONTENTS += ";" + InetAddress.getByName((String) machineList.get(i)).getHostAddress()  + "@"
 					+ readPort + "@" + writePort + "@" + (netID++);
 			CONF_FILE_CONTENTS += "@"  + (DEBUG_PORT);
 		}
+
 		if (DEBUG && logger.isDebugEnabled()) {
 			logger.debug("procPerMachineTable==>" + procsPerMachineTable);
 		}
