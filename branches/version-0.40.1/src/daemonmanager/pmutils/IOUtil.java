@@ -139,11 +139,11 @@ public class IOUtil {
 	}
 
 	public static String getMachineFilePath(String fileName) {
-		return IOUtil.getMPJHomeDir() + fileName;
+		return /*IOUtil.getMPJHomeDir() + */ fileName;
 	}
 
 	public static String getMachineFilePath() {
-		return IOUtil.getMPJHomeDir() + PMConstants.MACHINES;
+		return /* IOUtil.getMPJHomeDir() + */PMConstants.MACHINES;
 	}
 
 	public static boolean IsBusy(final InetAddress remote, int port) {
