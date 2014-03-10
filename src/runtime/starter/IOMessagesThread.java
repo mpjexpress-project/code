@@ -43,14 +43,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
-import runtime.portmanager.PortManager;
 
 public class IOMessagesThread extends Thread {
 
-	ServerSocket servSock;
-	public IOMessagesThread(ServerSocket servSock) {
+	Socket clientSock;
+	public IOMessagesThread(Socket clientSock) {
 		// TODO Auto-generated constructor stub
-		this.servSock = servSock;
+		this.clientSock = clientSock;
 	}
 
 	@Override
@@ -62,11 +61,9 @@ public class IOMessagesThread extends Thread {
 
 		Scanner input =null;
 		PrintWriter output = null;
-		Socket link = null;
 		try {				
-			link =servSock.accept();  
-			input = new Scanner(link.getInputStream()); 	
-			output = new PrintWriter(link.getOutputStream(),true);
+			input = new Scanner(clientSock.getInputStream()); 	
+			output = new PrintWriter(clientSock.getOutputStream(),true);
 			String message = input.nextLine();  	
 			while (!(message.endsWith("EXIT")))
 			{
@@ -82,7 +79,7 @@ public class IOMessagesThread extends Thread {
 		{
 			try
 			{
-				link.close();
+				clientSock.close();
 				input.close();
 				output.close();
 			}
