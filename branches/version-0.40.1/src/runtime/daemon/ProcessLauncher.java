@@ -88,16 +88,7 @@ public class ProcessLauncher extends Thread {
 			e3.printStackTrace();
 			return;
 		}	
-		try {
-			sockClient = new Socket(pTicket.getClientHostAddress(),
-					pTicket.getClientPort());
-		} catch (UnknownHostException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		} catch (IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
+	
 		int JvmProcessCount = 0;
 		if (pTicket.getDeviceName().equals("niodev")) {
 			JvmProcessCount = pTicket.getProcessCount();
@@ -162,7 +153,7 @@ public class ProcessLauncher extends Thread {
 			 * start 4 additional threads to handle I/O. Is it possible to
 			 * get rid of this overhead?
 			 */
-			outputThreads[j] = new OutputHandler(p[j], sockClient);
+			outputThreads[j] = new OutputHandler(p[j], sockserver);
 			outputThreads[j].start();
 
 			if (DEBUG && logger.isDebugEnabled()) {
@@ -189,7 +180,7 @@ public class ProcessLauncher extends Thread {
 
 		OutputStream outToServer = null;
 		try {
-			outToServer = sockClient.getOutputStream();
+			outToServer = sockserver.getOutputStream();
 			DataOutputStream out = new DataOutputStream(outToServer);
 			out.write("EXIT".getBytes(), 0, "EXIT".getBytes().length);
 			System.out.println("Job finished");
@@ -198,10 +189,10 @@ public class ProcessLauncher extends Thread {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} finally {
-			if (!sockClient.isClosed())
+			if (!sockserver.isClosed())
 				try {
 					outToServer.close();
-					sockClient.close();
+					sockserver.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
