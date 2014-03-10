@@ -216,7 +216,7 @@ public class ProcessArgumentsManager {
 						+ File.pathSeparator + "" + mpjHomeDir
 						+ "/lib/loader2.jar" + File.pathSeparator + ""
 						+ mpjHomeDir + "/lib/starter.jar" + File.pathSeparator
-					//	+ ""+ pTicket.getWorkingDirectory() +File.pathSeparator
+						+ ""+ pTicket.getClassPath()  +File.pathSeparator
 						+ "" + mpjHomeDir + "/lib/mpiExp.jar";
 
 				if (MPJDaemon.DEBUG && MPJDaemon.logger.isDebugEnabled()) {
@@ -246,6 +246,7 @@ public class ProcessArgumentsManager {
 					+ "" + mpjHomeDir + "/lib/loader2.jar" + File.pathSeparator
 					+ "" + mpjHomeDir + "/lib/starter.jar" + File.pathSeparator
 				//	+ "" + pTicket.getWorkingDirectory() +File.pathSeparator
+					+ ""+ pTicket.getClassPath()  +File.pathSeparator
 					+ "" + mpjHomeDir + "/lib/mpiExp.jar";
 					
 
