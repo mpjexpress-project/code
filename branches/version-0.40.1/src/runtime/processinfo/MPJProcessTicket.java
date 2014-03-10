@@ -62,8 +62,6 @@ public class MPJProcessTicket {
 	private String deviceName;
 	private String confFileContents;
 	private ArrayList<String> appArgs;
-	private int clientPort;
-	private String clientHostAddress;
 	private String userID;
 	/*  Hybrid Device */
 	private int networkProcessCount;
@@ -147,21 +145,7 @@ public class MPJProcessTicket {
 	}
 
 
-	public int getClientPort() {
-		return clientPort;
-	}
-
-	public void setClientPort(int clientPort) {
-		this.clientPort = clientPort;
-	}
-
-	public String getClientHostAddress() {
-		return clientHostAddress;
-	}
-
-	public void setClientHostAddress(String clientHostAddress) {
-		this.clientHostAddress = clientHostAddress;
-	}
+	
 	
 	public UUID getTicketID() {
 		return ticketID;
@@ -255,13 +239,7 @@ public class MPJProcessTicket {
 		this.deviceName = "";
 		this.confFileContents = "";
 		this.appArgs = new ArrayList<String>();
-		this.clientPort = 9999;
-		try {
-			this.clientHostAddress = InetAddress.getLocalHost().getHostAddress();
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
 		zippedSource = false;
 		ticketID = UUID.randomUUID();
 		sourceCode = "";
@@ -295,9 +273,6 @@ public class MPJProcessTicket {
 		this.deviceName = deviceName;
 		this.confFileContents = confFileContents;
 		this.appArgs = appArgs;
-		this.clientPort = clientPort;
-		this.clientHostAddress = clientHostAddress;
-		this.userID = userID;
 		this.totalProcessCount = totalProcessCount;
 		this.networkProcessCount = nioProcessCount;
 		this.networkDevice = networkDevice;
@@ -370,16 +345,7 @@ public class MPJProcessTicket {
 			argumentXML.setText(argument);
 			appArgsXML.appendChild(argumentXML);
 		}
-		processInfoXML.appendChild(appArgsXML);
-	
-
-		XML clientPortXML = new XML(XmlUtil.getTag(RTConstants.CLIENT_PORT));	
-		clientPortXML.setText(Integer.toString(this.clientPort));
-		processInfoXML.appendChild(clientPortXML);
-		
-		XML clientHostNameXML = new XML(XmlUtil.getTag(RTConstants.CLIENT_HOST_NAME));	
-		clientHostNameXML.setText(this.clientHostAddress);
-		processInfoXML.appendChild(clientHostNameXML);
+		processInfoXML.appendChild(appArgsXML);	
 		
 		XML userIDXML = new XML(XmlUtil.getTag(RTConstants.USER_ID));	
 		userIDXML.setText(this.userID);
@@ -472,12 +438,7 @@ public class MPJProcessTicket {
 				{
 					this.appArgs.add( argumentXML.getText());
 				}
-			}
-			XML clientPortXML = processInfoXml.getChild(RTConstants.CLIENT_PORT);
-			this.clientPort = Integer.parseInt(clientPortXML.getText());
-			
-			XML clientHostNameXML = processInfoXml.getChild(RTConstants.CLIENT_HOST_NAME);
-			this.clientHostAddress = clientHostNameXML.getText();
+			}	
 			
 			XML userIDXML = processInfoXml.getChild(RTConstants.USER_ID);
 			this.userID = userIDXML.getText();
