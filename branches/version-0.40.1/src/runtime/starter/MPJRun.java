@@ -113,6 +113,7 @@ public class MPJRun {
 	private int DEBUG_PORT = 24500;
 	private final String CONF_FILE_NAME = "mpjdev.conf";
 
+
 	/**
 	 * Parses the input ...
 	 */
@@ -231,8 +232,7 @@ public class MPJRun {
 			else if (args[i].equals("-profile")) {
 		        // i++;
 		        APROFILE = true;
-		      }
-			
+		      }			
 			else {
 
 				// these are JVM options ..
@@ -439,11 +439,6 @@ public class MPJRun {
 			logger.debug("procsPerMachineTable " + procsPerMachineTable);
 		}
 
-		for (int j = 0; j < peerSockets.size(); j++) {
-
-			Socket peerSock = peerSockets.get(j);
-			peerSock.close();
-		}
 
 	}
 
@@ -487,22 +482,8 @@ public class MPJRun {
 		ticket.setMainClass(className);
 		ticket.setConfFileContents(CONF_FILE_CONTENTS);
 		ticket.setDeviceName(deviceName);
-
-		ServerSocket servSock = null;
-		try {
-			servSock = new ServerSocket(0);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		int port = servSock.getLocalPort();
-
-		IOMessagesThread ioMessages = new IOMessagesThread(servSock);
+		IOMessagesThread ioMessages = new IOMessagesThread(sockClient);
 		ioMessages.start();
-
-		ticket.setClientPort(port);
-		ticket.setClientHostAddress(hostIP);
-
 		ArrayList<String> jvmArgs = new ArrayList<String>();
 		for (int j = 0; j < jArgs.length; j++) {
 			jvmArgs.add(jArgs[j]);
@@ -788,15 +769,15 @@ public class MPJRun {
 
 		Integer[] ports = new Integer[2];
 
-		Socket sockClient = null;
+		Socket portClient = null;
 		try {
-			sockClient = new Socket(machineName, 15000);
-			OutputStream outToServer = sockClient.getOutputStream();
+			portClient = new Socket(machineName, 15000);
+			OutputStream outToServer = portClient.getOutputStream();
 			DataOutputStream out = new DataOutputStream(outToServer);
 			out.writeInt(1);
 			out.flush();
 			DataInputStream din = new DataInputStream(
-					sockClient.getInputStream());
+					portClient.getInputStream());
 			ports[0] = din.readInt();
 			ports[1] = din.readInt();
 			out.writeInt(2);
@@ -806,8 +787,8 @@ public class MPJRun {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (!sockClient.isClosed())
-					sockClient.close();
+				if (!portClient.isClosed())
+					portClient.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -843,7 +824,7 @@ public class MPJRun {
 					logger.debug("Connecting to " + daemon + "@" + D_SER_PORT);
 				}
 				try {
-					Socket sockClient = new Socket(daemon, D_SER_PORT);
+					Socket sockClient  = new Socket(daemon, D_SER_PORT);
 					if (sockClient.isConnected())
 						peerSockets.add(sockClient);
 				} catch (IOException e3) {
