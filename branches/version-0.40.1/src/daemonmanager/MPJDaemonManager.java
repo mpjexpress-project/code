@@ -37,10 +37,14 @@
 
 package daemonmanager;
 
+import java.io.IOException;
+
 import daemonmanager.boot.MPJBoot;
+import daemonmanager.boot.WinBoot;
 import daemonmanager.cleanup.MPJCleanup;
 import daemonmanager.constants.PMConstants;
 import daemonmanager.halt.MPJHalt;
+import daemonmanager.halt.WinHalt;
 import daemonmanager.info.MPJProcessInfo;
 import daemonmanager.pmutils.CLOptions;
 import daemonmanager.status.MPJStatus;
@@ -81,6 +85,21 @@ public class MPJDaemonManager
 		{
 			MPJProcessInfo mpInfo = new MPJProcessInfo();
 			mpInfo.getJavaProcessInfo(options);
+		}
+		else if(options.getCmdType().equals(PMConstants.WIN_BOOT))
+		{
+			WinBoot winBoot = new WinBoot();
+			try {
+				winBoot.startMPJExpress();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
+			}
+		}
+		else if(options.getCmdType().equals(PMConstants.WIN_HALT))
+		{
+			WinHalt winHalt = new WinHalt();
+			winHalt.haltMPJExpress();
 		}
 		else
 		{
