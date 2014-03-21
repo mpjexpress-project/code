@@ -43,6 +43,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -72,7 +73,7 @@ public class MPJRun {
 	final String DEFAULT_MACHINES_FILE_NAME = "machines";
 	final int DEFAULT_PROTOCOL_SWITCH_LIMIT = 128 * 1024; // 128K
 
-	private int D_SER_PORT = 10000;
+	private int D_SER_PORT = getPortFromWrapper();
 
 	private String CONF_FILE_CONTENTS = "#temp line";
 	private int mxBoardNum = 0;
@@ -323,7 +324,6 @@ public class MPJRun {
 	 */
 	public MPJRun(String args[]) throws Exception {
 
-		long startTime = System.currentTimeMillis();
 		java.util.logging.Logger logger1 = java.util.logging.Logger
 				.getLogger("");
 
@@ -429,11 +429,6 @@ public class MPJRun {
 				logger.debug("Sending to " + peerSock);
 			}
 		}
-		long endTime = System.currentTimeMillis();
-
-		long duration = endTime - startTime;
-
-		System.out.println(" Duration in Secs  " + duration / 1000);
 
 		if (DEBUG && logger.isDebugEnabled()) {
 			logger.debug("procsPerMachineTable " + procsPerMachineTable);
@@ -814,9 +809,43 @@ public class MPJRun {
 
 	}
 
-	private void clientSocketInit() throws Exception {
-		for (int i = 0; i < machineList.size(); i++) {
+private static int getPortFromWrapper() {
 
+    int port = 0;
+    FileInputStream in = null;
+    DataInputStream din = null;
+    BufferedReader reader = null;
+    String line = "";
+
+    try {
+
+      String path = System.getenv("MPJ_HOME") + "/conf/wrapper.conf";
+      in = new FileInputStream(path);
+      din = new DataInputStream(in);
+      reader = new BufferedReader(new InputStreamReader(din));
+
+      while ((line = reader.readLine()) != null) {
+        if (line.startsWith("wrapper.app.parameter.2")) {
+          String trimmedLine = line.replaceAll("\\s+", "");
+          port = Integer.parseInt(trimmedLine.substring(24));
+          break;
+        }
+      }
+
+      in.close();
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    return port;
+
+  }
+
+
+	private void clientSocketInit() throws Exception {
+		
+		for (int i = 0; i < machineList.size(); i++) {
 			String daemon = (String) machineList.get(i);
 			try {
 
