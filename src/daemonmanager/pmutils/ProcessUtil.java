@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+
 public class ProcessUtil {
 	public static ArrayList<String> runProcess(String[] command,
 			boolean waitOutput) {
@@ -90,7 +91,11 @@ public class ProcessUtil {
 		int index = 0;
 		int space = 0;
 		String pid = "";
-		ArrayList<String> consoleMessages = getJavaProcesses(host,pb);
+		ArrayList<String> consoleMessages = new ArrayList<String>();
+		if(System.getProperty("os.name").startsWith("Windows"))
+			consoleMessages = getWinJavaProcesses(host,pb);
+		else			
+			consoleMessages = getJavaProcesses(host,pb);
 		for (String message : consoleMessages) {
 			index = message.indexOf("MPJDaemon");
 			if (index > -1) {
@@ -108,4 +113,12 @@ public class ProcessUtil {
 		return consoleMessages;
 	
 	}
+	public static ArrayList<String> getWinJavaProcesses(String host, ProcessBuilder pb) {
+		String[] command = {"jps", "-m", };	
+		ArrayList<String> consoleMessages = runProcess(command);
+		return consoleMessages;
+	
+	}
+
+	
 }
