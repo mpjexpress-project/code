@@ -65,16 +65,13 @@ public class IOUtil {
 				line=line.trim();
 				if (line != "" && !machineList.contains(line))	
 				{
-//					 InetAddress address = InetAddress.getByName(line);
-//				     String machineIP = address.getHostAddress();
-//				     machineList.add(machineIP);
 					 machineList.add(line);
 				}
 			}
 
 		} catch (Exception exp) {
 
-			exp.printStackTrace();
+			System.out.println(exp.getMessage());
 			return null;
 
 		} finally {
@@ -84,7 +81,7 @@ public class IOUtil {
 
 			} catch (Exception e) {
 
-				e.printStackTrace();
+				//System.out.println(exp.getMessage());
 			}
 		}
 

@@ -75,7 +75,7 @@ public class PMThreadUtil
 				
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		
 		
@@ -89,7 +89,7 @@ public class PMThreadUtil
 			machinesList = options.getMachineList();
 		else
 			machinesList = IOUtil.readMachineFile(options.getMachineFilePath());
-		
+		if(machinesList!=null && machinesList.size() > 0) {
 		for (String host : machinesList)
 		{
 			PMThread thread = null;
@@ -124,6 +124,7 @@ public class PMThreadUtil
 		}
 		if(options.isbThreading())
 			ExecuteThreads(threads,options.getThreadCount());
+		}
 	}
 	
 	
