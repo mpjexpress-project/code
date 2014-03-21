@@ -90,7 +90,7 @@ public class CLOptions {
 		this.cmdType = PMConstants.STATUS;
 		this.userCmd = "";
 		this.machineFilePath = "";
-		this.port = PMConstants.DAEMON_PORT_NUMBER;
+		this.port = IOUtil.getConfigValue(PMConstants.CONF_PORT_KEY); // PMConstants.DAEMON_PORT_NUMBER;
 		this.machineFilePath = IOUtil.getMachineFilePath();
 	}
 
@@ -213,6 +213,10 @@ public class CLOptions {
 				PMConstants.THREADED, true, PMMessages.CMD_OPT_THREADED));
 		options.addOption(new Option(PMConstants.PORT_OPT, PMConstants.PORT,
 				true, PMMessages.CMD_OPT_PORT));
+		options.addOption(new Option(PMConstants.WIN_BOOT_OPT, PMConstants.WIN_BOOT,
+				false, PMMessages.CMD_OPT_BOOT));
+		options.addOption(new Option(PMConstants.WIN_HALT_OPT, PMConstants.WIN_HALT,
+				false, PMMessages.CMD_OPT_HALT));
 
 		try {
 			CommandLine line = parser.parse(options, args);
@@ -228,6 +232,10 @@ public class CLOptions {
 				this.setCmdType(PMConstants.INFO);
 			else if (line.hasOption(PMConstants.CLEAN))
 				this.setCmdType(PMConstants.CLEAN);
+			else if (line.hasOption(PMConstants.WIN_BOOT))
+				this.setCmdType(PMConstants.WIN_BOOT);
+			else if (line.hasOption(PMConstants.WIN_HALT))
+				this.setCmdType(PMConstants.WIN_HALT);			
 
 			if (line.hasOption(PMConstants.HOSTS)) {
 				String[] hosts = line.getOptionValues(PMConstants.HOSTS);
