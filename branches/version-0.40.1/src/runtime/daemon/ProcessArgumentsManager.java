@@ -49,7 +49,8 @@ public class ProcessArgumentsManager {
 		this.debug_argument_index = debug_argument_index;
 	}
 	public  String[] GetArguments(MPJProcessTicket pTicket) {
-		if (pTicket.getDeviceName().equals("niodev")) {
+		if (pTicket.getDeviceName().equals("niodev") ||
+			 pTicket.getDeviceName().equals("mxdev")) {
 			return GetNIODeviceArguments();
 		} else if (pTicket.getDeviceName().equals("hybdev")) {
 			return GetHybridDeviceArguments();
