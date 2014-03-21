@@ -41,7 +41,9 @@ package daemonmanager.constants;
 public class PMConstants 
 {
 	public static String BOOT = "boot";
+	public static String WIN_BOOT = "winboot";
 	public static String HALT = "halt";
+	public static String WIN_HALT = "winhalt";
 	public static String CLEAN = "clean";
 	public static String STATUS = "status";
 	public static String INFO = "info";
@@ -56,8 +58,10 @@ public class PMConstants
 	public static String GREP_JAVA =   "ps aux|grep java";
 	
 	public static String BOOT_OPT = "b";
+	public static String WIN_BOOT_OPT = "wb";
 	public static String PORT_OPT = "p";
 	public static String HALT_OPT = "h";
+	public static String WIN_HALT_OPT = "wh";
 	public static String CLEAN_OPT = "c";
 	public static String INFO_OPT = "i";
 	public static String STATUS_OPT = "s";
@@ -67,13 +71,14 @@ public class PMConstants
 
 	public static String THREAD_COUNT_OPT = "nt";
 	public static String THREADED_OPT = "th";
-	public static String MACHINE_FILE = "machinefile";
+	public static String MACHINE_FILE = "machinesfile";
 	public static String THREAD_COUNT = "nthraeds";
 	public static String THREADED = "threaded";
 	public static String HOSTS = "hosts";
 	public static String PORT = "port";
 	public static String HELP = "help";
 	public static String DAEMON_PORT_NUMBER = "10000";
+	public static String CONF_PORT_KEY = "wrapper.app.parameter.2";
 }
 
 
