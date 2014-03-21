@@ -62,7 +62,7 @@ public class PMMessages
 	
 	public static String CMD_OPT_MACHINE_FILE = "Machine File e.g. <machines>";
 	public static String CMD_OPT_THREAD_COUNT = "Number of threads";
-	public static String  CMD_OPT_THREADED = "<true|false> use multithreading";
+	public static String CMD_OPT_THREADED = "<true|false> use multithreading";
 	public static String CMD_OPT_HOSTS = "Host name seperated by space <localhost1 localhost2 ... >";
 	public static String CMD_OPT_PORT = "Port no for MPJ Express Deamon listerner";
 	public static String CMD_OPT_HELP = "Help for process manager command line option";
