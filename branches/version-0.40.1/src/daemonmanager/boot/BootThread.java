@@ -91,7 +91,7 @@ public class BootThread extends PMThread {
 				}			
 
 			} catch (Exception ex) {
-				System.out.print(ex.getMessage() + "\n" + ex.getStackTrace());
+				System.out.print(ex.getMessage());
 			}
 		}
 
