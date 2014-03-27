@@ -71,7 +71,9 @@ public class IOUtil {
 
 		} catch (Exception exp) {
 
-			System.out.println(exp.getMessage());
+			 System.out.println("<"+path+"> file cannot "
+          + " be found." + " The starter module assumes "
+          + "it to be in the current directory.");
 			return null;
 
 		} finally {
