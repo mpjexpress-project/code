@@ -42,7 +42,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Map;
-import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.DailyRollingFileAppender;
 import org.apache.log4j.Level;
@@ -59,14 +59,15 @@ public class MPJDaemon {
 	static final boolean DEBUG = false;
 	static Logger logger = null;
 	private String mpjHomeDir = null;
-	private Vector<Socket> servSockets;
-
+	public volatile static ConcurrentHashMap<Socket, ProcessLauncher> servSockets;
+	ConnectionManager connectionManager;
+	PortManagerThread pManager;
 	public MPJDaemon(String args[]) throws Exception {
 
 		System.out.println("MPJ Daemon started");
 		InetAddress localaddr = InetAddress.getLocalHost();
 		String hostName = localaddr.getHostName();
-		servSockets = new Vector<Socket>();
+		servSockets = new ConcurrentHashMap<Socket, ProcessLauncher>();
 		Map<String, String> map = System.getenv();
 		mpjHomeDir = map.get("MPJ_HOME");
 		createLogger(mpjHomeDir, hostName);
@@ -86,14 +87,12 @@ public class MPJDaemon {
 			throw new MPJRuntimeException(
 					"Usage: java MPJDaemon daemonServerPort");
 		}
-		PortManagerThread pManager = new PortManagerThread();
+		pManager = new PortManagerThread();
 		pManager.start();
-
+		
+		connectionManager = new ConnectionManager(); 
+		connectionManager.start();		
 		serverSocketInit();
-
-		if (DEBUG && logger.isDebugEnabled()) {
-			logger.debug("Starting the selector thread ");
-		}
 
 	}
 
@@ -127,9 +126,9 @@ public class MPJDaemon {
 			serverSocket = new ServerSocket(D_SER_PORT);
 			do {
 				Socket servSock = serverSocket.accept();
-				logger.debug("Accepted connection");
-				servSockets.add(servSock);
+				logger.debug("Accepted connection");				
 				ProcessLauncher pLaunch = new ProcessLauncher(servSock);
+				servSockets.put(servSock,pLaunch);
 				pLaunch.start();
 			} while (true);
 		} catch (IOException ioEx) {
@@ -143,7 +142,15 @@ public class MPJDaemon {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
+		if(pManager != null)
+		{
+			pManager.isRun = false;
+		}
+		if(connectionManager != null)
+		{
+			connectionManager.isRun = false;
+		}
+		
 	}
 
 	public static void main(String args[]) {
