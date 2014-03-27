@@ -1,2 +1,9 @@
 #!/bin/sh
-java -jar $MPJ_HOME/lib/daemonmanager.jar -status
+
+if [ $# -ne 1 ]; then
+  echo "Usage: mpjstatus <machines_file>";
+  exit 127
+fi 
+
+java -jar $MPJ_HOME/lib/daemonmanager.jar -status -m "$@"
+
