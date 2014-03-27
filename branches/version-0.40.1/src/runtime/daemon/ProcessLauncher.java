@@ -44,7 +44,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -57,9 +56,10 @@ public class ProcessLauncher extends Thread {
 
 	boolean DEBUG = true;
 	private Process p[] = null;
-	private Socket sockClient = null;
 	private Socket sockserver = null;
 	private Logger logger = MPJDaemon.logger;
+	int JvmProcessCount =0;
+	ProcessArgumentsManager  argManager;
 
 	public ProcessLauncher( Socket sockServer) {
 
@@ -87,9 +87,8 @@ public class ProcessLauncher extends Thread {
 		} catch (IOException e3) {
 			e3.printStackTrace();
 			return;
-		}	
-	
-		int JvmProcessCount = 0;
+		}		
+
 		if (pTicket.getDeviceName().equals("niodev")) {
 			JvmProcessCount = pTicket.getProcessCount();
 		} else if (pTicket.getDeviceName().equals("hybdev")) {
@@ -98,7 +97,7 @@ public class ProcessLauncher extends Thread {
 	
 		OutputHandler[] outputThreads = new OutputHandler[JvmProcessCount];
 		p = new Process[JvmProcessCount];
-		ProcessArgumentsManager  argManager = new ProcessArgumentsManager(pTicket);
+		argManager = new ProcessArgumentsManager(pTicket);
 		String [] arguments = argManager.GetArguments(pTicket);
 		
 
@@ -120,25 +119,20 @@ public class ProcessLauncher extends Thread {
 				arguments[argManager.getDebugArgumentIndex()] = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=" + 					(pTicket.getDebugPort());
 			}
 			
-			if (MPJDaemon.DEBUG && logger.isDebugEnabled()) {
-				String args = "";
+			if (DEBUG && logger.isDebugEnabled()) {
 				for (int i = 0; i < arguments.length; i++) {
 					logger.debug("arguments["+i+"] = "+ arguments[i]);		
 				}
-				//logger.debug(args);
 			}		
 		
 			ProcessBuilder pb = new ProcessBuilder(arguments);
-			Map<String, String> map = System.getenv();
-			String mpjHomeDir = map.get("MPJ_HOME");
-			pb.directory(new File(mpjHomeDir));
+			String currentDir = pTicket.getWorkingDirectory();
+			pb.directory(new File(currentDir));
 			pb.redirectErrorStream(true);;
 
 			if (DEBUG && logger.isDebugEnabled()) {
 				logger.debug("starting the process ");
 			}
-			logger.debug("starting the process ");
-
 			try {
 				p[j] = pb.start();
 			} catch (IOException e) {
@@ -178,27 +172,39 @@ public class ProcessLauncher extends Thread {
 			logger.debug("Stopping the output");
 		}
 
-		OutputStream outToServer = null;
-		try {
-			outToServer = sockserver.getOutputStream();
-			DataOutputStream out = new DataOutputStream(outToServer);
-			out.write("EXIT".getBytes(), 0, "EXIT".getBytes().length);
-			System.out.println("Job finished");
-
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} finally {
-			if (!sockserver.isClosed())
-				try {
-					outToServer.close();
-					sockserver.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		if(sockserver != null && !sockserver.isClosed() && !sockserver.isOutputShutdown() )
+		{
+			OutputStream outToServer = null;
+			try {
+				outToServer = sockserver.getOutputStream();
+				
+				DataOutputStream out = new DataOutputStream(outToServer);
+				out.write("EXIT".getBytes(), 0, "EXIT".getBytes().length);
+				System.out.println("Job finished");
+	
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} finally {
+				if (!sockserver.isClosed())
+					try {
+						outToServer.close();
+						sockserver.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			}
+		}
+		killProcesses();
+		MPJDaemon.servSockets.remove(sockserver);
+		if (DEBUG && logger.isDebugEnabled()) {
+			logger.debug("\n\n ** .. execution ends .. ** \n\n");
 		}
 
+	}
+	public void killProcesses()
+	{		
 		// Its important to kill all JVMs that we started ...
 		synchronized (p) {
 			for (int i = 0; i < JvmProcessCount; i++)
@@ -214,12 +220,8 @@ public class ProcessLauncher extends Thread {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		if (DEBUG && logger.isDebugEnabled()) {
-			logger.debug("\n\n ** .. execution ends .. ** \n\n");
-		}
-
 	}
+	
 
 	private String getStringFromInputStream(InputStream is) {
 
