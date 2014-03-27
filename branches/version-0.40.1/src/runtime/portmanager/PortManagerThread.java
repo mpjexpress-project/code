@@ -37,17 +37,22 @@
 
 package runtime.portmanager;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 
 public class PortManagerThread extends Thread {
+	public volatile boolean isRun = true;
 
 	public PortManagerThread() {
 		
 	}
 
-	private int port = 15000;	
+	private int port = getServerSocketPortFromWrapper();;	
 
 	@Override
 	public void run() {
@@ -59,12 +64,11 @@ public class PortManagerThread extends Thread {
 		try {	
 
 			ServerSocket servSock =  new ServerSocket(port); 
-			while(true)
+			while(isRun)
 			{
 				Socket sock =servSock.accept();  
 				PortRequesterThread thread = new PortRequesterThread(sock);
 				thread.start();
-		//		requestThreads.add(thread);
 			}
 
 		} catch (Exception cce) {
@@ -73,6 +77,39 @@ public class PortManagerThread extends Thread {
 		}
 	
 	}
+	
+	private static int getServerSocketPortFromWrapper() {
+
+    int port = 0;
+    FileInputStream in = null;
+    DataInputStream din = null;
+    BufferedReader reader = null;
+    String line = "";
+
+    try {
+
+      String path = System.getenv("MPJ_HOME") + "/conf/wrapper.conf";
+      in = new FileInputStream(path);
+      din = new DataInputStream(in);
+      reader = new BufferedReader(new InputStreamReader(din));
+
+      while ((line = reader.readLine()) != null) {
+        if (line.startsWith("wrapper.app.parameter.3")) {
+          String trimmedLine = line.replaceAll("\\s+", "");
+          port = Integer.parseInt(trimmedLine.substring(24));
+          break;
+        }
+      }
+
+      in.close();
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    return port;
+
+  }
 
 
 }
