@@ -217,7 +217,7 @@ public class ProcessArgumentsManager {
 						+ File.pathSeparator + "" + mpjHomeDir
 						+ "/lib/loader2.jar" + File.pathSeparator + ""
 						+ mpjHomeDir + "/lib/starter.jar" + File.pathSeparator
-						+ ""+ pTicket.getClassPath()  +File.pathSeparator
+				//		+ ""+ pTicket.getClassPath()  +File.pathSeparator
 						+ "" + mpjHomeDir + "/lib/mpiExp.jar";
 
 				if (MPJDaemon.DEBUG && MPJDaemon.logger.isDebugEnabled()) {
@@ -247,7 +247,7 @@ public class ProcessArgumentsManager {
 					+ "" + mpjHomeDir + "/lib/loader2.jar" + File.pathSeparator
 					+ "" + mpjHomeDir + "/lib/starter.jar" + File.pathSeparator
 				//	+ "" + pTicket.getWorkingDirectory() +File.pathSeparator
-					+ ""+ pTicket.getClassPath()  +File.pathSeparator
+				//	+ ""+ pTicket.getClassPath()  +File.pathSeparator
 					+ "" + mpjHomeDir + "/lib/mpiExp.jar";
 					
 
@@ -313,8 +313,13 @@ public class ProcessArgumentsManager {
 		arguments[indx] = cmdClassPath;
 		indx++;
 
-		arguments[indx] = pTicket.getMainClass();
-		
+	if (pTicket.getClassPath().endsWith(".jar"))
+      arguments[indx] = pTicket.getClassPath();
+    else if (pTicket.getMainClass() != null)
+      arguments[indx] = pTicket.getMainClass();
+    else
+      arguments[indx] = pTicket.getClassPath();
+	
 		if (MPJDaemon.DEBUG && MPJDaemon.logger.isDebugEnabled()) {
 			MPJDaemon.logger.debug("HybridDaemon: Value of Indx: " + indx
 					+ " Count of args till now: " + (CMD_WORDS + jArgs.length + nArgumentIncrement));
