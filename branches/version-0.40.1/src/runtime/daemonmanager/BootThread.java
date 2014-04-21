@@ -70,8 +70,7 @@ public class BootThread extends DMThread {
       try {
 	String[] command = { "ssh", host, "nohup", "java", "-cp",
 	    MPJUtil.getJarPath("daemon") + ":.", "runtime.daemon.MPJDaemon",
-	    port, ">" + MPJUtil.getWrapperLogPath(),
-	    "2>" + MPJUtil.getWrapperLogPath(),
+	    port,
 
 	};
 	ArrayList<String> consoleMessages = DaemonUtil.runProcess(command,
