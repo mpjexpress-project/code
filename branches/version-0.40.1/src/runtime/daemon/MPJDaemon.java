@@ -50,114 +50,117 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.spi.LoggerRepository;
 
-import runtime.MPJRuntimeException;
-import runtime.portmanager.PortManagerThread;
+import runtime.common.MPJRuntimeException;
 
 public class MPJDaemon {
 
-	private int D_SER_PORT = 10000;
-	static final boolean DEBUG = false;
-	static Logger logger = null;
-	private String mpjHomeDir = null;
-	public volatile static ConcurrentHashMap<Socket, ProcessLauncher> servSockets;
-	ConnectionManager connectionManager;
-	PortManagerThread pManager;
-	public MPJDaemon(String args[]) throws Exception {
+  private int D_SER_PORT = 10000;
+  static final boolean DEBUG = true;
+  static Logger logger = null;
+  private String mpjHomeDir = null;
+  public volatile static ConcurrentHashMap<Socket, ProcessLauncher> servSockets;
+  ConnectionManager connectionManager;
+  PortManagerThread pManager;
 
-		System.out.println("MPJ Daemon started");
-		InetAddress localaddr = InetAddress.getLocalHost();
-		String hostName = localaddr.getHostName();
-		servSockets = new ConcurrentHashMap<Socket, ProcessLauncher>();
-		Map<String, String> map = System.getenv();
-		mpjHomeDir = map.get("MPJ_HOME");
-		createLogger(mpjHomeDir, hostName);
-		if (DEBUG && logger.isDebugEnabled()) {
-			logger.debug("mpjHomeDir " + mpjHomeDir);
-		}
-		if (args.length == 1) {
+  public MPJDaemon(String args[]) throws Exception {
 
-			if (DEBUG && logger.isDebugEnabled()) {
-				logger.debug(" args[0] " + args[0]);
-				logger.debug("setting daemon port to" + args[0]);
-			}
+    System.out.println("MPJ Daemon started");
+    InetAddress localaddr = InetAddress.getLocalHost();
+    String hostName = localaddr.getHostName();
+    servSockets = new ConcurrentHashMap<Socket, ProcessLauncher>();
+    Map<String, String> map = System.getenv();
+    mpjHomeDir = map.get("MPJ_HOME");
+    createLogger(mpjHomeDir, hostName);
+    if (DEBUG && logger.isDebugEnabled()) {
+      logger.debug("mpjHomeDir " + mpjHomeDir);
+    }
+    if (args.length == 1) {
 
-			D_SER_PORT = new Integer(args[0]).intValue();
+      if (DEBUG && logger.isDebugEnabled()) {
+	logger.debug(" args[0] " + args[0]);
+	logger.debug("setting daemon port to" + args[0]);
+      }
 
-		} else {
-			throw new MPJRuntimeException(
-					"Usage: java MPJDaemon daemonServerPort");
-		}
-		pManager = new PortManagerThread();
-		pManager.start();
+      D_SER_PORT = new Integer(args[0]).intValue();
+
+    } else {
+      throw new MPJRuntimeException("Usage: java MPJDaemon daemonServerPort");
+    }
+    pManager = new PortManagerThread();
+    pManager.start();
+
+    connectionManager = new ConnectionManager();
+    connectionManager.start();
+    serverSocketInit();
+
+  }
+
+  private void createLogger(String homeDir, String hostName)
+      throws MPJRuntimeException {
+
+    if (logger == null) {
+
+      DailyRollingFileAppender fileAppender = null;
+
+      try {
+	fileAppender = new DailyRollingFileAppender(new PatternLayout(
+	    " %-5p %c %x - %m\n"), homeDir + "/logs/daemon-" + hostName
+	    + ".log", "yyyy-MM-dd-a");
+
+	Logger rootLogger = Logger.getRootLogger();
+	rootLogger.addAppender(fileAppender);
+	LoggerRepository rep = rootLogger.getLoggerRepository();
+	rootLogger.setLevel((Level) Level.ALL);
+	logger = Logger.getLogger("mpjdaemon");
+      }
+      catch (Exception e) {
+	throw new MPJRuntimeException(e);
+      }
+    }
+  }
+
+  private void serverSocketInit() {
+
+    ServerSocket serverSocket = null;
+    try {
+      serverSocket = new ServerSocket(D_SER_PORT);
+      do {
+	Socket servSock = serverSocket.accept();
+	if (DEBUG && logger.isDebugEnabled()) {
+	  logger.debug("Accepted connection");
+	}
+	ProcessLauncher pLaunch = new ProcessLauncher(servSock);
+	servSockets.put(servSock, pLaunch);
+	pLaunch.start();
+      } while (true);
+    }
+    catch (IOException ioEx) {
+      System.out.println("Unable to attach to port!");
+      System.exit(1);
+    }
+    if (!serverSocket.isClosed())
+      try {
+	serverSocket.close();
+      }
+      catch (IOException e) {
+	e.printStackTrace();
+      }
+    if (pManager != null) {
+      pManager.isRun = false;
+    }
+    if (connectionManager != null) {
+      connectionManager.isRun = false;
+    }
+
+  }
+
+  public static void main(String args[]) {
+    try {
 		
-		connectionManager = new ConnectionManager(); 
-		connectionManager.start();		
-		serverSocketInit();
-
-	}
-
-	private void createLogger(String homeDir, String hostName)
-			throws MPJRuntimeException {
-
-		if (logger == null) {
-
-			DailyRollingFileAppender fileAppender = null;
-
-			try {
-				fileAppender = new DailyRollingFileAppender(new PatternLayout(
-						" %-5p %c %x - %m\n"), homeDir + "/logs/daemon-"
-						+ hostName + ".log", "yyyy-MM-dd-a");
-
-				Logger rootLogger = Logger.getRootLogger();
-				rootLogger.addAppender(fileAppender);
-				LoggerRepository rep = rootLogger.getLoggerRepository();
-				rootLogger.setLevel((Level) Level.ALL);
-				logger = Logger.getLogger("mpjdaemon");
-			} catch (Exception e) {
-				throw new MPJRuntimeException(e);
-			}
-		}
-	}
-
-	private void serverSocketInit() {
-
-		ServerSocket serverSocket = null;
-		try {
-			serverSocket = new ServerSocket(D_SER_PORT);
-			do {
-				Socket servSock = serverSocket.accept();
-				logger.debug("Accepted connection");				
-				ProcessLauncher pLaunch = new ProcessLauncher(servSock);
-				servSockets.put(servSock,pLaunch);
-				pLaunch.start();
-			} while (true);
-		} catch (IOException ioEx) {
-			System.out.println("Unable to attach to port!");
-			System.exit(1);
-		}
-		if (!serverSocket.isClosed())
-			try {
-				serverSocket.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		if(pManager != null)
-		{
-			pManager.isRun = false;
-		}
-		if(connectionManager != null)
-		{
-			connectionManager.isRun = false;
-		}
-		
-	}
-
-	public static void main(String args[]) {
-		try {
-			MPJDaemon dae = new MPJDaemon(args);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+      MPJDaemon dae = new MPJDaemon(args);
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 }
