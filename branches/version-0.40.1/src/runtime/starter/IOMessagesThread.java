@@ -43,53 +43,48 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
-
 public class IOMessagesThread extends Thread {
 
-	Socket clientSock;
-	public IOMessagesThread(Socket clientSock) {
-		// TODO Auto-generated constructor stub
-		this.clientSock = clientSock;
-	}
+  Socket clientSock;
 
-	@Override
-	public void run() {
-		serverSocketInit();
-	}
+  public IOMessagesThread(Socket clientSock) {
+    this.clientSock = clientSock;
+  }
 
-	private void serverSocketInit() {		
+  @Override
+  public void run() {
+    serverSocketInit();
+  }
 
-		Scanner input =null;
-		PrintWriter output = null;
-		try {				
-			input = new Scanner(clientSock.getInputStream()); 	
-			output = new PrintWriter(clientSock.getOutputStream(),true);
-			String message = input.nextLine();  	
-			while (!(message.endsWith("EXIT")))
-			{
-				if(!message.startsWith("@Ping#"))
-					System.out.println(message);
-				message = input.nextLine();					
-			}
+  private void serverSocketInit() {
 
-		} catch (Exception cce) {
+    Scanner input = null;
+    PrintWriter output = null;
+    try {
+      input = new Scanner(clientSock.getInputStream());
+      output = new PrintWriter(clientSock.getOutputStream(), true);
+      String message = input.nextLine();
+      while (!(message.endsWith("EXIT"))) {
+	if (!message.startsWith("@Ping#"))
+	  System.out.println(message);
+	message = input.nextLine();
+      }
 
-			System.exit(0);
-		}
-		finally
-		{
-			try
-			{
-				clientSock.close();
-				input.close();
-				output.close();
-			}
-			catch(IOException ioEx)
-			{			
-				System.exit(1);
-			}      
-		}
-	}
-	
+    }
+    catch (Exception cce) {
+
+      System.exit(0);
+    }
+    finally {
+      try {
+	clientSock.close();
+	input.close();
+	output.close();
+      }
+      catch (IOException ioEx) {
+	System.exit(1);
+      }
+    }
+  }
 
 }
