@@ -246,7 +246,6 @@
 			<arg value="${mx_home}/include"/>
 			<arg value="-L"/>
 			<arg value="${mx_home}/lib"/>
-			<arg value="-fPIC"/>
 			<arg value="-lmyriexpress"/>
 		</exec>
 
@@ -325,7 +324,7 @@
 		</javadoc>
 	</target>
 
-	<target name="all" depends="compile,mxlib,jars,clean"
+	<target name="all" depends="compile,jars,clean"
             description="All"/>
 
 </project>
