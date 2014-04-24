@@ -270,6 +270,12 @@ public class MPJProcessTicket {
   }
 
   public MPJXml ToXML() {
+
+    // Send true as parameter in case you want sourceCode tag in XML Ticket
+    return ToXML(true);
+  }
+
+  private MPJXml ToXML(boolean src) {
     MPJXml processInfoXML = new MPJXml(getTag(RTConstants.MPJ_PROCESS_INFO));
 
     MPJXml ticketIDXML = new MPJXml(getTag(RTConstants.TICKET_ID));
@@ -305,10 +311,11 @@ public class MPJProcessTicket {
     zippedCodeXML.setText(Boolean.toString(this.zippedSource));
     processInfoXML.appendChild(zippedCodeXML);
 
-    MPJXml codeFolderXML = new MPJXml(getTag(RTConstants.SOURCE_CODE));
-    codeFolderXML.setText(this.sourceCode);
-    processInfoXML.appendChild(codeFolderXML);
-
+    if (src) {
+      MPJXml codeFolderXML = new MPJXml(getTag(RTConstants.SOURCE_CODE));
+      codeFolderXML.setText(this.sourceCode);
+      processInfoXML.appendChild(codeFolderXML);
+    }
     MPJXml mainClassXML = new MPJXml(getTag(RTConstants.MAIN_CLASS));
     mainClassXML.setText(this.mainClass);
     processInfoXML.appendChild(mainClassXML);
