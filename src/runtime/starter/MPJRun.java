@@ -99,7 +99,7 @@ public class MPJRun {
   String className = null;
   String applicationClassPathEntry = null;
 
-  static final boolean DEBUG = true;
+  static final boolean DEBUG = false;
   static final String VERSION = "0.40.1";
   private static int RUNNING_JAR_FILE = 2;
   private static int RUNNING_CLASS_FILE = 1;
@@ -333,8 +333,6 @@ public class MPJRun {
 
       } else if (args[i].equals("-src")) {
 	this.zippedSource = true;
-	this.sourceFolder = args[i + 1];
-	i++;
       } else if (args[i].equals("-debug")) {
 	DEBUG_PORT = new Integer(args[i + 1]).intValue();
 	i++;
@@ -457,6 +455,7 @@ public class MPJRun {
     ticket.setUserID(System.getProperty("user.name"));
     if (this.zippedSource) {
       String zipFileName = UUID.randomUUID() + ".zip";
+      this.sourceFolder = wdir;
       IOHelper.zipFolder(this.sourceFolder, zipFileName);
       byte[] zipContents = IOHelper.ReadBinaryFile(zipFileName);
       String encodedString = Base64.encodeBase64String(zipContents);
@@ -495,7 +494,6 @@ public class MPJRun {
     if (APROFILE) {
       ticket.setProfiler(true);
     }
-
     String ticketString = ticket.ToXML().toXmlString();
     OutputStream outToServer = null;
     try {
@@ -567,7 +565,8 @@ public class MPJRun {
 	    + "\n   -psl val           -- 128Kbytes"
 	    + "\n   -machinesfile val  -- machines"
 	    + "\n   -debug val         -- 24500"
-	    + "\n   -src val           -- ..."
+	    + "\n   -src val           -- false"
+	    + "\n   -profile val       -- false"
 	    + "\n   -h                 -- print this usage information"
 	    + "\n   ...any JVM arguments..."
 	    + "\n Note: Value on the right in front of each option is the default value"
@@ -614,7 +613,8 @@ public class MPJRun {
 	      + (rank++);
 
 	} else if (deviceName.equals("mxdev")) {
-	  CONF_FILE_CONTENTS +=";"+(String) machineList.get(i) + "@" + mxBoardNum + "@" + (rank++);
+	  CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
+	      + mxBoardNum + "@" + (rank++);
 	}
 	CONF_FILE_CONTENTS += "@" + (DEBUG_PORT);
 
@@ -670,8 +670,8 @@ public class MPJRun {
 		  + "@" + (rank++);
 
 	    } else if (deviceName.equals("mxdev")) {
-	      CONF_FILE_CONTENTS += ";"+(String) machineList.get(i) + "@" + (mxBoardNum + j) + "@"
-		  + (rank++);
+	      CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
+		  + (mxBoardNum + j) + "@" + (rank++);
 	    }
 	    CONF_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
 	  }
@@ -697,8 +697,8 @@ public class MPJRun {
 		      .getHostAddress() + "@" + readPort + "@" + writePort
 		  + "@" + (rank++);
 	    } else if (deviceName.equals("mxdev")) {
-	      CONF_FILE_CONTENTS += ";"+(String) machineList.get(i) + "@" + (mxBoardNum + j) + "@"
-		  + (rank++);
+	      CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
+		  + (mxBoardNum + j) + "@" + (rank++);
 	    }
 	    CONF_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
 	  }
