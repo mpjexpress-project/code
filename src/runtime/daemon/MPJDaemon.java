@@ -55,7 +55,7 @@ import runtime.common.MPJRuntimeException;
 public class MPJDaemon {
 
   private int D_SER_PORT = 10000;
-  static final boolean DEBUG = true;
+  static final boolean DEBUG = false;
   static Logger logger = null;
   private String mpjHomeDir = null;
   public volatile static ConcurrentHashMap<Socket, ProcessLauncher> servSockets;

@@ -66,6 +66,9 @@ public class ProcessArgumentsManager {
 
     Map<String, String> map = System.getenv();
     String mpjHomeDir = map.get("MPJ_HOME");
+    String workingDirectory = pTicket.getWorkingDirectory();
+    if (pTicket.isZippedSource())
+      workingDirectory = sourceFolder;
 
     boolean now = false;
     boolean noSwitch = true;
@@ -83,8 +86,7 @@ public class ProcessArgumentsManager {
 	    + File.pathSeparator + "" + mpjHomeDir + "/lib/log4j-1.2.11.jar"
 	    + File.pathSeparator + "" + mpjHomeDir + "/lib/wrapper.jar"
 	    + File.pathSeparator + pTicket.getClassPath() + File.pathSeparator
-	    + sourceFolder + File.pathSeparator + pTicket.getWorkingDirectory()
-	    + File.pathSeparator + cp;
+	    + workingDirectory + File.pathSeparator + cp;
 
 	pTicket.getJvmArgs().add(e, cp);
 	now = false;
@@ -104,8 +106,7 @@ public class ProcessArgumentsManager {
 	      + File.pathSeparator + "" + mpjHomeDir + "/lib/log4j-1.2.11.jar"
 	      + File.pathSeparator + "" + mpjHomeDir + "/lib/wrapper.jar"
 	      + File.pathSeparator + pTicket.getClassPath()
-	      + File.pathSeparator + sourceFolder + File.pathSeparator
-	      + pTicket.getWorkingDirectory());
+	      + File.pathSeparator + workingDirectory);
     }
 
     for (int e = 0; e < pTicket.getJvmArgs().size(); e++) {
@@ -181,6 +182,9 @@ public class ProcessArgumentsManager {
     boolean now = false;
     boolean noSwitch = true;
     String cmdClassPath = " ";
+    String workingDirectory = pTicket.getWorkingDirectory();
+    if (pTicket.isZippedSource())
+      workingDirectory = sourceFolder;
 
     String[] jArgs = pTicket.getJvmArgs().toArray(new String[0]);
     for (int e = 0; e < jArgs.length; e++) {
@@ -290,7 +294,7 @@ public class ProcessArgumentsManager {
 
     arguments[indx] = "runtime.daemon.HybridStarter";
     indx++;
-    arguments[indx] = pTicket.getWorkingDirectory();
+    arguments[indx] = workingDirectory;
     indx++;
     int threadPerHost = getThreadsPerHost(pTicket.getTotalProcessCount(),
 	pTicket.getNetworkProcessCount(), pTicket.getStartingRank());

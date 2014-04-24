@@ -44,15 +44,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import runtime.common.MPJProcessTicket;
+import runtime.common.RTConstants;
 
 public class ProcessLauncher extends Thread {
 
-  boolean DEBUG = true;
+  boolean DEBUG = false;
   private Process p[] = null;
   private Socket sockserver = null;
   private Logger logger = MPJDaemon.logger;
@@ -84,14 +84,14 @@ public class ProcessLauncher extends Thread {
       }
       if (ticketString != "")
 	pTicket.FromXML(ticketString);
-
     }
     catch (IOException e3) {
       e3.printStackTrace();
       return;
     }
 
-    if (pTicket.getDeviceName().equals("niodev") || pTicket.getDeviceName().equals("mxdev")) {
+    if (pTicket.getDeviceName().equals("niodev")
+	|| pTicket.getDeviceName().equals("mxdev")) {
       JvmProcessCount = pTicket.getProcessCount();
     } else if (pTicket.getDeviceName().equals("hybdev")) {
       JvmProcessCount = 1;
@@ -103,13 +103,16 @@ public class ProcessLauncher extends Thread {
     String[] arguments = argManager.GetArguments(pTicket);
 
     for (int j = 0; j < JvmProcessCount; j++) {
-      if (pTicket.getDeviceName().equals("niodev") || pTicket.getDeviceName().equals("mxdev")) {
+      if (pTicket.getDeviceName().equals("niodev")
+	  || pTicket.getDeviceName().equals("mxdev")) {
 	String rank = new String("" + (pTicket.getStartingRank() + j));
 	arguments[argManager.getRankArgumentIndex()] = rank;
 	if (pTicket.isProfiler())
 	  arguments[1] = "-tau:node=" + rank;
       }
-      if (pTicket.isDebug() && (pTicket.getDeviceName().equals("niodev") || pTicket.getDeviceName().equals("mxdev"))) {
+      if (pTicket.isDebug()
+	  && (pTicket.getDeviceName().equals("niodev") || pTicket
+	      .getDeviceName().equals("mxdev"))) {
 	arguments[argManager.getDebugArgumentIndex()] = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address="
 	    + (pTicket.getDebugPort() + j * 2);
       }
