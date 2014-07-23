@@ -152,6 +152,7 @@ public class MPJRun {
       logger.info("processInput called ...");
     }
 
+    System.out.println("FK>> I am going to process now!");
     processInput(args);
     
     // FK>> Checking for HADOOP HOME
@@ -398,7 +399,7 @@ public class MPJRun {
 	// these have to be app arguments ...
 	else {
 	  appArgs.add(args[i]);
-          System.out.println(appArgs.get(i));
+          System.out.println("The value is at:" + i );
 	}
 
       }
