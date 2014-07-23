@@ -75,5 +75,7 @@ public class RTConstants {
   public static String MPJEXPRESS_VERSION_KEY = "mpjexpress.version";
   public static String MPJEXPRESS_CONF_FILE = "conf/mpjexpress.conf";
   public static String MPJDEV_CONF_FILE = "mpjdev.conf";
+  // FK >> Adding HADOOP YARN HOME to the list of constants
+  public static String HADOOP_YARN_HOME = System.getenv("HADOOP_HOME");
 
 }
