@@ -73,6 +73,10 @@ public class MPJRun {
   private int DEBUG_PORT = 0;
   private int portManagerPort = 0;
 
+  // FK>> Adding YARN related variables here
+  private boolean isYarn = false;
+  static String yarnHomeDir = null;
+
   String machinesFile = DEFAULT_MACHINES_FILE_NAME;
   private int psl = DEFAULT_PROTOCOL_SWITCH_LIMIT;
 
@@ -127,7 +131,7 @@ public class MPJRun {
       mpjHomeDir = map.get("MPJ_HOME");
       RTConstants.MPJ_HOME_DIR = mpjHomeDir;
       if (mpjHomeDir == null) {
-	throw new Exception("MPJ_HOME environment variable not set!!!");
+	throw new Exception("MPJ_HOME environment not set!!");
       }
     }
     catch (Exception exc) {
@@ -135,6 +139,7 @@ public class MPJRun {
       exc.printStackTrace();
       return;
     }
+   
     readValuesFromMPJExpressConf();
     createLogger(args);
 
@@ -148,6 +153,24 @@ public class MPJRun {
     }
 
     processInput(args);
+    
+    // FK>> Checking for HADOOP HOME
+    if(isYarn) {
+      try {
+        yarnHomeDir = map.get("HADOOP_HOME");
+        RTConstants.HADOOP_YARN_HOME = yarnHomeDir;
+        if (yarnHomeDir == null) {
+          throw new Exception("FK>> YARN flag passed but HADOOP_HOME not set");
+        }
+        else
+          System.out.println("FK>> HADOOP HOME is set to: " + yarnHomeDir);
+      }
+      catch (Exception exc) {
+        System.out.println("Error: " + exc.getMessage());
+        exc.printStackTrace();
+        return;
+      }
+    }
 
     /* the code is running in the multicore configuration */
     if (deviceName.equals("multicore")) {
@@ -248,17 +271,18 @@ public class MPJRun {
       System.exit(0);
     }
 
+    // FK>> My debug statements for the code
+    System.out.println("FK>> Total arguments:" + args.length);
+
     boolean parallelProgramNotYetEncountered = true;
 
     for (int i = 0; i < args.length; i++) {
 
       if (args[i].equals("-np")) {
-
 	try {
 	  nprocs = new Integer(args[i + 1]).intValue();
 	  if (nprocs < 1) {
-	    System.out
-		.println("Number of Processes should be equal to or greater than 1");
+	    System.out.println("Number of Processes should be equal to or greater than 1");
 	    System.out.println("exiting ...");
 	    System.exit(0);
 	  }
@@ -274,6 +298,13 @@ public class MPJRun {
 	printUsage();
 	System.exit(0);
       }
+
+      // FK>> Adding check for YARN flag
+      else if (args[i].equals("-yarn")) {
+        isYarn = true;
+        System.out.println("FK>> YARN Flag!");
+        i++;
+      } 
 
       else if (args[i].equals("-dport")) {
 	D_SER_PORT = new Integer(args[i + 1]).intValue();
@@ -367,6 +398,7 @@ public class MPJRun {
 	// these have to be app arguments ...
 	else {
 	  appArgs.add(args[i]);
+          System.out.println(appArgs.get(i));
 	}
 
       }
@@ -389,6 +421,9 @@ public class MPJRun {
       logger.debug("className : <" + className + ">");
       logger.debug("applicationClassPathEntry : <" + applicationClassPathEntry
 	  + ">");
+      // FK>> Log statements for YARN
+      logger.debug("-yarn: <" + isYarn + ">");
+      logger.debug("$HADOOP_HOME: <" + yarnHomeDir + ">");
 
       for (int i = 0; i < jArgs.length; i++) {
 	if (DEBUG && logger.isDebugEnabled())
@@ -534,6 +569,7 @@ public class MPJRun {
     }
   }
 
+  // FK>> Help print statement for YARN added
   private void printUsage() {
     System.out
 	.println("MPJ Express version " + VERSION
@@ -547,6 +583,7 @@ public class MPJRun {
 	    + "\n   -dport val         -- <read from mpjexpress.conf>"
 	    + "\n   -wdir val          -- $MPJ_HOME/bin"
 	    + "\n   -mpjport val       -- Deprecated"
+            + "\n   -yarn              -- to run application using Hadoop YARN"
 	    + "\n   -mxboardnum val    -- 0"
 	    + "\n   -headnodeip val    -- ..."
 	    + "\n   -psl val           -- 128Kbytes"
