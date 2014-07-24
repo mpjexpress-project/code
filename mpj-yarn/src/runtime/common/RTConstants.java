@@ -77,5 +77,5 @@ public class RTConstants {
   public static String MPJDEV_CONF_FILE = "mpjdev.conf";
   // FK >> Adding HADOOP YARN HOME to the list of constants
   public static String HADOOP_YARN_HOME = System.getenv("HADOOP_HOME");
-
+  public static String HADOOP_YARN = "false";
 }
