@@ -304,7 +304,7 @@ public class MPJRun {
       else if (args[i].equals("-yarn")) {
         isYarn = true;
         System.out.println("FK>> YARN Flag!");
-        i++;
+        RTConstants.HADOOP_YARN = "true";
       } 
 
       else if (args[i].equals("-dport")) {
