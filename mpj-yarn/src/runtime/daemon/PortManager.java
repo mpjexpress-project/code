@@ -80,7 +80,7 @@ public class PortManager {
     }
     catch (final IOException e) {
       return false;
-    }
+    } //FK>> WHAT IS GOING ON HERE?!?!
     finally {
       if (dataSock != null) {
 	dataSock.close();
