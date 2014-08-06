@@ -143,6 +143,25 @@ public class Wrapper extends Thread {
   **/
   private int findPort(){
     System.out.println("#FK> Hello! I am going to find you ports!");
+    int minPort = 25000;
+    int maxPort = 40000;
+    int selectedPort;
+
+    Random rand = new Random();
+    selectedPort = (rand.nextInt((maxPort - minPort) + 1) + minPort);
+    System.out.println("#FK> I generated:"+selectedPort);
+    return selectedPort;
+  }
+
+  /**
+  * #FK
+  * input: Integer
+  * output: Integer
+  * description: function to send selected ports to MPJRun.java
+  *
+  **/
+  private int sendPort(int port){
+    System.out.println("#FK> Hello I am going to send ports!");
     return 1;
   }
 
