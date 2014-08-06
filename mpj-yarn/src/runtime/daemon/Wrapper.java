@@ -42,6 +42,9 @@ import java.net.*;
 import java.io.*;
 import java.lang.reflect.*;
 
+import java.net.DatagramSocket;
+import java.net.ServerSocket;
+
 public class Wrapper extends Thread {
 
   String configFileName = null;
@@ -142,14 +145,45 @@ public class Wrapper extends Thread {
   *
   **/
   private int findPort(){
-    System.out.println("#FK> Hello! I am going to find you ports!");
+    System.out.println("#FK> Generating ports numbers..");
     int minPort = 25000;
     int maxPort = 40000;
     int selectedPort;
+    ServerSocket sock = null;
+    DatagramSocket dataSock = null;
 
-    Random rand = new Random();
-    selectedPort = (rand.nextInt((maxPort - minPort) + 1) + minPort);
-    System.out.println("#FK> I generated:"+selectedPort);
+    while(true){
+      Random rand = new Random();
+      selectedPort = (rand.nextInt((maxPort - minPort) + 1) + minPort);
+      System.out.println("#FK> Port generated:"+selectedPort);
+ 
+      System.out.println("#FK> Checking for port availability..");
+   
+      try {
+        sock = new ServerSocket(selectedPort);
+        //sock.setReuseAddress(true);
+        dataSock = new DatagramSocket(selectedPort);
+        //dataSock.setReuseAddress(true);
+      }
+      catch (final IOException e) {
+        continue;
+      }
+      //finally {
+	//try {
+          dataSock.close();
+	//}
+	//catch (final IOException e){
+	//  System.out.println("FK> Cannot close socket!");
+	//}
+        try {
+          sock.close();
+	}
+        catch (final IOException e){
+          System.out.println("FK> Cannot close socket!");
+        }
+        break;
+     //}
+    }
     return selectedPort;
   }
 
