@@ -71,6 +71,7 @@ public class DMThreadUtil {
   }
 
   public static void ExecuteCommand(CLOptions options) {
+    System.out.println("FK>> I am going to execute command");
 
     String type = options.getCmdType();
     ArrayList<Thread> threads = new ArrayList<Thread>();

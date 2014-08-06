@@ -72,12 +72,18 @@ public class Wrapper extends Thread {
 
     InetAddress localaddr = InetAddress.getLocalHost();
     hostName = localaddr.getHostName();
+    // #FK - Prepping for port search and allocation
+    System.out.println("FK>> I am wrapper, running on " + hostName);
 
     configFileName = args[0];
     processes = (new Integer(args[1])).intValue();
     deviceName = args[2];
     rank = args[3];
     className = args[4];
+
+    // #FK - Checking for arguments
+    System.out.println("FK>> I will read "+configFileName+", np is "+processes+",device to be used is "+deviceName+", rank would be "+rank+", and class:"+className);
+    System.out.println("FK>> I got:" + findPort());
 
     nargs = new String[(args.length - 5)];
     System.arraycopy(args, 5, nargs, 0, nargs.length);
@@ -126,6 +132,18 @@ public class Wrapper extends Thread {
     catch (Exception ex) {
       ex.printStackTrace();
     }
+  }
+
+  /**
+  * #FK
+  * input: none
+  * output: integer
+  * description: function to scan and allocate free ports
+  *
+  **/
+  private int findPort(){
+    System.out.println("#FK> Hello! I am going to find you ports!");
+    return 1;
   }
 
   public static void main(String args[]) throws Exception {
