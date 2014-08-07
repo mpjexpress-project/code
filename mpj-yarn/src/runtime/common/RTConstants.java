@@ -78,4 +78,7 @@ public class RTConstants {
   // FK >> Adding HADOOP YARN HOME to the list of constants
   public static String HADOOP_YARN_HOME = System.getenv("HADOOP_HOME");
   public static String HADOOP_YARN = "false";
+  //FK >> Adding PORT options for new MPJRun.java to collect info
+  public static String MPJ_RUN_SERVER_PORT_KEY = "mpjexpress.mpjrun.port.1";
+  public static String MPJ_RUN_SERVER_PORT = "40003";
 }
