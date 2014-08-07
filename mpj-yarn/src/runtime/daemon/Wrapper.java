@@ -155,36 +155,28 @@ public class Wrapper extends Thread {
     while(true){
       Random rand = new Random();
       selectedPort = (rand.nextInt((maxPort - minPort) + 1) + minPort);
-      System.out.println("#FK> Port generated:"+selectedPort);
+      System.out.println("#FK> Port generated[:"+selectedPort+"].Checking availability..");
  
-      System.out.println("#FK> Checking for port availability..");
-   
       try {
         sock = new ServerSocket(selectedPort);
-        //sock.setReuseAddress(true);
-        dataSock = new DatagramSocket(selectedPort);
-        //dataSock.setReuseAddress(true);
+        sock.setReuseAddress(true);
       }
-      catch (final IOException e) {
+      catch (IOException e) {
+        System.err.println("["+selectedPort+"]:Port already in use. Checking for new port..");
         continue;
       }
-      //finally {
-	//try {
-          dataSock.close();
-	//}
-	//catch (final IOException e){
-	//  System.out.println("FK> Cannot close socket!");
-	//}
-        try {
-          sock.close();
-	}
-        catch (IOException e){
-          System.err.println("FK> IOException encountered in closing sockets: "+e.getMessage());
+      
+      try {
+        sock.close();
+      }
+      catch (IOException e){
+        System.err.println("[Wrapper.java]: IOException encountered in closing sockets: "+e.getMessage());
+        e.printStackTrace();
         }
-        break;
-     //}
+      break;
     }
-    System.out.println("FK> Port successfully generated..");
+
+    System.out.println("#FK> Port successfully generated..");
     return selectedPort;
   }
 
@@ -197,6 +189,7 @@ public class Wrapper extends Thread {
   **/
   private int sendPort(int port){
     System.out.println("#FK> Hello I am going to send ports!");
+
     return 1;
   }
 

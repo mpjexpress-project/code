@@ -530,7 +530,7 @@ public class MPJRun {
       out.writeInt(length);
       if (DEBUG && logger.isDebugEnabled()) {
 	logger.info("Machine Name: "
-	    + sockClient.getInetAddress().getHostName() + " Startting Rank: "
+	    + sockClient.getInetAddress().getHostName() + " Starting Rank: "
 	    + ticket.getStartingRank() + " Process Count: "
 	    + ticket.getProcessCount());
       }
