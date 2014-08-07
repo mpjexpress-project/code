@@ -73,6 +73,9 @@ public class MPJRun {
   private int DEBUG_PORT = 0;
   private int portManagerPort = 0;
 
+  // FK>> SERVER port variable for MPJrun.java
+  private int SERVER_PORT = 0;
+
   // FK>> Adding YARN related variables here
   private boolean isYarn = false;
   static String yarnHomeDir = null;
@@ -172,6 +175,9 @@ public class MPJRun {
         return;
       }
     }
+
+    // FK>> Checking for PORT
+    collectPortInfo();
 
     /* the code is running in the multicore configuration */
     if (deviceName.equals("multicore")) {
@@ -850,7 +856,9 @@ public class MPJRun {
 	  logLevel = MPJUtil.confValue(line);
 	} else if (line.startsWith(RTConstants.MPJEXPRESS_VERSION_KEY)) {
 	  VERSION = MPJUtil.confValue(line);
-	}
+	} else if (line.startsWith(RTConstants.MPJ_RUN_SERVER_PORT_KEY)){
+          SERVER_PORT = Integer.parseInt(MPJUtil.confValue(line));
+        }
       }
 
       in.close();
@@ -914,6 +922,16 @@ public class MPJRun {
 
     }
 
+  }
+
+  /**
+  * #FK
+  * input: void 
+  * output: void
+  * description: collect ip, port information from all wrappers
+  **/
+  private void collectPortInfo(){
+    System.out.println(">> #FK function created & port:" + SERVER_PORT);
   }
 
   /**
