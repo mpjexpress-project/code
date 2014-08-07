@@ -45,7 +45,7 @@ import java.lang.reflect.*;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 
-import org.apache.log4j.*
+import org.apache.log4j.*;
 
 public class Wrapper extends Thread {
 
@@ -147,7 +147,7 @@ public class Wrapper extends Thread {
   *
   **/
   private int findPort(){
-    System.out.println("#FK> Generating ports numbers..");
+    System.out.println("["+hostName+"]#FK> Generating ports numbers..");
     int minPort = 25000;
     int maxPort = 40000;
     int selectedPort;
@@ -157,14 +157,14 @@ public class Wrapper extends Thread {
     while(true){
       Random rand = new Random();
       selectedPort = (rand.nextInt((maxPort - minPort) + 1) + minPort);
-      System.out.println("#FK> Port generated:"+selectedPort+"].Checking availability..");
+      System.out.println("#FK> Port generated:"+selectedPort+"]. Checking availability..");
  
       try {
         sock = new ServerSocket(selectedPort);
         sock.setReuseAddress(true);
       }
       catch (IOException e) {
-        System.err.println("["+hostName+":"selectedPort+"]Port already in use. Checking for new port..");
+        System.err.println("["+hostName+":"+selectedPort+"]Port already in use. Checking for new port..");
         continue;
       }
       
@@ -191,18 +191,14 @@ public class Wrapper extends Thread {
   **/
   private int sendPort(int port){
     System.out.println("#FK> Hello I am going to send ports!");
-
+    
     return 1;
   }
 
   public static void main(String args[]) throws Exception {
-    // Wrapper wrap = new Wrapper();
-    // wrap.execute(args);
-
     ThreadGroup group = new ThreadGroup("MPI" + args[3]);
     Wrapper wrap = new Wrapper(group, args[3]);
     wrap.args = args;
-    // Thread runner = new Thread("Main",wrap,group);
     wrap.start();
     wrap.join();
   }
