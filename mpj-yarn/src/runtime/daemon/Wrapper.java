@@ -45,6 +45,8 @@ import java.lang.reflect.*;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 
+import org.apache.log4j.*
+
 public class Wrapper extends Thread {
 
   String configFileName = null;
@@ -155,14 +157,14 @@ public class Wrapper extends Thread {
     while(true){
       Random rand = new Random();
       selectedPort = (rand.nextInt((maxPort - minPort) + 1) + minPort);
-      System.out.println("#FK> Port generated[:"+selectedPort+"].Checking availability..");
+      System.out.println("#FK> Port generated:"+selectedPort+"].Checking availability..");
  
       try {
         sock = new ServerSocket(selectedPort);
         sock.setReuseAddress(true);
       }
       catch (IOException e) {
-        System.err.println("["+selectedPort+"]:Port already in use. Checking for new port..");
+        System.err.println("["+hostName+":"selectedPort+"]Port already in use. Checking for new port..");
         continue;
       }
       
@@ -170,7 +172,7 @@ public class Wrapper extends Thread {
         sock.close();
       }
       catch (IOException e){
-        System.err.println("[Wrapper.java]: IOException encountered in closing sockets: "+e.getMessage());
+        System.err.println("["+hostName+":Wrapper.java]: IOException encountered in closing sockets: "+e.getMessage());
         e.printStackTrace();
         }
       break;
