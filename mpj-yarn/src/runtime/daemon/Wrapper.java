@@ -178,12 +178,13 @@ public class Wrapper extends Thread {
         try {
           sock.close();
 	}
-        catch (final IOException e){
-          System.out.println("FK> Cannot close socket!");
+        catch (IOException e){
+          System.err.println("FK> IOException encountered in closing sockets: "+e.getMessage());
         }
         break;
      //}
     }
+    System.out.println("FK> Port successfully generated..");
     return selectedPort;
   }
 
