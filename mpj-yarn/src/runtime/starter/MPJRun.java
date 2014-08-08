@@ -177,9 +177,6 @@ public class MPJRun {
       }
     }
 
-    // FK>> Checking for PORT
-    collectPortInfo();
-
     /* the code is running in the multicore configuration */
     if (deviceName.equals("multicore")) {
 
@@ -208,6 +205,10 @@ public class MPJRun {
     }
 
     machinesSanityCheck();
+    
+    // FK>> Checking for PORT
+    collectPortInfo();
+
     // Changed to incorporate hybrid device configuration
     if (deviceName.equals("hybdev"))
       assignTasksHyb();
@@ -933,7 +934,8 @@ public class MPJRun {
   **/
   private void collectPortInfo(){
     System.out.println("#FK>> opening server port:" + SERVER_PORT);
-    ServerSocket servSock = null;
+    System.out.println("#FK>> I am expecting contact from:" + nprocs);
+    /*ServerSocket servSock = null;
 
     try {
       servSock = new ServerSocket(SERVER_PORT);
@@ -955,7 +957,7 @@ public class MPJRun {
     sock.close();  
     }
     catch (Exception e){
-    }  
+    } */ 
   }
 
   /**
