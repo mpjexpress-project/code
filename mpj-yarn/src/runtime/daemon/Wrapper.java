@@ -59,6 +59,10 @@ public class Wrapper extends Thread {
   String hostName = null;
   String args[] = null;
 
+  //FK>> Variables to communicate with MPJRun.java
+  String serverIP = null;
+  int serverPort = 0;
+
   public Wrapper(ThreadGroup group, String name) {
     super(group, name);
   }
@@ -88,7 +92,9 @@ public class Wrapper extends Thread {
 
     // #FK - Checking for arguments
     System.out.println("FK>> I will read "+configFileName+", np is "+processes+",device to be used is "+deviceName+", rank would be "+rank+", and class:"+className);
-    System.out.println("FK>> I got:" + findPort());
+    int tmp = findPort();
+    System.out.println("FK>> I got:" + tmp);
+    System.out.println("["+hostName+"]:Port comm status = "+ sendPort(tmp));
 
     nargs = new String[(args.length - 5)];
     System.arraycopy(args, 5, nargs, 0, nargs.length);
@@ -191,7 +197,23 @@ public class Wrapper extends Thread {
   **/
   private int sendPort(int port){
     System.out.println("#FK> Hello I am going to send ports!");
-    
+    Socket clientSock = null;
+
+    try {
+      clientSock = new Socket("barq.seecs.edu.pk", 40003);
+      DataOutputStream out = new DataOutputStream(clientSock.getOutputStream());
+      DataInputStream in = new DataInputStream(clientSock.getInputStream());
+
+      int num1 = 23;
+      out.writeInt(num1);
+      out.flush();
+      int num2 = in.readInt();
+      
+      clientSock.close();
+   }
+   catch (IOException e){
+   }
+
     return 1;
   }
 

@@ -136,7 +136,7 @@ public class MPJRun {
       mpjHomeDir = map.get("MPJ_HOME");
       RTConstants.MPJ_HOME_DIR = mpjHomeDir;
       if (mpjHomeDir == null) {
-	throw new Exception("MPJ_HOME environment not set!!");
+	throw new Exception("[MPJRun.java]:MPJ_HOME environment found..");
       }
     }
     catch (Exception exc) {
@@ -268,7 +268,6 @@ public class MPJRun {
     if (DEBUG && logger.isDebugEnabled()) {
       logger.debug("procsPerMachineTable " + procsPerMachineTable);
     }
-
   }
 
   /**
@@ -955,6 +954,7 @@ public class MPJRun {
         System.out.println("MPJRun.java got:"+num1);
         int num2 = 3;
         out.writeInt(num2);
+        out.flush();
 
         sock.close();  
       }
