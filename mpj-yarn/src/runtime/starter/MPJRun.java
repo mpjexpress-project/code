@@ -37,6 +37,7 @@
 package runtime.starter;
 
 import java.io.*;
+import java.net.ServerSocket;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -931,7 +932,30 @@ public class MPJRun {
   * description: collect ip, port information from all wrappers
   **/
   private void collectPortInfo(){
-    System.out.println(">> #FK function created & port:" + SERVER_PORT);
+    System.out.println("#FK>> opening server port:" + SERVER_PORT);
+    ServerSocket servSock = null;
+
+    try {
+      servSock = new ServerSocket(SERVER_PORT);
+    }
+    catch (Exception e) {
+      System.err.println("[MPJRun.java]: Error opening server port..");
+      e.printStackTrace();
+    }
+    try{
+    Socket sock = servSock.accept();
+    DataOutputStream out = new DataOutputStream(sock.getOutputStream());
+    DataInputStream in = new DataInputStream(sock.getInputStream());
+    
+    int num1 = in.readInt();
+    System.out.println("MPJRun.java got:"+num1);
+    int num2 = 3;
+    out.writeInt(num2);
+
+    sock.close();  
+    }
+    catch (Exception e){
+    }  
   }
 
   /**
