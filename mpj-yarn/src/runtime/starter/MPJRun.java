@@ -74,8 +74,9 @@ public class MPJRun {
   private int DEBUG_PORT = 0;
   private int portManagerPort = 0;
 
-  // FK>> SERVER port variable for MPJrun.java
+  // FK>> SERVER port variables for MPJrun.java
   private int SERVER_PORT = 0;
+  private String localhostName = null; //For wrappers
 
   // FK>> Adding YARN related variables here
   private boolean isYarn = false;
@@ -935,7 +936,7 @@ public class MPJRun {
   private void collectPortInfo(){
     System.out.println("#FK>> opening server port:" + SERVER_PORT);
     System.out.println("#FK>> I am expecting contact from:" + nprocs);
-    /*ServerSocket servSock = null;
+    ServerSocket servSock = null;
 
     try {
       servSock = new ServerSocket(SERVER_PORT);
@@ -944,20 +945,22 @@ public class MPJRun {
       System.err.println("[MPJRun.java]: Error opening server port..");
       e.printStackTrace();
     }
-    try{
-    Socket sock = servSock.accept();
-    DataOutputStream out = new DataOutputStream(sock.getOutputStream());
-    DataInputStream in = new DataInputStream(sock.getInputStream());
+    for(int i = nprocs; i > 0; i--){
+      try{
+        Socket sock = servSock.accept();
+        DataOutputStream out = new DataOutputStream(sock.getOutputStream());
+        DataInputStream in = new DataInputStream(sock.getInputStream());
     
-    int num1 = in.readInt();
-    System.out.println("MPJRun.java got:"+num1);
-    int num2 = 3;
-    out.writeInt(num2);
+        int num1 = in.readInt();
+        System.out.println("MPJRun.java got:"+num1);
+        int num2 = 3;
+        out.writeInt(num2);
 
-    sock.close();  
-    }
-    catch (Exception e){
-    } */ 
+        sock.close();  
+      }
+      catch (Exception e){
+      } 
+    } 
   }
 
   /**
