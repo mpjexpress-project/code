@@ -80,6 +80,8 @@ public class MPJDaemon {
     String hostName = localaddr.getHostName();
     servSockets = new ConcurrentHashMap<Socket, ProcessLauncher>();
     Map<String, String> map = System.getenv();
+
+    //1# FK> Making sure MPJ_HOME variable is set
     try {
       mpjHomeDir = map.get("MPJ_HOME");
       RTConstants.MPJ_HOME_DIR = mpjHomeDir;
@@ -93,11 +95,15 @@ public class MPJDaemon {
       return;
     }
 
+    //2# FK> Reading values from conf/mpjexpress.conf
     readValuesFromMPJExpressConf();
+
     createLogger(mpjHomeDir, hostName);
     if (DEBUG && logger.isDebugEnabled()) {
       logger.debug("mpjHomeDir " + mpjHomeDir);
     }
+
+    //3# FK> Checking if daemon port is specified in args
     if (args.length == 1) {
 
       if (DEBUG && logger.isDebugEnabled()) {
@@ -236,6 +242,7 @@ public class MPJDaemon {
 	  logLevel = MPJUtil.confValue(line);
 	}
       }
+
 
       in.close();
 

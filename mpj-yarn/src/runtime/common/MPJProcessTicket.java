@@ -54,7 +54,7 @@ public class MPJProcessTicket {
   private boolean zippedSource;
   private String sourceCode;
   private String deviceName;
-  private String confFileContents;
+  private String confFileContents; //<<~~ FK> RM THIS!
   private ArrayList<String> appArgs;
   private String userID;
   /* Hybrid Device */
