@@ -208,7 +208,7 @@ public class MPJRun {
     machinesSanityCheck();
     
     // FK>> Checking for PORT
-    collectPortInfo();
+    //collectPortInfo();
 
     // Changed to incorporate hybrid device configuration
     if (deviceName.equals("hybdev"))
@@ -268,6 +268,7 @@ public class MPJRun {
     if (DEBUG && logger.isDebugEnabled()) {
       logger.debug("procsPerMachineTable " + procsPerMachineTable);
     }
+    collectPortInfo();
   }
 
   /**
