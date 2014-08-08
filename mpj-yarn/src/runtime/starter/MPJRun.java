@@ -637,7 +637,7 @@ public class MPJRun {
 	procsPerMachineTable
 	    .put(InetAddress.getByName((String) machineList.get(i))
 		.getHostAddress(), new Integer(1));
-
+	//FK>> This has to be removed from here. You do not need this now
 	if (deviceName.equals("niodev")) {
 	  Integer[] ports = getNextAvialablePorts((String) machineList.get(i));
 	  int readPort = ports[0];
@@ -691,7 +691,7 @@ public class MPJRun {
 	  }
 
 	  for (int j = 0; j < (divisor + 1); j++) {
-
+	     // FK>> this also needs to be removed
 	    if (deviceName.equals("niodev")) {
 
 	      Integer[] ports = getNextAvialablePorts((String) machineList
