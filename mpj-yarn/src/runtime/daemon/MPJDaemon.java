@@ -113,25 +113,28 @@ public class MPJDaemon {
 
       D_SER_PORT = new Integer(args[0]).intValue();
 
-    } else {
+    } 
+    else {
       throw new MPJRuntimeException("Usage: java MPJDaemon daemonServerPort");
     }
 
     if (DEBUG && logger.isDebugEnabled())
         logger.debug("Starting PortManager thread .. ");
 
+    // FK --> #4 Invoking port manager. To be removed!
     pManager = new PortManagerThread(portManagerPort);
     pManager.start();
 
     if (DEBUG && logger.isDebugEnabled())
         logger.debug("Starting ConnectionManager thread .. ");
 
+    // FK --> Invoking connection manager thread to make sure machines stay up
     connectionManager = new ConnectionManager();
     connectionManager.start();
 
     if (DEBUG && logger.isDebugEnabled())
         logger.debug("serverSocketInit .. ");
-
+    // FK --> #5 main function of this class where MPJRun.java connection
     serverSocketInit();
 
   }
@@ -189,6 +192,9 @@ public class MPJDaemon {
 	if (DEBUG && logger.isDebugEnabled()) {
 	  logger.debug("Accepted connection");
 	}
+
+	// FK--> Connection is accepted and the socket passed onto 
+        // ProcessLauncher.java which takes care of the rest
 	ProcessLauncher pLaunch = new ProcessLauncher(servSock);
 	servSockets.put(servSock, pLaunch);
 	pLaunch.start();

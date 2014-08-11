@@ -223,7 +223,7 @@ public class MPJRun {
       writeFile(CONF_FILE_CONTENTS + "\n");
     }
 
-    //FK--?? what is this? classpath entry point?
+    //FK--> directory where class is present
     urlArray = applicationClassPathEntry.getBytes();
     
     // FK --> #6 Create a peer socket vector, connect to daemon on each
@@ -541,6 +541,7 @@ public class MPJRun {
     if (APROFILE) {
       ticket.setProfiler(true);
     }
+    // FK-->> conversion into XML and then transmission over the network
     String ticketString = ticket.ToXML().toXmlString();
     OutputStream outToServer = null;
     try {

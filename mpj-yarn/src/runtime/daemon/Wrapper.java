@@ -91,7 +91,7 @@ public class Wrapper extends Thread {
     className = args[4];
 
     // #FK - Checking for arguments
-    System.out.println("FK>> I will read "+configFileName+", np is "+processes+",device to be used is "+deviceName+", rank would be "+rank+", and class:"+className);
+    //System.out.println("FK>> I will read "+configFileName+", np is "+processes+",device to be used is "+deviceName+", rank would be "+rank+", and class:"+className);
     int tmp = findPort();
     System.out.println("FK>> I got:" + tmp);
     System.out.println("["+hostName+"]:Port comm status = "+ sendPort(tmp));

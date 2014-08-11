@@ -75,7 +75,8 @@ public class ProcessLauncher extends Thread {
       logger.debug("Job Started");
 
     MPJProcessTicket pTicket = new MPJProcessTicket();
-
+    // FK --> #1 Takes socket as an input and reads the ticket on the socket
+    // being sent by the pack function on the other end
     try {
 
       String ticketString = getStringFromInputStream(sockserver
@@ -100,8 +101,11 @@ public class ProcessLauncher extends Thread {
       JvmProcessCount = 1;
     }
 
+    // FK--> #2 Initiate output handler thread to handle stdout
     OutputHandler[] outputThreads = new OutputHandler[JvmProcessCount];
     p = new Process[JvmProcessCount];
+
+    // FK--> #3 Passing the ticket to arguments manager for parsing
     argManager = new ProcessArgumentsManager(pTicket);
     String[] arguments = argManager.GetArguments(pTicket);
 
@@ -131,6 +135,7 @@ public class ProcessLauncher extends Thread {
 	}
       }
 
+      // FK --> Process builder is then used to launch the wrapper process
       ProcessBuilder pb = new ProcessBuilder(arguments);
       pb.directory(new File(pTicket.getWorkingDirectory()));
       pb.redirectErrorStream(true);
