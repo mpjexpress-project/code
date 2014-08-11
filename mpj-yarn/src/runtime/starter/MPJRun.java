@@ -131,6 +131,7 @@ public class MPJRun {
       logger1.removeHandler(h);
     }
 
+    // FK--> #1 Checking for MPJ_HOME environment variable
     Map<String, String> map = System.getenv();
     try {
       mpjHomeDir = map.get("MPJ_HOME");
@@ -149,18 +150,14 @@ public class MPJRun {
     createLogger(args);
 
     if (DEBUG && logger.isDebugEnabled()) {
-      logger.info(" --MPJRun invoked--");
-      logger.info(" adding shutdown hook thread");
+      logger.debug(" --MPJRun.java invoked--");
+      logger.debug("[MPJRun.java]: processInput called ...");
     }
 
-    if (DEBUG && logger.isDebugEnabled()) {
-      logger.info("processInput called ...");
-    }
-
-    System.out.println("FK>> I am going to process INPUT now!");
+    // FK --> #2 Processing input
     processInput(args);
     
-    // FK>> Checking for HADOOP HOME
+    // FK>> Checking for HADOOP HOME: No use for this yet
     if(isYarn) {
       try {
         yarnHomeDir = map.get("HADOOP_HOME");
@@ -178,13 +175,15 @@ public class MPJRun {
       }
     }
 
-    /* the code is running in the multicore configuration */
+    // FK--> #3 Check for MPJE configuration
+    
+    // Multicore mode
     if (deviceName.equals("multicore")) {
 
       System.out.println("MPJ Express (" + VERSION + ") is started in the "
 	  + "multicore configuration");
       if (DEBUG && logger.isDebugEnabled()) {
-	logger.info("className " + className);
+	logger.debug("className " + className);
       }
 
       int jarOrClass = (applicationClassPathEntry.endsWith(".jar") ? RUNNING_JAR_FILE
@@ -195,16 +194,19 @@ public class MPJRun {
 	  appArgs, mpjHomeDir, ADEBUG, APROFILE, DEBUG_PORT);
       return;
 
-    } else { /* cluster configuration */
+    } 
+    // Cluster mode
+    else {
       System.out.println("MPJ Express (" + VERSION + ") is started in the "
 	  + "cluster configuration with " + deviceName);
     }
 
+    // FK--> #4 Read the machine file
     machineList = MPJUtil.readMachineFile(machinesFile);
     for (int i = machineList.size(); i > nprocs; i--) {
       machineList.remove(i - 1);
     }
-
+    // FK--> Check to see if hostnames resolve to IPs for machines
     machinesSanityCheck();
     
     // FK>> Checking for PORT
@@ -213,6 +215,7 @@ public class MPJRun {
     // Changed to incorporate hybrid device configuration
     if (deviceName.equals("hybdev"))
       assignTasksHyb();
+    // FK--> #5 Calling assignTask()
     else
       assignTasks();
 
@@ -220,13 +223,19 @@ public class MPJRun {
       writeFile(CONF_FILE_CONTENTS + "\n");
     }
 
+    //FK--?? what is this? classpath entry point?
     urlArray = applicationClassPathEntry.getBytes();
+    
+    // FK --> #6 Create a peer socket vector, connect to daemon on each
+    // machine and if connection is successful, save the socket reference
+    // inside this vector
     peerSockets = new Vector<Socket>();
     clientSocketInit();
+
     int peersStartingRank = 0;
 
+    // FK --> #7 This loop launches a new Wrapper process on each
     for (int j = 0; j < peerSockets.size(); j++) {
-
       Socket peerSock = peerSockets.get(j);
 
       if (DEBUG && logger.isDebugEnabled()) {
@@ -237,7 +246,8 @@ public class MPJRun {
        * FIXME: should we not be checking all IP addresses of remote machine?
        * Does it make sense?
        */
-
+      // FK>> KEEP this in mind while fetching ports from each Wrapper
+      // FK>> You may not need to transmit the hostname or IP
       String hAddress = peerSock.getInetAddress().getHostAddress();
       String hName = peerSock.getInetAddress().getHostName();
 
@@ -255,8 +265,11 @@ public class MPJRun {
 	// according to node
 	// (NioProcessCount,
 	// StartingRank)
-      } else {
-
+      } 
+      // FK-->> #8 Exact point of magic! pack() being called
+      // which is basically creating a xml ticket, passing it on to each
+      // daemon and launching wrapper.java
+      else {
 	pack(nProcesses, peersStartingRank, peerSock);
 	peersStartingRank += nProcesses;
       }
@@ -282,7 +295,7 @@ public class MPJRun {
     }
 
     // FK>> My debug statements for the code
-    System.out.println("FK>> Total arguments:" + args.length);
+    //System.out.println("FK>> Total arguments:" + args.length);
 
     boolean parallelProgramNotYetEncountered = true;
 
@@ -360,7 +373,8 @@ public class MPJRun {
 	jvmArgs.add("-cp");
 	jvmArgs.add(args[i + 1]);
 	i++;
-      } else if (args[i].equals("-jar")) {
+      } 
+      else if (args[i].equals("-jar")) {
 	File tFile = new File(args[i + 1]);
 	String absJarPath = tFile.getAbsolutePath();
 
@@ -377,28 +391,31 @@ public class MPJRun {
 	  }
 	  parallelProgramNotYetEncountered = false;
 	  i++;
-	} else {
+	} 
+        else {
 	  throw new MPJRuntimeException("mpjrun cannot find the jar file <"
 	      + args[i + 1] + ">. Make sure this is the right path.");
 	}
 
-      } else if (args[i].equals("-src")) {
+      } 
+      else if (args[i].equals("-src")) {
 	this.zippedSource = true;
-      } else if (args[i].equals("-debug")) {
+      } 
+      else if (args[i].equals("-debug")) {
 	DEBUG_PORT = new Integer(args[i + 1]).intValue();
 	i++;
 	ADEBUG = true;
-      } else if (args[i].equals("-profile")) {
+      } 
+      else if (args[i].equals("-profile")) {
 	APROFILE = true;
-      } else {
+      } 
+      else {
 	// these are JVM options ..
 	if (parallelProgramNotYetEncountered) {
 	  if (args[i].startsWith("-")) {
 	    jvmArgs.add(args[i]);
-	  } else {
-	    // This code takes care of executing class files
-	    // directly ....
-	    // although does not look like it ....
+	  } 
+          else {
 	    applicationClassPathEntry = System.getProperty("user.dir");
 	    className = args[i];
 	    parallelProgramNotYetEncountered = false;
@@ -418,6 +435,7 @@ public class MPJRun {
     jArgs = jvmArgs.toArray(new String[0]);
     aArgs = appArgs.toArray(new String[0]);
 
+    // FK-->> Debug statements for logs
     if (DEBUG && logger.isDebugEnabled()) {
 
       logger.debug("###########################");
@@ -614,6 +632,9 @@ public class MPJRun {
 
     int noOfMachines = machineList.size();
 
+    // FK --> Make configuration file by adding contents one by one
+    // first is the number of processes, then protocol switch, then ip/port
+    // details of each host
     CONF_FILE_CONTENTS += ";" + "# Number of Processes";
     CONF_FILE_CONTENTS += ";" + nprocs;
     CONF_FILE_CONTENTS += ";" + "# Protocol Switch Limit";
@@ -632,12 +653,16 @@ public class MPJRun {
 	    + " are less than than machines " + noOfMachines);
 	logger.debug("Adding 1 processes to the first " + nprocs + " items");
       }
-
+    // FK--> Since the number of processes is less than machines, so
+    // allocate each machine a single process
       for (int i = 0; i < nprocs; i++) {
 	procsPerMachineTable
 	    .put(InetAddress.getByName((String) machineList.get(i))
 		.getHostAddress(), new Integer(1));
-	//FK>> This has to be removed from here. You do not need this now
+
+	//FK>> Port fetching has to be removed from here.
+        // Cannot do direct replacement since at the moment, no wrapper 
+	// running! Need to start wrapper before calling this
 	if (deviceName.equals("niodev")) {
 	  Integer[] ports = getNextAvialablePorts((String) machineList.get(i));
 	  int readPort = ports[0];
@@ -647,7 +672,8 @@ public class MPJRun {
 		  .getHostAddress() + "@" + readPort + "@" + writePort + "@"
 	      + (rank++);
 
-	} else if (deviceName.equals("mxdev")) {
+	} 
+        else if (deviceName.equals("mxdev")) {
 	  CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
 	      + mxBoardNum + "@" + (rank++);
 	}
@@ -662,7 +688,8 @@ public class MPJRun {
        * number of processes are greater than compute nodes available. we'll
        * start more than one process on compute nodes to deal with this
        */
-    } else if (nprocs > noOfMachines) {
+    } 
+    else if (nprocs > noOfMachines) {
 
       if (DEBUG && logger.isDebugEnabled()) {
 	logger.debug("Processes Requested " + nprocs
@@ -704,13 +731,15 @@ public class MPJRun {
 		      .getHostAddress() + "@" + readPort + "@" + writePort
 		  + "@" + (rank++);
 
-	    } else if (deviceName.equals("mxdev")) {
+	    } 
+            else if (deviceName.equals("mxdev")) {
 	      CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
 		  + (mxBoardNum + j) + "@" + (rank++);
 	    }
 	    CONF_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
 	  }
-	} else if (divisor > 0) {
+	} 
+        else if (divisor > 0) {
 	  procsPerMachineTable.put(
 	      InetAddress.getByName((String) machineList.get(i))
 		  .getHostAddress(), new Integer(divisor));
@@ -731,7 +760,8 @@ public class MPJRun {
 		  + InetAddress.getByName((String) machineList.get(i))
 		      .getHostAddress() + "@" + readPort + "@" + writePort
 		  + "@" + (rank++);
-	    } else if (deviceName.equals("mxdev")) {
+	    } 
+            else if (deviceName.equals("mxdev")) {
 	      CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
 		  + (mxBoardNum + j) + "@" + (rank++);
 	    }
