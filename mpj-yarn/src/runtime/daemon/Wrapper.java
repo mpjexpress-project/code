@@ -182,7 +182,7 @@ public class Wrapper extends Thread {
   *
   **/
   private int findPort(){
-    System.out.println("["+hostName+"]#FK> Generating ports numbers..");
+    //System.out.println("["+hostName+"]#FK> Generating ports numbers..");
     int minPort = 25000;
     int maxPort = 40000;
     int selectedPort;
@@ -192,7 +192,7 @@ public class Wrapper extends Thread {
     while(true){
       Random rand = new Random();
       selectedPort = (rand.nextInt((maxPort - minPort) + 1) + minPort);
-      System.out.println("#FK> Port generated:"+selectedPort+"]. Checking availability..");
+      //System.out.println("#FK> Port generated:"+selectedPort+"]. Checking availability..");
  
       try {
         sock = new ServerSocket(selectedPort);
@@ -213,7 +213,7 @@ public class Wrapper extends Thread {
       break;
     }
 
-    System.out.println("#FK> Port successfully generated..");
+    //System.out.println("#FK> Port successfully generated..");
     return selectedPort;
   }
 
@@ -242,7 +242,7 @@ public class Wrapper extends Thread {
       byte[] dataFrame = new byte[len];
       in.readFully(dataFrame);
       WRAPPER_INFO = new String(dataFrame, "UTF-8");
-      System.out.println("I received: " + WRAPPER_INFO);
+      //System.out.println("I received: " + WRAPPER_INFO);
       
       clientSock.close();
    }
