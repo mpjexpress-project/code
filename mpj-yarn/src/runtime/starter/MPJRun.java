@@ -985,7 +985,7 @@ public class MPJRun {
     socketList = new Vector<Socket>();  
     byte[] dataFrame = null;  
 
-    System.out.println("#FK[MPJRun.java]:Opening server port:" + SERVER_PORT);
+    //System.out.println("#FK[MPJRun.java]:Opening server port:" + SERVER_PORT);
     System.out.println("#FK[MPJRun.java]:I am expecting contact from:" + nprocs);
 
     // Creating a server socket for incoming connections
@@ -1007,11 +1007,11 @@ public class MPJRun {
     
         wport = in.readInt();
         rport = in.readInt();
-        System.out.println("MPJRun.java got:"+wport+","+rport);
+        //System.out.println("MPJRun.java got:"+wport+","+rport);
 
         WRAPPER_INFO += ";" + sock.getInetAddress().getHostAddress() + "@" + rport + "@" + wport + "@" + (rank++);
       
-        System.out.println("Entry: " + WRAPPER_INFO);
+        //System.out.println("Entry: " + WRAPPER_INFO);
         socketList.add(sock);
   
 	WRAPPER_INFO += "@" + (DEBUG_PORT);
@@ -1020,6 +1020,7 @@ public class MPJRun {
       }
     }
 
+    System.out.println("I am going to distribute:"+ WRAPPER_INFO);
     try {
       dataFrame = new byte[WRAPPER_INFO.getBytes("UTF-8").length];
       dataFrame = WRAPPER_INFO.getBytes("UTF-8");
