@@ -975,6 +975,9 @@ public class MPJRun {
   * description: collect ip, port information from all wrappers
   **/
   private void collectPortInfo(){
+    int wport = 0;
+    int rport = 0;
+
     System.out.println("#FK[MPJRun.java]:Opening server port:" + SERVER_PORT);
     System.out.println("#FK[MPJRun.java]:I am expecting contact from:" + nprocs);
     ServerSocket servSock = null;
@@ -992,13 +995,19 @@ public class MPJRun {
         DataOutputStream out = new DataOutputStream(sock.getOutputStream());
         DataInputStream in = new DataInputStream(sock.getInputStream());
     
-        int num1 = in.readInt();
-        System.out.println("MPJRun.java got:"+num1);
-        int num2 = 3;
-        out.writeInt(num2);
-        out.flush();
+        wport = in.readInt();
+        rport = in.readInt();
+        System.out.println("MPJRun.java got:"+wport+","+rport);
 
-        sock.close();  
+        int num = 0;
+        out.writeInt(num);
+        out.flush();  
+      }
+      catch (Exception e){
+      }
+
+      try {
+        sock.close();
       }
       catch (Exception e){
       } 

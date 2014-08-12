@@ -92,8 +92,9 @@ public class Wrapper extends Thread {
 
     // #FK - Checking for arguments
     //System.out.println("FK>> I will read "+configFileName+", np is "+processes+",device to be used is "+deviceName+", rank would be "+rank+", and class:"+className);
-    int tmp = findPort();
-    System.out.println("["+hostName+"]:Port comm status = "+ sendPort(tmp));
+    int tmp1 = findPort();
+    int tmp2 = findPort();
+    System.out.println("["+hostName+"]:Port comm status = "+ sendPorts(tmp1,tmp2));
 
     nargs = new String[(args.length - 5)];
     System.arraycopy(args, 5, nargs, 0, nargs.length);
@@ -189,12 +190,12 @@ public class Wrapper extends Thread {
 
   /**
   * #FK
-  * input: Integer
-  * output: Integer
+  * input: Two integers
+  * output: Integer (0 for success, 1 for error)
   * description: function to send selected ports to MPJRun.java
   *
   **/
-  private int sendPort(int port){
+  private int sendPorts(int wport, int rport){
     System.out.println("#FK>[Wrapper.java]:I am going to send ports!");
     Socket clientSock = null;
 
@@ -203,7 +204,9 @@ public class Wrapper extends Thread {
       DataOutputStream out = new DataOutputStream(clientSock.getOutputStream());
       DataInputStream in = new DataInputStream(clientSock.getInputStream());
 
-      out.writeInt(port);
+      out.writeInt(wport);
+      out.flush();
+      out.writeInt(rport);
       out.flush();
       int num2 = in.readInt();
       
