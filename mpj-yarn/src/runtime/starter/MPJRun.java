@@ -644,7 +644,7 @@ public class MPJRun {
     CONF_FILE_CONTENTS += ";" + "# Number of Processes";
     CONF_FILE_CONTENTS += ";" + nprocs;
     CONF_FILE_CONTENTS += ";" + "# Protocol Switch Limit";
-    CONF_FILE_CONTENTS += ";" + psl;
+    CONF_FILE_CONTENTS += ";" + psl +";";
     /* PORT, IP information removed
     CONF_FILE_CONTENTS += ";"
 	+ "# Entry, HOST_NAME/IP@READPORT@WRITEPORT@RANK@DEBUGPORT";
@@ -687,7 +687,7 @@ public class MPJRun {
 	  CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
 	      + mxBoardNum + "@" + (rank++);
 	}
-	CONF_FILE_CONTENTS += "@" + (DEBUG_PORT);
+	//CONF_FILE_CONTENTS += "@" + (DEBUG_PORT);
 
 	if (DEBUG && logger.isDebugEnabled()) {
 	  logger.debug("procPerMachineTable==>" + procsPerMachineTable);
@@ -746,7 +746,7 @@ public class MPJRun {
 	      CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
 		  + (mxBoardNum + j) + "@" + (rank++);
 	    }
-	    CONF_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
+	    //CONF_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
 	  }
 	} 
         else if (divisor > 0) {
@@ -776,7 +776,7 @@ public class MPJRun {
 	      CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
 		  + (mxBoardNum + j) + "@" + (rank++);
 	    }
-	    CONF_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
+	    //CONF_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
 	  }
 	}
       }
