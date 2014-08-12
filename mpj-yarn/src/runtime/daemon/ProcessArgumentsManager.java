@@ -446,6 +446,7 @@ public class ProcessArgumentsManager {
       catch (IOException e1) {
 	e1.printStackTrace();
       }
+      // WHY and WHERE is this going?
       return ports;
 
     }
