@@ -88,7 +88,7 @@ public class Wrapper extends Thread {
     configFileName = args[0];
     processes = (new Integer(args[1])).intValue();
     deviceName = args[2];
-    rank = args[3];
+    //rank = args[3];
     className = args[4];
 
     // #FK - Checking for arguments
@@ -238,6 +238,9 @@ public class Wrapper extends Thread {
       out.flush();
       out.writeInt(rport);
       out.flush();
+
+      int r = in.readInt();
+      rank = Integer.toString(r);
 
       int len = in.readInt();
       byte[] dataFrame = new byte[len];
