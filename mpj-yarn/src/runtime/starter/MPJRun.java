@@ -1004,7 +1004,7 @@ public class MPJRun {
         out.writeInt(num);
         out.flush();
 
-        System.out.println("I am connected to: " + sock.getRemoteSocketAddress); 
+        System.out.println("I am connected to: " + sock.getRemoteSocketAddress()); 
       }
       catch (Exception e){
       }
