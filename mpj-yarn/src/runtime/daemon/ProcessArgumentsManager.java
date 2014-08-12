@@ -428,6 +428,8 @@ public class ProcessArgumentsManager {
 
       while (conf_file_tokenizer.hasMoreTokens()) {
 	String token = conf_file_tokenizer.nextToken();
+        // FK-->> Added to understand working
+        //System.out.println("Token:"+token);
 	if (token.contains("@") && !token.startsWith("#")) {
 	  String[] tokens = token.split("@");
 	  ports.add(Integer.parseInt(tokens[1]));
