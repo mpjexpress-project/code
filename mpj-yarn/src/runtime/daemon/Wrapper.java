@@ -115,6 +115,14 @@ public class Wrapper extends Thread {
 	arvs[i + 3] = nargs[i];
       }
 
+      /* FK -> Tmp code to read MPJDEV.conf */
+      BufferedReader in = new BufferedReader(new FileReader("arvs[1]"));
+      String line;
+      while( (line = in.readLine()) != null )
+        System.out.println(line);
+      in.close();
+
+
       Method m = c.getMethod("main", new Class[] { arvs.getClass() });
       m.setAccessible(true);
       int mods = m.getModifiers();
