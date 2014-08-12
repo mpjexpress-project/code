@@ -151,7 +151,8 @@ public class Wrapper extends Thread {
 	  || !Modifier.isPublic(mods)) {
 	throw new NoSuchMethodException("main");
       }
-
+      
+      System.out.println("#FK> Going to invoke method");
       m.invoke(null, new Object[] { arvs });
 
       System.out.println("Stopping process <" + rank + "> on <" + hostName
