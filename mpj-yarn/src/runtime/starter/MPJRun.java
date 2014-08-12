@@ -71,7 +71,7 @@ public class MPJRun {
   // FK--> This variable will only be used for number of processes and 
   // protocol switch limit now. No port or IP transaction
   private String CONF_FILE_CONTENTS = "#temp line";
-
+  private String WRAPPER_INFO = "#HOST_NAME/IP@READPORT@WRITEPORT@RANK@DEBUGPORT";
   private int mxBoardNum = 0;
   private int D_SER_PORT = 0;
   private int DEBUG_PORT = 0;
@@ -1002,7 +1002,9 @@ public class MPJRun {
 
         int num = 0;
         out.writeInt(num);
-        out.flush();  
+        out.flush();
+
+        System.out.println("I am connected to: " + sock.getRemoteSocketAddress); 
       }
       catch (Exception e){
       }
