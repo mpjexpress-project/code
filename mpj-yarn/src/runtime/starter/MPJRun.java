@@ -671,19 +671,20 @@ public class MPJRun {
 	//FK>> Port fetching has to be removed from here.
         // Cannot do direct replacement since at the moment, no wrapper 
 	// running! Need to start wrapper before calling this
-	if (deviceName.equals("niodev")) {
+/*	if (deviceName.equals("niodev")) {
 	  Integer[] ports = getNextAvialablePorts((String) machineList.get(i));
 	  int readPort = ports[0];
 	  int writePort = ports[1];
 
-	  /* FK--> No more ports added to CONF file 
+	  // FK--> No more ports added to CONF file 
           CONF_FILE_CONTENTS += ";"
 	      + InetAddress.getByName((String) machineList.get(i))
 		  .getHostAddress() + "@" + readPort + "@" + writePort + "@"
 	      + (rank++);
-          */
+         
 	} 
-        else if (deviceName.equals("mxdev")) {
+        else */
+        if (deviceName.equals("mxdev")) {
 	  CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
 	      + mxBoardNum + "@" + (rank++);
 	}
@@ -729,20 +730,20 @@ public class MPJRun {
 
 	  for (int j = 0; j < (divisor + 1); j++) {
 	     // FK>> this also needs to be removed
-	    if (deviceName.equals("niodev")) {
+	    /*if (deviceName.equals("niodev")) {
 
 	      Integer[] ports = getNextAvialablePorts((String) machineList
 		  .get(i));
 	      int readPort = ports[0];
 	      int writePort = ports[1];
-/* FK -->> Adding of ports to conf file removed
+// FK -->> Adding of ports to conf file removed
 	      CONF_FILE_CONTENTS += ";"
 		  + InetAddress.getByName((String) machineList.get(i))
 		      .getHostAddress() + "@" + readPort + "@" + writePort
 		  + "@" + (rank++);
-*/
+
 	    } 
-            else if (deviceName.equals("mxdev")) {
+            else*/ if (deviceName.equals("mxdev")) {
 	      CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
 		  + (mxBoardNum + j) + "@" + (rank++);
 	    }
@@ -1011,7 +1012,7 @@ public class MPJRun {
         int num = 0;
         out.writeInt(num);
         out.flush();
-
+	WRAPPER_INFO += "@" + (DEBUG_PORT);
       }
       catch (Exception e){
       }
