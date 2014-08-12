@@ -97,6 +97,27 @@ public class Wrapper extends Thread {
     int tmp2 = findPort();
     System.out.println("["+hostName+"]:Port comm status = "+ mpjrunConnect(tmp1,tmp2));
 
+    StringTokenizer conf_file = new StringTokenizer(WRAPPER_INFO, ";");
+    FileOutputStream out = null;
+    try {
+      out = new FileOutputStream(configFileName);
+    }
+    catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+    PrintStream cout = new PrintStream(out);
+    
+    while(conf_file.hasMoreTokens()) {
+      String token = conf_file.nextToken();
+      cout.println(token);
+    }
+    cout.close();
+    try {
+      out.close();
+    }
+    catch (IOException e){
+    }
+
     nargs = new String[(args.length - 5)];
     System.arraycopy(args, 5, nargs, 0, nargs.length);
 
@@ -122,7 +143,6 @@ public class Wrapper extends Thread {
       while( (line = in.readLine()) != null )
         System.out.println(line);
       in.close();
-
 
       Method m = c.getMethod("main", new Class[] { arvs.getClass() });
       m.setAccessible(true);
