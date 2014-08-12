@@ -66,7 +66,6 @@ public class MPJProcessTicket {
   private boolean isProfiler;
   private int debugPort;
   private String mpjHomeDir;
-  private String masterNode;
 
   public String getClassPath() {
     return classPath;
