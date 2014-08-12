@@ -222,6 +222,8 @@ public class MPJRun {
     else
       assignTasks();
 
+    System.out.println("MPJDev.conf: " + CONF_FILE_CONTENTS);
+
     if (ADEBUG) {
       writeFile(CONF_FILE_CONTENTS + "\n");
     }
@@ -973,8 +975,8 @@ public class MPJRun {
   * description: collect ip, port information from all wrappers
   **/
   private void collectPortInfo(){
-    System.out.println("#FK>> opening server port:" + SERVER_PORT);
-    System.out.println("#FK>> I am expecting contact from:" + nprocs);
+    System.out.println("#FK[MPJRun.java]:Opening server port:" + SERVER_PORT);
+    System.out.println("#FK[MPJRun.java]:I am expecting contact from:" + nprocs);
     ServerSocket servSock = null;
 
     try {
