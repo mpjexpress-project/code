@@ -100,7 +100,7 @@ public class Wrapper extends Thread {
     StringTokenizer conf_file = new StringTokenizer(WRAPPER_INFO, ";");
     FileOutputStream out = null;
     try {
-      out = new FileOutputStream(configFileName);
+      out = new FileOutputStream(configFileName, 1);
     }
     catch (FileNotFoundException e) {
       e.printStackTrace();
