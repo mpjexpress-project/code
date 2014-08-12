@@ -62,6 +62,7 @@ public class Wrapper extends Thread {
   //FK>> Variables to communicate with MPJRun.java
   String serverIP = null;
   int serverPort = 0;
+  private String WRAPPER_INFO = null;
 
   public Wrapper(ThreadGroup group, String name) {
     super(group, name);
@@ -94,7 +95,7 @@ public class Wrapper extends Thread {
     //System.out.println("FK>> I will read "+configFileName+", np is "+processes+",device to be used is "+deviceName+", rank would be "+rank+", and class:"+className);
     int tmp1 = findPort();
     int tmp2 = findPort();
-    System.out.println("["+hostName+"]:Port comm status = "+ sendPorts(tmp1,tmp2));
+    System.out.println("["+hostName+"]:Port comm status = "+ mpjrunConnect(tmp1,tmp2));
 
     nargs = new String[(args.length - 5)];
     System.arraycopy(args, 5, nargs, 0, nargs.length);
@@ -203,7 +204,7 @@ public class Wrapper extends Thread {
   * description: function to send selected ports to MPJRun.java
   *
   **/
-  private int sendPorts(int wport, int rport){
+  private int mpjrunConnect(int wport, int rport){
     System.out.println("#FK>[Wrapper.java]:I am going to send ports!");
     Socket clientSock = null;
 
@@ -216,7 +217,12 @@ public class Wrapper extends Thread {
       out.flush();
       out.writeInt(rport);
       out.flush();
-      int num2 = in.readInt();
+
+      int len = in.readInt();
+      byte[] dataFrame = new byte[len];
+      in.readFully(dataFrame);
+      WRAPPER_INFO = new String(dataFrame, "UTF-8");
+      System.out.println("I received: " + WRAPPER_INFO);
       
       clientSock.close();
    }

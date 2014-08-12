@@ -982,11 +982,13 @@ public class MPJRun {
     ServerSocket servSock = null;
     Socket sock = null;
     Vector<Socket> socketList;
-    socketList = new Vector<Socket>();    
+    socketList = new Vector<Socket>();  
+    byte[] dataFrame = null;  
 
     System.out.println("#FK[MPJRun.java]:Opening server port:" + SERVER_PORT);
     System.out.println("#FK[MPJRun.java]:I am expecting contact from:" + nprocs);
 
+    // Creating a server socket for incoming connections
     try {
       servSock = new ServerSocket(SERVER_PORT);
     }
@@ -994,6 +996,9 @@ public class MPJRun {
       System.err.println("[MPJRun.java]: Error opening server port..");
       e.printStackTrace();
     }
+
+    // Loop to read port numbers from Wrapper.java processes
+    // and to create WRAPPER_INFO (containing all IPs and ports)
     for(int i = nprocs; i > 0; i--){
       try{
         sock = servSock.accept();
@@ -1009,15 +1014,31 @@ public class MPJRun {
         System.out.println("Entry: " + WRAPPER_INFO);
         socketList.add(sock);
   
-        int num = 0;
-        out.writeInt(num);
-        out.flush();
 	WRAPPER_INFO += "@" + (DEBUG_PORT);
       }
       catch (Exception e){
       }
+    }
 
-      try {
+    try {
+      dataFrame = new byte[WRAPPER_INFO.getBytes("UTF-8").length];
+      dataFrame = WRAPPER_INFO.getBytes("UTF-8");
+    }
+    catch (UnsupportedEncodingException e){
+    }
+    int length = dataFrame.length;
+
+    // Loop to broadcast WRAPPER_INFO to all Wrappers
+    for(int i = nprocs; i > 0; i--){
+      try{
+        sock = socketList.get(nprocs - i);    
+        DataOutputStream out = new DataOutputStream(sock.getOutputStream());
+
+        out.writeInt(length);
+        out.flush();
+        out.write(dataFrame, 0, length);
+        out.flush();
+
         sock.close();
       }
       catch (Exception e){
