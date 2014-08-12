@@ -83,7 +83,7 @@ public class Wrapper extends Thread {
     InetAddress localaddr = InetAddress.getLocalHost();
     hostName = localaddr.getHostName();
     // #FK - Prepping for port search and allocation
-    System.out.println("FK[wrapper.java]:running on " + hostName);
+    //System.out.println("FK[wrapper.java]:running on " + hostName);
 
     configFileName = args[0];
     processes = (new Integer(args[1])).intValue();
@@ -225,7 +225,7 @@ public class Wrapper extends Thread {
   *
   **/
   private int mpjrunConnect(int wport, int rport){
-    System.out.println("#FK>[Wrapper.java]:I am going to send ports!");
+    //System.out.println("#FK>[Wrapper.java]:I am going to send ports!");
     Socket clientSock = null;
 
     try {
