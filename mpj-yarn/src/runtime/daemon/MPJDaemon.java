@@ -72,7 +72,7 @@ public class MPJDaemon {
   private static String mpjHomeDir = null;
   public volatile static ConcurrentHashMap<Socket, ProcessLauncher> servSockets;
   ConnectionManager connectionManager;
-  PortManagerThread pManager;
+  //PortManagerThread pManager;
 
   public MPJDaemon(String args[]) throws Exception {
  
@@ -122,8 +122,8 @@ public class MPJDaemon {
         logger.debug("Starting PortManager thread .. ");
 
     // FK --> #4 Invoking port manager. To be removed!
-    pManager = new PortManagerThread(portManagerPort);
-    pManager.start();
+    //pManager = new PortManagerThread(portManagerPort);
+    //pManager.start();
 
     if (DEBUG && logger.isDebugEnabled())
         logger.debug("Starting ConnectionManager thread .. ");
@@ -217,9 +217,9 @@ public class MPJDaemon {
       catch (IOException e) {
 	e.printStackTrace();
       }
-    if (pManager != null) {
-      pManager.isRun = false;
-    }
+    //if (pManager != null) {
+    //  pManager.isRun = false;
+    //}
     if (connectionManager != null) {
       connectionManager.isRun = false;
     }
