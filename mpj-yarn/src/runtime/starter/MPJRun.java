@@ -975,13 +975,16 @@ public class MPJRun {
   * description: collect ip, port information from all wrappers
   **/
   private void collectPortInfo(){
+    int rank = 0;
     int wport = 0;
     int rport = 0;
+    ServerSocket servSock = null;
     Socket sock = null;
+    Vector<Socket> socketList;
+    socketList = new Vector<Socket>();    
 
     System.out.println("#FK[MPJRun.java]:Opening server port:" + SERVER_PORT);
     System.out.println("#FK[MPJRun.java]:I am expecting contact from:" + nprocs);
-    ServerSocket servSock = null;
 
     try {
       servSock = new ServerSocket(SERVER_PORT);
@@ -1000,12 +1003,15 @@ public class MPJRun {
         rport = in.readInt();
         System.out.println("MPJRun.java got:"+wport+","+rport);
 
+        WRAPPER_INFO += ";" + sock.getInetAddress().getHostAddress() + "@" + rport + "@" + wport + "@" + (rank++);
+      
+        System.out.println("Entry: " + WRAPPER_INFO);
+        socketList.add(sock);
+  
         int num = 0;
         out.writeInt(num);
         out.flush();
 
-        System.out.println("I am connected to: " + sock.getRemoteSocketAddress());
-        System.out.println("I am connected to: " + sock.getInetAddress().getHostAddress()); 
       }
       catch (Exception e){
       }
