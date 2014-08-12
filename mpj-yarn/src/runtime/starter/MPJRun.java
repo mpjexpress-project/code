@@ -761,7 +761,7 @@ public class MPJRun {
 
 	  for (int j = 0; j < divisor; j++) {
 
-	    if (deviceName.equals("niodev")) {
+	   /* if (deviceName.equals("niodev")) {
 	      Integer[] ports = getNextAvialablePorts((String) machineList
 		  .get(i));
 	      int readPort = ports[0];
@@ -771,9 +771,9 @@ public class MPJRun {
 		  + InetAddress.getByName((String) machineList.get(i))
 		      .getHostAddress() + "@" + readPort + "@" + writePort
 		  + "@" + (rank++);
-*/
+
 	    } 
-            else if (deviceName.equals("mxdev")) {
+            else*/ if (deviceName.equals("mxdev")) {
 	      CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
 		  + (mxBoardNum + j) + "@" + (rank++);
 	    }
