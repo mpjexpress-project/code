@@ -67,8 +67,11 @@ public class MPJRun {
 
   final String DEFAULT_MACHINES_FILE_NAME = "machines";
   final int DEFAULT_PROTOCOL_SWITCH_LIMIT = 128 * 1024; // 128K
-
+  
+  // FK--> This variable will only be used for number of processes and 
+  // protocol switch limit now. No port or IP transaction
   private String CONF_FILE_CONTENTS = "#temp line";
+
   private int mxBoardNum = 0;
   private int D_SER_PORT = 0;
   private int DEBUG_PORT = 0;
@@ -640,8 +643,10 @@ public class MPJRun {
     CONF_FILE_CONTENTS += ";" + nprocs;
     CONF_FILE_CONTENTS += ";" + "# Protocol Switch Limit";
     CONF_FILE_CONTENTS += ";" + psl;
+    /* PORT, IP information removed
     CONF_FILE_CONTENTS += ";"
 	+ "# Entry, HOST_NAME/IP@READPORT@WRITEPORT@RANK@DEBUGPORT";
+    */
 
     /*
      * number of requested parallel processes are less than or equal to compute
@@ -668,11 +673,13 @@ public class MPJRun {
 	  Integer[] ports = getNextAvialablePorts((String) machineList.get(i));
 	  int readPort = ports[0];
 	  int writePort = ports[1];
-	  CONF_FILE_CONTENTS += ";"
+
+	  /* FK--> No more ports added to CONF file 
+          CONF_FILE_CONTENTS += ";"
 	      + InetAddress.getByName((String) machineList.get(i))
 		  .getHostAddress() + "@" + readPort + "@" + writePort + "@"
 	      + (rank++);
-
+          */
 	} 
         else if (deviceName.equals("mxdev")) {
 	  CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
@@ -726,12 +733,12 @@ public class MPJRun {
 		  .get(i));
 	      int readPort = ports[0];
 	      int writePort = ports[1];
-
+/* FK -->> Adding of ports to conf file removed
 	      CONF_FILE_CONTENTS += ";"
 		  + InetAddress.getByName((String) machineList.get(i))
 		      .getHostAddress() + "@" + readPort + "@" + writePort
 		  + "@" + (rank++);
-
+*/
 	    } 
             else if (deviceName.equals("mxdev")) {
 	      CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
@@ -756,11 +763,12 @@ public class MPJRun {
 		  .get(i));
 	      int readPort = ports[0];
 	      int writePort = ports[1];
-
+/* FK -->> Ports removed from CONF file
 	      CONF_FILE_CONTENTS += ";"
 		  + InetAddress.getByName((String) machineList.get(i))
 		      .getHostAddress() + "@" + readPort + "@" + writePort
 		  + "@" + (rank++);
+*/
 	    } 
             else if (deviceName.equals("mxdev")) {
 	      CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
