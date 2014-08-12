@@ -977,6 +977,7 @@ public class MPJRun {
   private void collectPortInfo(){
     int wport = 0;
     int rport = 0;
+    Socket sock = null;
 
     System.out.println("#FK[MPJRun.java]:Opening server port:" + SERVER_PORT);
     System.out.println("#FK[MPJRun.java]:I am expecting contact from:" + nprocs);
@@ -991,7 +992,7 @@ public class MPJRun {
     }
     for(int i = nprocs; i > 0; i--){
       try{
-        Socket sock = servSock.accept();
+        sock = servSock.accept();
         DataOutputStream out = new DataOutputStream(sock.getOutputStream());
         DataInputStream in = new DataInputStream(sock.getInputStream());
     
