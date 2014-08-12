@@ -82,7 +82,7 @@ public class Wrapper extends Thread {
     InetAddress localaddr = InetAddress.getLocalHost();
     hostName = localaddr.getHostName();
     // #FK - Prepping for port search and allocation
-    System.out.println("FK>> I am wrapper, running on " + hostName);
+    System.out.println("FK[wrapper.java]:running on " + hostName);
 
     configFileName = args[0];
     processes = (new Integer(args[1])).intValue();
@@ -93,7 +93,6 @@ public class Wrapper extends Thread {
     // #FK - Checking for arguments
     //System.out.println("FK>> I will read "+configFileName+", np is "+processes+",device to be used is "+deviceName+", rank would be "+rank+", and class:"+className);
     int tmp = findPort();
-    System.out.println("FK>> I got:" + tmp);
     System.out.println("["+hostName+"]:Port comm status = "+ sendPort(tmp));
 
     nargs = new String[(args.length - 5)];
@@ -196,7 +195,7 @@ public class Wrapper extends Thread {
   *
   **/
   private int sendPort(int port){
-    System.out.println("#FK> Hello I am going to send ports!");
+    System.out.println("#FK>[Wrapper.java]:I am going to send ports!");
     Socket clientSock = null;
 
     try {
@@ -204,8 +203,7 @@ public class Wrapper extends Thread {
       DataOutputStream out = new DataOutputStream(clientSock.getOutputStream());
       DataInputStream in = new DataInputStream(clientSock.getInputStream());
 
-      int num1 = 23;
-      out.writeInt(num1);
+      out.writeInt(port);
       out.flush();
       int num2 = in.readInt();
       
