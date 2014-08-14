@@ -238,9 +238,11 @@ public class Wrapper extends Thread {
       out.flush();
       out.writeInt(rport);
       out.flush();
+      out.writeInt(Integer.parseInt(rank));
+      out.flush();
 
-      int r = in.readInt();
-      rank = Integer.toString(r);
+      //int r = in.readInt();
+      //rank = Integer.toString(r);
 
       int len = in.readInt();
       byte[] dataFrame = new byte[len];
