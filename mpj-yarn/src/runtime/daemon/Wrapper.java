@@ -46,7 +46,6 @@ import java.net.DatagramSocket;
 import java.net.ServerSocket;
 
 import org.apache.log4j.*;
-import runtime.common.RTConstants;
 
 public class Wrapper extends Thread {
 
@@ -95,7 +94,7 @@ public class Wrapper extends Thread {
     className = args[4];
 
     // #FK - Checking for arguments
-    System.out.println("["+hostName+"] I will read "+configFileName+", rank would be "+rank+" and connect to "+serverName);
+    //System.out.println("["+hostName+"] I will read "+configFileName+", rank would be "+rank+" and connect to "+serverName);
     int tmp = mpjrunConnect(findPort(), findPort());
 //    int tmp1 = findPort();
 //    int tmp2 = findPort();
