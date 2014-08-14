@@ -102,9 +102,6 @@ public class ProcessLauncher extends Thread {
       JvmProcessCount = 1;
     }
     
-    logger.debug("MASTER_NODE:"+ pTicket.getMasterNode());
-    logger.debug("MASTER_PORT:"+ pTicket.getMasterPort());
-
     // FK--> #2 Initiate output handler thread to handle stdout
     OutputHandler[] outputThreads = new OutputHandler[JvmProcessCount];
     p = new Process[JvmProcessCount];
