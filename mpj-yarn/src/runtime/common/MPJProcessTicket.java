@@ -85,7 +85,7 @@ public class MPJProcessTicket {
     return masterPort;
   }
  
-  public void getMasterPort(String masterPort){
+  public void setMasterPort(String masterPort){
     this.masterPort = masterPort;
   }
   //-----------------------------------------
