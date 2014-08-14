@@ -101,9 +101,8 @@ public class ProcessLauncher extends Thread {
     } else if (pTicket.getDeviceName().equals("hybdev")) {
       JvmProcessCount = 1;
     }
-
-    RTConstants.MPJ_MASTER_NODE = pTicket.getMasterNode();    
-    System.out.println("MASTER_NODE:"+RTConstants.MPJ_MASTER_NODE);
+    
+    System.out.println("MASTER_NODE:"+ pTicket.getMasterNode());
 
     // FK--> #2 Initiate output handler thread to handle stdout
     OutputHandler[] outputThreads = new OutputHandler[JvmProcessCount];
