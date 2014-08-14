@@ -90,11 +90,13 @@ public class Wrapper extends Thread {
     configFileName = args[0];
     processes = (new Integer(args[1])).intValue();
     deviceName = args[2];
-    rank = args[3];
-    className = args[4];
+    serverName = args[3];
+    serverPort = Integer.parseInt(args[4]);
+    rank = args[5];
+    className = args[6];
 
     // #FK - Checking for arguments
-    //System.out.println("["+hostName+"] I will read "+configFileName+", rank would be "+rank+" and connect to "+serverName);
+    System.out.println("["+hostName+"] I will read "+configFileName+", port would be "+serverPort+" and connect to "+serverName);
     int tmp = mpjrunConnect(findPort(), findPort());
 //    int tmp1 = findPort();
 //    int tmp2 = findPort();
@@ -121,8 +123,8 @@ public class Wrapper extends Thread {
     catch (IOException e){
     }
 
-    nargs = new String[(args.length - 5)];
-    System.arraycopy(args, 5, nargs, 0, nargs.length);
+    nargs = new String[(args.length - 7)];
+    System.arraycopy(args, 7, nargs, 0, nargs.length);
 
     c = Class.forName(className);
 
