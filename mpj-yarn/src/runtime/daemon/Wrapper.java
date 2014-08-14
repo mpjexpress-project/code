@@ -86,7 +86,8 @@ public class Wrapper extends Thread {
     // #FK - Prepping for port search and allocation
     //System.out.println("FK[wrapper.java]:running on " + hostName);
 
-    serverName = RTConstants.MPJ_MASTER_NODE;
+//    serverName = RTConstants.MPJ_MASTER_NODE;
+
     configFileName = args[0];
     processes = (new Integer(args[1])).intValue();
     deviceName = args[2];
