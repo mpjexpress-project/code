@@ -1023,7 +1023,7 @@ public class MPJRun {
         socketList.add(sock);
   
 	peers[rank] += "@" + (DEBUG_PORT);
-        System.out.println("My entry:"+peers[rank]);
+        //System.out.println("My entry:"+peers[rank]);
 
       }
       catch (Exception e){
@@ -1035,7 +1035,7 @@ public class MPJRun {
       WRAPPER_INFO += peers[i];
     }
 
-    System.out.println("I am going to distribute:"+ WRAPPER_INFO);
+    //System.out.println("I am going to distribute:"+ WRAPPER_INFO);
 
     try {
       dataFrame = new byte[WRAPPER_INFO.getBytes("UTF-8").length];
