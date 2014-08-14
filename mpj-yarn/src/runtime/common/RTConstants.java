@@ -41,6 +41,10 @@ public class RTConstants {
 
   public static String MPJ_PROCESS_INFO = "MPJProcessInfo";
   public static String CLASS_PATH = "ClassPath";
+  // FK -->> For master node information
+  public static String MASTER_NODE = "MasterNode";
+  public static String MASTER_PORT = "MasterPort";
+  // ----------------------------------
   public static String PROCESS_COUNT = "ProcessCount";
   public static String STARTING_RANK = "StartingRank";
   public static String JVM_ARGS = "JvmArgs";

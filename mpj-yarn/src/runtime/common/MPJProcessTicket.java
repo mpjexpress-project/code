@@ -57,7 +57,11 @@ public class MPJProcessTicket {
   private String confFileContents; 
   private ArrayList<String> appArgs;
   private String userID;
+
+  // FK--> Variable introduced to communicate masterNode info
   private String masterNode;
+  private String masterPort;
+
   /* Hybrid Device */
   private int networkProcessCount;
   private int totalProcessCount;
@@ -68,6 +72,7 @@ public class MPJProcessTicket {
   private int debugPort;
   private String mpjHomeDir;
 
+  // FK--> Respective get and set functions for masterNode info
   public String getMasterNode() {
     return masterNode;
   }
@@ -75,6 +80,15 @@ public class MPJProcessTicket {
   public void setMasterNode(String masterNode){
     this.masterNode = masterNode;
   }
+
+  public String getMasterPort() {
+    return masterPort;
+  }
+ 
+  public void getMasterPort(String masterPort){
+    this.masterPort = masterPort;
+  }
+  //-----------------------------------------
 
   public String getClassPath() {
     return classPath;
@@ -246,7 +260,10 @@ public class MPJProcessTicket {
     this.deviceName = "";
     this.confFileContents = "";
     this.appArgs = new ArrayList<String>();
+ 
+    //FK -->> MasterNode Info
     this.masterNode = "";
+    this.masterPort = "";
 
     zippedSource = false;
     ticketID = UUID.randomUUID();
@@ -261,13 +278,13 @@ public class MPJProcessTicket {
     mpjHomeDir = null;
   }
 
-  public MPJProcessTicket(UUID ticketID, String classPath, String masterNode, int processCount,
+  public MPJProcessTicket(UUID ticketID, String classPath, int processCount,
       int startingRank, ArrayList<String> jvmArgs, String workingDirectory,
       String mainClass, boolean zippedCode, String codeFolder,
       String deviceName, String confFileContents, ArrayList<String> appArgs,
       int clientPort, String clientHostAddress, String userID,
       int nioProcessCount, int totalProcessCount, String networkDevice, String mpjHomeDir,
-      boolean isDebug, boolean isProfiler, int debugPort) {
+      boolean isDebug, boolean isProfiler, int debugPort, String masterNode, String masterPort) {
     super();
     this.ticketID = ticketID;
     this.classPath = classPath;
@@ -288,7 +305,9 @@ public class MPJProcessTicket {
     this.isProfiler = isProfiler;
     this.debugPort = debugPort;
     this.mpjHomeDir = mpjHomeDir;
+    // FK--> masterNode information
     this.masterNode = masterNode;
+    this.masterPort = masterPort;
   }
 
   public MPJXml ToXML() {
@@ -307,6 +326,16 @@ public class MPJProcessTicket {
     MPJXml classPathXML = new MPJXml(getTag(RTConstants.CLASS_PATH));
     classPathXML.setText(this.classPath);
     processInfoXML.appendChild(classPathXML);
+
+    // FK-->> MasterNode information
+    MPJXml masterNodeXML = new MPJXml(getTag(RTConstants.MASTER_NODE));
+    masterNodeXML.setText(this.masterNode);
+    processInfoXML.appendChild(masterNodeXML);
+
+    MPJXml masterPortXML = new MPJXml(getTag(RTConstants.MASTER_PORT));
+    masterPortXML.setText(this.masterPort);
+    processInfoXML.appendChild(masterPortXML);
+    //-----------------------------------------
 
     MPJXml processCountXML = new MPJXml(getTag(RTConstants.PROCESS_COUNT));
     processCountXML.setText(Integer.toString(this.processCount));
@@ -406,6 +435,14 @@ public class MPJProcessTicket {
 
       MPJXml classPathXML = processInfoXml.getChild(RTConstants.CLASS_PATH);
       this.classPath = classPathXML.getText();
+
+      // FK-->> Adding this for masterNode recognition
+      MPJXml masterNodeXML = processInfoXml.getChild(RTConstants.MASTER_NODE);
+      this.masterNode = masterNodeXML.getText();
+
+      MPJXml masterPortXML = processInfoXml.getChild(RTConstants.MASTER_PORT);
+      this.masterPort = masterPortXML.getText();
+      //---------------------------------------------
 
       MPJXml processCountXML = processInfoXml
 	  .getChild(RTConstants.PROCESS_COUNT);
