@@ -161,7 +161,7 @@ public class ProcessArgumentsManager {
     /*
      * FIX ME BY RIZWAN HANIF : making arguments to launch MPI Processes
      */
-    int N_ARG_COUNT = 7;
+    int N_ARG_COUNT = 9;
     int increment = 1;
 
     int nArgumentIncrement = 0;
@@ -196,6 +196,10 @@ public class ProcessArgumentsManager {
     arguments[indx] = Integer.toString(pTicket.getProcessCount());
     indx++;
     arguments[indx] = pTicket.getDeviceName();
+    indx++;
+    arguments[indx] = pTicket.getMasterNode();
+    indx++;
+    arguments[indx] = pTicket.getMasterPort();
     indx++;
     arguments[indx] = "" + (-1);
     /*
