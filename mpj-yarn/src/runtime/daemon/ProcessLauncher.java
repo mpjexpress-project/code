@@ -49,7 +49,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import runtime.common.MPJProcessTicket;
-import runtime.common.RTConstants;
 
 public class ProcessLauncher extends Thread {
 
