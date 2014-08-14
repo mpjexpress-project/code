@@ -136,7 +136,7 @@ public class MPJRun {
 
     // FK--> #1 Checking for MPJ_HOME environment variable
     Map<String, String> map = System.getenv();
-    try {
+    try{
       mpjHomeDir = map.get("MPJ_HOME");
       RTConstants.MPJ_HOME_DIR = mpjHomeDir;
       if (mpjHomeDir == null) {
@@ -150,6 +150,8 @@ public class MPJRun {
     }
    
     readValuesFromMPJExpressConf();
+    localhostName = InetAddress.getLocalHost().getHostName();
+    System.out.println("I am MPJRun.java, running on:"+localhostName);
     createLogger(args);
 
     if (DEBUG && logger.isDebugEnabled()) {
@@ -501,6 +503,7 @@ public class MPJRun {
 
     MPJProcessTicket ticket = new MPJProcessTicket();
     ticket.setMpjHomeDir(mpjHomeDir);
+    ticket.setMasterNode(localhostName);
     ticket.setClassPath(new String(urlArray));
     ticket.setProcessCount(nProcesses);
     ticket.setStartingRank(start_rank);

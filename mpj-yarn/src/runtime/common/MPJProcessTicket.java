@@ -54,9 +54,10 @@ public class MPJProcessTicket {
   private boolean zippedSource;
   private String sourceCode;
   private String deviceName;
-  private String confFileContents; //<<~~ FK> RM THIS!
+  private String confFileContents; 
   private ArrayList<String> appArgs;
   private String userID;
+  private String masterNode;
   /* Hybrid Device */
   private int networkProcessCount;
   private int totalProcessCount;
@@ -67,10 +68,18 @@ public class MPJProcessTicket {
   private int debugPort;
   private String mpjHomeDir;
 
+  public String getMasterNode() {
+    return masterNode;
+  }
+
+  public void setMasterNode(String masterNode){
+    this.masterNode = masterNode;
+  }
+
   public String getClassPath() {
     return classPath;
   }
-
+  
   public void setClassPath(String classPath) {
     this.classPath = classPath;
   }
@@ -237,6 +246,7 @@ public class MPJProcessTicket {
     this.deviceName = "";
     this.confFileContents = "";
     this.appArgs = new ArrayList<String>();
+    this.masterNode = "";
 
     zippedSource = false;
     ticketID = UUID.randomUUID();
@@ -251,7 +261,7 @@ public class MPJProcessTicket {
     mpjHomeDir = null;
   }
 
-  public MPJProcessTicket(UUID ticketID, String classPath, int processCount,
+  public MPJProcessTicket(UUID ticketID, String classPath, String masterNode, int processCount,
       int startingRank, ArrayList<String> jvmArgs, String workingDirectory,
       String mainClass, boolean zippedCode, String codeFolder,
       String deviceName, String confFileContents, ArrayList<String> appArgs,
@@ -278,6 +288,7 @@ public class MPJProcessTicket {
     this.isProfiler = isProfiler;
     this.debugPort = debugPort;
     this.mpjHomeDir = mpjHomeDir;
+    this.masterNode = masterNode;
   }
 
   public MPJXml ToXML() {
