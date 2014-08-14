@@ -45,8 +45,6 @@ import java.lang.reflect.*;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 
-import org.apache.log4j.*;
-
 public class Wrapper extends Thread {
 
   String configFileName = null;
@@ -69,23 +67,22 @@ public class Wrapper extends Thread {
   }
 
   /**
-   * Executes MPJ program in a new JVM. This method is invoked in main method of
-   * this class, which is started by MPJDaemon. This method can start multiple
-   * threads in a JVM. This will also parse configuration file.
+   * Executes MPJ program in a new JVM. This method is invoked in main
+   * method of this class, which is started by MPJDaemon. This method 
+   * can start multiple threads in a JVM. This will also parse configuration
+   * file.
    * 
    * @param args
    *          Arguments to this method. args[0] is configFileName 'String',
    *          args[1] is number of processes, args[2] is deviceName, args[3] is
-   *          rank, args[4] is className
+   *          hostname of MPJRun.java server, args[4] is the port number of
+   *          MPJRun.java server, args[5] is rank, args[6] is className
    */
   public void execute(String args[]) throws Exception {
 
     InetAddress localaddr = InetAddress.getLocalHost();
     hostName = localaddr.getHostName();
-    // #FK - Prepping for port search and allocation
     //System.out.println("FK[wrapper.java]:running on " + hostName);
-
-//    serverName = RTConstants.MPJ_MASTER_NODE;
 
     configFileName = args[0];
     processes = (new Integer(args[1])).intValue();
@@ -95,19 +92,18 @@ public class Wrapper extends Thread {
     rank = args[5];
     className = args[6];
 
-    // #FK - Checking for arguments
-    System.out.println("["+hostName+"] I will read "+configFileName+", port would be "+serverPort+" and connect to "+serverName);
     int tmp = mpjrunConnect(findPort(), findPort());
-//    int tmp1 = findPort();
-//    int tmp2 = findPort();
-//    System.out.println("["+hostName+"]:Port comm status = "+ mpjrunConnect(tmp1,tmp2));
 
+    /* This code segment is used to append the received mpjdev.conf 
+     * contents into the already existing mpjdev.conf file
+     */
     StringTokenizer conf_file = new StringTokenizer(WRAPPER_INFO, ";");
     FileOutputStream out = null;
     try {
       out = new FileOutputStream(configFileName, true);
     }
     catch (FileNotFoundException e) {
+      System.err.println("["+hostName+"-Wrapper.java]: mpjdev.conf not found..");
       e.printStackTrace();
     }
     PrintStream cout = new PrintStream(out);
@@ -121,6 +117,8 @@ public class Wrapper extends Thread {
       out.close();
     }
     catch (IOException e){
+      System.err.println("["+hostName+"-Wrapper.java]: Error closing mpjdev.conf");
+      e.printStackTrace();
     }
 
     nargs = new String[(args.length - 7)];
@@ -129,8 +127,7 @@ public class Wrapper extends Thread {
     c = Class.forName(className);
 
     try {
-      System.out.println("Starting process <" + rank + "> on <" + hostName
-	  + ">");
+      System.out.println("["+hostName+"]: Starting process <"+rank+">");
 
       String arvs[] = new String[nargs.length + 3];
 
@@ -143,12 +140,12 @@ public class Wrapper extends Thread {
       }
 
       /* FK -> Tmp code to read MPJDEV.conf */
-      BufferedReader in = new BufferedReader(new FileReader(arvs[1]));
+/*      BufferedReader in = new BufferedReader(new FileReader(arvs[1]));
       String line;
       while( (line = in.readLine()) != null )
         System.out.println(line);
       in.close();
-
+*/
       Method m = c.getMethod("main", new Class[] { arvs.getClass() });
       m.setAccessible(true);
       int mods = m.getModifiers();
@@ -157,15 +154,12 @@ public class Wrapper extends Thread {
 	throw new NoSuchMethodException("main");
       }
       
-      //System.out.println("#FK> Going to invoke method");
       m.invoke(null, new Object[] { arvs });
-
-      System.out.println("Stopping process <" + rank + "> on <" + hostName
-	  + ">");
+      
+      System.out.println("["+hostName+"]: Process <"+rank+"> completed");
     }
     catch (Exception ioe) {
-      System.out
-	  .println("multi-threaded starter: exception" + ioe.getMessage());
+      System.err.println("["+hostName+"-Wrapper.java]: Multi-threaded starter: exception" + ioe.getMessage());
       ioe.printStackTrace();
     }
 
@@ -181,31 +175,37 @@ public class Wrapper extends Thread {
   }
 
   /**
-  * #FK
-  * input: none
-  * output: integer
-  * description: function to scan and allocate free ports
-  *
-  **/
+   * Returns an avaiable port on the system.
+   * <p>
+   * This method searches for a random port between 25,000 and 40,000.
+   * It opens up a server socket on this port to confirm availability
+   * and then passes it back. If the port is not available, another 
+   * random port is generated.
+   *
+   * @param selectedPort Integer value of the available port
+   */
+
   private int findPort(){
-    //System.out.println("["+hostName+"]#FK> Generating ports numbers..");
     int minPort = 25000;
     int maxPort = 40000;
     int selectedPort;
     ServerSocket sock = null;
     DatagramSocket dataSock = null;
 
+    /* The loop generates a random port number, opens a socket on 
+     * the generated port
+     */
+
     while(true){
       Random rand = new Random();
       selectedPort = (rand.nextInt((maxPort - minPort) + 1) + minPort);
-      //System.out.println("#FK> Port generated:"+selectedPort+"]. Checking availability..");
  
       try {
         sock = new ServerSocket(selectedPort);
         sock.setReuseAddress(true);
       }
       catch (IOException e) {
-        System.err.println("["+hostName+":"+selectedPort+"]Port already in use. Checking for new port..");
+        System.err.println("[Wrapper.java]:"+hostName+"-"+selectedPort+"]Port already in use. Checking for a new port..");
         continue;
       }
       
@@ -219,7 +219,6 @@ public class Wrapper extends Thread {
       break;
     }
 
-    //System.out.println("#FK> Port successfully generated..");
     return selectedPort;
   }
 
@@ -231,11 +230,10 @@ public class Wrapper extends Thread {
   *
   **/
   private int mpjrunConnect(int wport, int rport){
-    //System.out.println("#FK>[Wrapper.java]:I am going to send ports!");
     Socket clientSock = null;
 
     try {
-      clientSock = new Socket("barq.seecs.edu.pk", 40003);
+      clientSock = new Socket(serverName, serverPort);
       DataOutputStream out = new DataOutputStream(clientSock.getOutputStream());
       DataInputStream in = new DataInputStream(clientSock.getInputStream());
 
@@ -259,7 +257,6 @@ public class Wrapper extends Thread {
    }
    catch (IOException e){
    }
-
     return 1;
   }
 
