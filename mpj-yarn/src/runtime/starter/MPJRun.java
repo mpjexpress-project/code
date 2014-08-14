@@ -222,7 +222,8 @@ public class MPJRun {
     else
       assignTasks();
 
-    System.out.println("MPJDev.conf: " + CONF_FILE_CONTENTS);
+    // FK--> Printing the conf file
+    //System.out.println("MPJDev.conf: " + CONF_FILE_CONTENTS);
 
     if (ADEBUG) {
       writeFile(CONF_FILE_CONTENTS + "\n");
@@ -1024,7 +1025,7 @@ public class MPJRun {
       }
     }
 
-    System.out.println("I am going to distribute:"+ WRAPPER_INFO);
+    //System.out.println("I am going to distribute:"+ WRAPPER_INFO);
     try {
       dataFrame = new byte[WRAPPER_INFO.getBytes("UTF-8").length];
       dataFrame = WRAPPER_INFO.getBytes("UTF-8");

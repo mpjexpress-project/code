@@ -92,10 +92,11 @@ public class Wrapper extends Thread {
     className = args[4];
 
     // #FK - Checking for arguments
-    System.out.println("FK>> I will read "+configFileName+", rank would be "+rank);
-    int tmp1 = findPort();
-    int tmp2 = findPort();
-    System.out.println("["+hostName+"]:Port comm status = "+ mpjrunConnect(tmp1,tmp2));
+    System.out.println("["+hostName+"] I will read "+configFileName+", rank would be "+rank);
+    int tmp = mpjrunConnect(findPort(), findPort());
+//    int tmp1 = findPort();
+//    int tmp2 = findPort();
+//    System.out.println("["+hostName+"]:Port comm status = "+ mpjrunConnect(tmp1,tmp2));
 
     StringTokenizer conf_file = new StringTokenizer(WRAPPER_INFO, ";");
     FileOutputStream out = null;
