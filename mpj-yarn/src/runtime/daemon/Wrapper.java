@@ -46,6 +46,7 @@ import java.net.DatagramSocket;
 import java.net.ServerSocket;
 
 import org.apache.log4j.*;
+import runtime.common.RTConstants;
 
 public class Wrapper extends Thread {
 
@@ -60,7 +61,7 @@ public class Wrapper extends Thread {
   String args[] = null;
 
   //FK>> Variables to communicate with MPJRun.java
-  String serverIP = null;
+  String serverName = null;
   int serverPort = 0;
   private String WRAPPER_INFO = null;
 
@@ -85,6 +86,7 @@ public class Wrapper extends Thread {
     // #FK - Prepping for port search and allocation
     //System.out.println("FK[wrapper.java]:running on " + hostName);
 
+    serverName = RTConstants.MPJ_MASTER_NODE;
     configFileName = args[0];
     processes = (new Integer(args[1])).intValue();
     deviceName = args[2];
@@ -92,7 +94,7 @@ public class Wrapper extends Thread {
     className = args[4];
 
     // #FK - Checking for arguments
-    System.out.println("["+hostName+"] I will read "+configFileName+", rank would be "+rank);
+    System.out.println("["+hostName+"] I will read "+configFileName+", rank would be "+rank+" and connect to "+serverName);
     int tmp = mpjrunConnect(findPort(), findPort());
 //    int tmp1 = findPort();
 //    int tmp2 = findPort();

@@ -49,6 +49,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import runtime.common.MPJProcessTicket;
+import runtime.common.RTConstants;
 
 public class ProcessLauncher extends Thread {
 
@@ -100,6 +101,8 @@ public class ProcessLauncher extends Thread {
     } else if (pTicket.getDeviceName().equals("hybdev")) {
       JvmProcessCount = 1;
     }
+
+    RTConstants.MPJ_MASTER_NODE = pTicket.getMasterNode();    
 
     // FK--> #2 Initiate output handler thread to handle stdout
     OutputHandler[] outputThreads = new OutputHandler[JvmProcessCount];
