@@ -86,7 +86,8 @@ public class ProcessLauncher extends Thread {
       if (ticketString != "")
 	pTicket.FromXML(ticketString);
       if (DEBUG && logger.isDebugEnabled()) {
-	//logger.debug(pTicket.ToXML(false).toXmlString());
+	logger.debug(pTicket.ToXML(false).toXmlString());
+        logger.debug("Am I printing this?");
       }
 
     }
