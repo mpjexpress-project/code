@@ -138,11 +138,11 @@ public class Wrapper extends Thread {
       }
 
       /* FK -> Tmp code to read MPJDEV.conf */
-      /*BufferedReader in = new BufferedReader(new FileReader(arvs[1]));
+      BufferedReader in = new BufferedReader(new FileReader(arvs[1]));
       String line;
       while( (line = in.readLine()) != null )
         System.out.println(line);
-      in.close();*/
+      in.close();
 
       Method m = c.getMethod("main", new Class[] { arvs.getClass() });
       m.setAccessible(true);
