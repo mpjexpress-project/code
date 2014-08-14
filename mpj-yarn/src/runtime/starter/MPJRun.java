@@ -503,7 +503,11 @@ public class MPJRun {
 
     MPJProcessTicket ticket = new MPJProcessTicket();
     ticket.setMpjHomeDir(mpjHomeDir);
+    // FK --> MasterNode information
     ticket.setMasterNode(localhostName);
+    ticket.setMasterPort(Integer.toString(SERVER_PORT));
+    // -------------
+
     ticket.setClassPath(new String(urlArray));
     ticket.setProcessCount(nProcesses);
     ticket.setStartingRank(start_rank);
