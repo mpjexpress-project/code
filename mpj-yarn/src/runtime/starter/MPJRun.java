@@ -67,9 +67,6 @@ public class MPJRun {
 
   final String DEFAULT_MACHINES_FILE_NAME = "machines";
   final int DEFAULT_PROTOCOL_SWITCH_LIMIT = 128 * 1024; // 128K
-  
-  // FK--> This variable will only be used for number of processes and 
-  // protocol switch limit now. No port or IP transaction
   private String CONF_FILE_CONTENTS = "#temp line";
   private String WRAPPER_INFO = "#HOST_NAME/IP@READPORT@WRITEPORT@RANK@DEBUGPORT";
   private int mxBoardNum = 0;
@@ -77,9 +74,11 @@ public class MPJRun {
   private int DEBUG_PORT = 0;
   private int portManagerPort = 0;
 
-  // FK>> SERVER port variables for MPJrun.java
+  /* Variables to store master node information.
+   * This needs to be forwarded to the wrapper processes.
+   */
   private int SERVER_PORT = 0;
-  private String localhostName = null; //For wrappers
+  private String localhostName = null; 
 
   // FK>> Adding YARN related variables here
   private boolean isYarn = false;
@@ -144,14 +143,13 @@ public class MPJRun {
       }
     }
     catch (Exception exc) {
-      System.out.println("Error: " + exc.getMessage());
+      System.out.println("[MPJRun.java]:" + exc.getMessage());
       exc.printStackTrace();
       return;
     }
    
     readValuesFromMPJExpressConf();
     localhostName = InetAddress.getLocalHost().getHostName();
-    System.out.println("I am MPJRun.java, running on:"+localhostName);
     createLogger(args);
 
     if (DEBUG && logger.isDebugEnabled()) {
@@ -213,9 +211,6 @@ public class MPJRun {
     }
     // FK--> Check to see if hostnames resolve to IPs for machines
     machinesSanityCheck();
-    
-    // FK>> Checking for PORT
-    //collectPortInfo();
 
     // Changed to incorporate hybrid device configuration
     if (deviceName.equals("hybdev"))
@@ -493,7 +488,9 @@ public class MPJRun {
    * of config file contents 8. deviceName-: what device to use? 9. appArgs-:
    * Application arguments .. 10. networkDevice- niodev in case of Hybdrid 11.
    * ADEBUG- Flag for launching application in debug mode 12. APROFILE- Flag for
-   * launching application in Profiling mode
+   * launching application in Profiling mode. 13. MasterNode - hostname of the
+   * machine running the MPJRun.java class. 14. MasterPort - port number at which
+   * MPJRun.java is awaiting connections from the wrapper class.
    */
   private void pack(int nProcesses, int start_rank, Socket sockClient) {
 
@@ -503,7 +500,8 @@ public class MPJRun {
 
     MPJProcessTicket ticket = new MPJProcessTicket();
     ticket.setMpjHomeDir(mpjHomeDir);
-    // FK --> MasterNode information
+
+    // MasterNode information being appended to ticket
     ticket.setMasterNode(localhostName);
     ticket.setMasterPort(Integer.toString(SERVER_PORT));
     // -------------
@@ -994,8 +992,9 @@ public class MPJRun {
     byte[] dataFrame = null;  
     String[] peers = new String[nprocs];    
 
-    //System.out.println("#FK[MPJRun.java]:Opening server port:" + SERVER_PORT);
-    System.out.println("#FK[MPJRun.java]:I am expecting contact from:" + nprocs);
+    if (DEBUG && logger.isDebugEnabled()) {
+    logger.debug("[MPJRun.java]:Creating server.. Waiting for <"+nprocs+"> processes to connect");
+    }
 
     // Creating a server socket for incoming connections
     try {
@@ -1034,6 +1033,8 @@ public class MPJRun {
 
       }
       catch (Exception e){
+        System.err.println("[MPJRun.java]: Error accepting connection from peer socket..");
+        e.printStackTrace();
       }
     }
 
@@ -1043,7 +1044,6 @@ public class MPJRun {
     }
 
     //System.out.println("I am going to distribute:"+ WRAPPER_INFO);
-
     try {
       dataFrame = new byte[WRAPPER_INFO.getBytes("UTF-8").length];
       dataFrame = WRAPPER_INFO.getBytes("UTF-8");
@@ -1066,13 +1066,12 @@ public class MPJRun {
         sock.close();
       }
       catch (Exception e){
+        System.err.println("[MPJRun.java]: Error closing connection from peer socket..");
+        e.printStackTrace();
       } 
     } 
   }
 
-  /**
-   * Entry point to the class
-   */
   public static void main(String args[]) throws Exception {
 
     try {
@@ -1081,7 +1080,5 @@ public class MPJRun {
     catch (Exception e) {
       throw e;
     }
-
   }
-
 }
