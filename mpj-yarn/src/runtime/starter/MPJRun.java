@@ -1008,11 +1008,12 @@ public class MPJRun {
         wport = in.readInt();
         rport = in.readInt();
         //System.out.println("MPJRun.java got:"+wport+","+rport);
+	rank = in.readInt();
 
-	out.writeInt(rank);
-        out.flush();
+	//out.writeInt(rank);
+        //out.flush();
 
-        WRAPPER_INFO += ";" + sock.getInetAddress().getHostAddress() + "@" + rport + "@" + wport + "@" + (rank++);
+        WRAPPER_INFO += ";" + sock.getInetAddress().getHostAddress() + "@" + rport + "@" + wport + "@" + rank;
       
         //System.out.println("Entry: " + WRAPPER_INFO);
         socketList.add(sock);
