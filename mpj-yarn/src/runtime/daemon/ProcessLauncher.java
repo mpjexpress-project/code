@@ -87,7 +87,7 @@ public class ProcessLauncher extends Thread {
 	pTicket.FromXML(ticketString);
       if (DEBUG && logger.isDebugEnabled()) {
 	logger.debug(pTicket.ToXML(false).toXmlString());
-        logger.debug("Am I printing this?");
+        logger.debug("FK: Am I printing this?");
       }
 
     }
@@ -103,7 +103,8 @@ public class ProcessLauncher extends Thread {
       JvmProcessCount = 1;
     }
     
-    System.out.println("MASTER_NODE:"+ pTicket.getMasterNode());
+    logger.debug("MASTER_NODE:"+ pTicket.getMasterNode());
+    logger.debug("MASTER_PORT:"+ pTicket.getMasterPort());
 
     // FK--> #2 Initiate output handler thread to handle stdout
     OutputHandler[] outputThreads = new OutputHandler[JvmProcessCount];
@@ -267,6 +268,7 @@ public class ProcessLauncher extends Thread {
     }
     if (DEBUG && logger.isDebugEnabled()) {
       logger.debug("Ticket length  " + len);
+      logger.debug("FK>> Where is this ticket being printed??");
     }
     byte[] xml = new byte[len];
     try {
