@@ -985,6 +985,7 @@ public class MPJRun {
     Vector<Socket> socketList;
     socketList = new Vector<Socket>();  
     byte[] dataFrame = null;  
+    String[] peers = new String[nprocs];    
 
     //System.out.println("#FK[MPJRun.java]:Opening server port:" + SERVER_PORT);
     System.out.println("#FK[MPJRun.java]:I am expecting contact from:" + nprocs);
@@ -1014,18 +1015,28 @@ public class MPJRun {
 	//out.writeInt(rank);
         //out.flush();
 
-        WRAPPER_INFO += ";" + sock.getInetAddress().getHostAddress() + "@" + rport + "@" + wport + "@" + rank;
+        peers[rank] = ";" + sock.getInetAddress().getHostAddress() + "@" + rport + "@" + wport + "@" + rank;
+
+        //WRAPPER_INFO += ";" + sock.getInetAddress().getHostAddress() + "@" + rport + "@" + wport + "@" + rank;
       
         //System.out.println("Entry: " + WRAPPER_INFO);
         socketList.add(sock);
   
-	WRAPPER_INFO += "@" + (DEBUG_PORT);
+	peers[rank] += "@" + (DEBUG_PORT);
+        System.out.println("My entry:"+peers[rank]);
+
       }
       catch (Exception e){
       }
     }
 
-    //System.out.println("I am going to distribute:"+ WRAPPER_INFO);
+    // Loop to sort contents of mpjdev.conf according to rank
+    for(int i=0; i < nprocs; i++) {
+      WRAPPER_INFO += peers[i];
+    }
+
+    System.out.println("I am going to distribute:"+ WRAPPER_INFO);
+
     try {
       dataFrame = new byte[WRAPPER_INFO.getBytes("UTF-8").length];
       dataFrame = WRAPPER_INFO.getBytes("UTF-8");
