@@ -88,11 +88,11 @@ public class Wrapper extends Thread {
     configFileName = args[0];
     processes = (new Integer(args[1])).intValue();
     deviceName = args[2];
-    //rank = args[3];
+    rank = args[3];
     className = args[4];
 
     // #FK - Checking for arguments
-    //System.out.println("FK>> I will read "+configFileName+", np is "+processes+",device to be used is "+deviceName+", rank would be "+rank+", and class:"+className);
+    System.out.println("FK>> I will read "+configFileName+", rank would be "+rank);
     int tmp1 = findPort();
     int tmp2 = findPort();
     System.out.println("["+hostName+"]:Port comm status = "+ mpjrunConnect(tmp1,tmp2));
