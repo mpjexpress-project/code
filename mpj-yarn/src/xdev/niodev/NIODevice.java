@@ -732,17 +732,22 @@ public class NIODevice implements Device {
           logger.info("Peer info token: "+ token);
           token = arguments.nextToken();
           logger.info("Peer info next token:"+token);
-          StringTokenizer peer= new StringTokenizer(token, "@");
-          logger.info("Value of peer token:"+peer);
-          nodes.add(peer.nextToken());
 
-          logger.info("Value of peer token:"+peer);
-          wPorts.add(new Integer(peer.nextToken()).intValue());
-          logger.info("Value of peer token:"+peer);
+          StringTokenizer peer= new StringTokenizer(token, "@");
+	  String peerToken = peer.nextToken();
+
+          logger.info("Value of peer token:"+peerToken);
+          nodes.add(peerToken);
+
+          peerToken = peer.nextToken();
+          wPorts.add(Integer.parseInt(peerToken));
+          logger.info("Value of peer token:"+peerToken);
+
 	  rPorts.add(new Integer(peer.nextToken()).intValue());
           logger.info("Value of peer token:"+peer);
           ranks.add(new Integer(peer.nextToken()).intValue());
           logger.info("Value of peer token:"+peer);
+
           logger.info("Value of initial token:"+token);
           token = arguments.nextToken();
           logger.info("Value of new token:"+token);
