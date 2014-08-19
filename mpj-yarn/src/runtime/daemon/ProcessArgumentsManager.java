@@ -161,6 +161,7 @@ public class ProcessArgumentsManager {
     /*
      * FIX ME BY RIZWAN HANIF : making arguments to launch MPI Processes
      */
+    // Incremented by 2 to include port and hostname
     int N_ARG_COUNT = 9;
     int increment = 1;
 
@@ -191,12 +192,16 @@ public class ProcessArgumentsManager {
 
     arguments[indx] = "runtime.daemon.Wrapper";
     indx++;
-    arguments[indx] = configFilePath;
+    // FK --> Modifying argument processing for NIODevInit
+    arguments[indx] = pTicket.getConfFileContents();
+    //arguments[indx] = configFilePath;
     indx++;
     arguments[indx] = Integer.toString(pTicket.getProcessCount());
     indx++;
     arguments[indx] = pTicket.getDeviceName();
     indx++;
+
+    // FK --> Two extra arguments for Hadoop YARN
     arguments[indx] = pTicket.getMasterNode();
     indx++;
     arguments[indx] = pTicket.getMasterPort();
