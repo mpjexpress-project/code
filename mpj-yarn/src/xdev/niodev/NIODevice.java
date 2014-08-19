@@ -684,9 +684,8 @@ public class NIODevice implements Device {
 
     rank = Integer.parseInt(args[0]);
     UUID myuuid = UUID.randomUUID();
-    id = new ProcessID(myuuid); // , rank);
+    id = new ProcessID(myuuid);
     Map<String, String> map = System.getenv();
-    //mpjHomeDir = map.get("MPJ_HOME");
 
     try {
 
@@ -705,8 +704,11 @@ public class NIODevice implements Device {
       throw new XDevException(unkhe);
     }
 
-    // FK--> Point of code where device arguements are being parsed
-    // number of processes and protcol switch limit are being read here
+    /* String arguments are being parsed here one by one to obtain
+     * the values of (1) number of processes, (2) protocol switch
+     * limit, (3) IPs of all nodes, (4) read and write ports for
+     * all nodes and (5) ranks for all nodes.
+     */
     
     StringTokenizer arguments = new StringTokenizer(args[1],";");
     logger.info("Original string: " + args[1]);
@@ -718,48 +720,38 @@ public class NIODevice implements Device {
       
       if(token.equals("#Number of Processes")) {
         nprocs = new Integer(arguments.nextToken()).intValue();
-        logger.info("Value read for nproc: " + nprocs);
+        logger.info("Number of processes:" + nprocs);
       }
       else if(token.equals("#Protocol Switch Limit")) {
         psl = new Integer(arguments.nextToken()).intValue();
-        logger.info("Value read for psl: " + psl);
-        //logger.info(token);
-        //logger.info(arguments.nextToken());
-        //logger.info(arguments.nextToken());
+        logger.info("Protocol Switch Limit:" + psl);
       }
       else if(token.equals("#Peer Information")) {
           token = arguments.nextToken();
         for(int i = 0; i<nprocs; i++) {
-          logger.info("Peer info token:"+token);
-
           StringTokenizer peer= new StringTokenizer(token, "@");
 	  String peerToken = peer.nextToken();
 
-          logger.info("Value of peer token:"+peerToken);
           nodes.add(peerToken);
 
           peerToken = peer.nextToken();
           wPorts.add(Integer.parseInt(peerToken));
-          logger.info("Value of peer token:"+peerToken);
 
     	  peerToken = peer.nextToken();
 	  rPorts.add(Integer.parseInt(peerToken));
-          logger.info("Value of peer token:"+peerToken);
 
 	  peerToken = peer.nextToken();
           ranks.add(Integer.parseInt(peerToken));
-          logger.info("Value of peer token:"+peerToken);
 
-          logger.info("Value of initial token:"+token);
           if(arguments.hasMoreTokens())
             token = arguments.nextToken();
-          logger.info("Value of new token:"+token);
         }
       }
     } 
         
+    /* Old code for reading information from mpjdev.conf commented out.
 
-    /*ConfigReader reader = null;
+    ConfigReader reader = null;
 
     try {
       reader = new ConfigReader(args[1]);
@@ -774,14 +766,15 @@ public class NIODevice implements Device {
       throw new XDevException(config_error);
     }
     */
+
     pids = new ProcessID[nprocs];
 
-    if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
-      logger.info("total processes:<" + nprocs);
-      logger.info("protocolSwitchLimit :<" + psl);
-    }
+    /* This segment of the code converts the dynamic lists into
+     * fixed sized arrays. This is done so because rest of the code
+     * was working using arrays, and lists were a modification added
+     * by me - Farrukh.
+     */
 
-    // FK --> Other argument such as port etc are being processed here
     String[] nodeList = new String[nprocs];
     int[] rPortList = new int[nprocs];
     int[] wPortList = new int[nprocs];
@@ -794,6 +787,7 @@ public class NIODevice implements Device {
       rankList[i] = ranks.get(i);
     }
 
+    /* Old code for reading information from mpjdev.conf commented out */
     int count = 0;
 
     /*while (count < nprocs) {
@@ -809,7 +803,6 @@ public class NIODevice implements Device {
       if (line == null || line.equals("") || line.equals("#")) {
 	continue;
       }
-
       line = line.trim();
       StringTokenizer tokenizer = new StringTokenizer(line, "@");
       nodeList[count] = tokenizer.nextToken();
@@ -817,9 +810,7 @@ public class NIODevice implements Device {
       rPortList[count] = (new Integer(tokenizer.nextToken())).intValue();
       rankList[count] = (new Integer(tokenizer.nextToken())).intValue();
       count++;
-
     }
-
     reader.close();*/
 
     /* Open the selector */
