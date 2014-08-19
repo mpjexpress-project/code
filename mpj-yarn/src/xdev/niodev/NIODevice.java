@@ -728,10 +728,9 @@ public class NIODevice implements Device {
         //logger.info(arguments.nextToken());
       }
       else if(token.equals("#Peer Information")) {
-        for(int i = 0; i<nprocs; i++) {
-          logger.info("Peer info token: "+ token);
           token = arguments.nextToken();
-          logger.info("Peer info next token:"+token);
+        for(int i = 0; i<nprocs; i++) {
+          logger.info("Peer info token:"+token);
 
           StringTokenizer peer= new StringTokenizer(token, "@");
 	  String peerToken = peer.nextToken();
