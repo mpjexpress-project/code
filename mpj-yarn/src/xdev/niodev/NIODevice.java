@@ -752,7 +752,7 @@ public class NIODevice implements Device {
           logger.info("Value of peer token:"+peerToken);
 
           logger.info("Value of initial token:"+token);
-          if(!arguments.hasMoreTokens())
+          if(arguments.hasMoreTokens())
             token = arguments.nextToken();
           logger.info("Value of new token:"+token);
         }
