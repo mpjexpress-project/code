@@ -722,6 +722,8 @@ public class NIODevice implements Device {
       else if(token.equals("#Protocol Switch Limit")) {
         psl = new Integer(arguments.nextToken()).intValue();
         logger.info("Value read for psl: " + psl);
+        logger.info(token);
+        logger.info(arguments);
       }
       else if(token.equals("#Peer Information")) {
         for(int i = 0; i<nprocs; i++) {
