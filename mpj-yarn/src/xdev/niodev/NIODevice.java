@@ -733,11 +733,18 @@ public class NIODevice implements Device {
           token = arguments.nextToken();
           logger.info("Peer info next token:"+token);
           StringTokenizer peer= new StringTokenizer(token, "@");
+          logger.info("Value of peer token:"+peer);
           nodeList[i] = peer.nextToken();
+          logger.info("Value of peer token:"+peer);
           wPortList[i] = new Integer(peer.nextToken()).intValue();
+          logger.info("Value of peer token:"+peer);
 	  rPortList[i] = new Integer(peer.nextToken()).intValue();
+          logger.info("Value of peer token:"+peer);
           rankList[i] = new Integer(peer.nextToken()).intValue();
+          logger.info("Value of peer token:"+peer);
+          logger.info("Value of initial token:"+token);
           token = arguments.nextToken();
+          logger.info("Value of new token:"+token);
         }
       }
     } 
