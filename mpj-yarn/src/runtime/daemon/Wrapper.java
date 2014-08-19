@@ -56,8 +56,7 @@ public class Wrapper extends Thread {
   String[] nargs = null;
   String hostName = null;
   String args[] = null;
-
-  //FK>> Variables to communicate with MPJRun.java
+  
   String serverName = null;
   int serverPort = 0;
   private String WRAPPER_INFO = null;
@@ -97,7 +96,7 @@ public class Wrapper extends Thread {
     /* This code segment is used to append the received mpjdev.conf 
      * contents into the already existing mpjdev.conf file
      */
-    StringTokenizer conf_file = new StringTokenizer(WRAPPER_INFO, ";");
+    /*StringTokenizer conf_file = new StringTokenizer(WRAPPER_INFO, ";");
     FileOutputStream out = null;
     try {
       out = new FileOutputStream(configFileName, true);
@@ -119,14 +118,14 @@ public class Wrapper extends Thread {
     catch (IOException e){
       System.err.println("["+hostName+"-Wrapper.java]: Error closing mpjdev.conf");
       e.printStackTrace();
-    }
+    }*/
 
     nargs = new String[(args.length - 7)];
     System.arraycopy(args, 7, nargs, 0, nargs.length);
 
     c = Class.forName(className);
 
-    try {
+    //try {
       System.out.println("["+hostName+"]: Starting process <"+rank+">");
 
       String arvs[] = new String[nargs.length + 3];
@@ -134,6 +133,8 @@ public class Wrapper extends Thread {
       arvs[0] = rank;
       arvs[1] = configFileName;
       arvs[2] = deviceName;
+
+      System.out.println("New string: " +configFileName);
 
       for (int i = 0; i < nargs.length; i++) {
 	arvs[i + 3] = nargs[i];
@@ -146,6 +147,8 @@ public class Wrapper extends Thread {
         System.out.println(line);
       in.close();
 */
+      /* Temporarily commented until argument parsing can be sorted */
+      /*
       Method m = c.getMethod("main", new Class[] { arvs.getClass() });
       m.setAccessible(true);
       int mods = m.getModifiers();
@@ -161,8 +164,7 @@ public class Wrapper extends Thread {
     catch (Exception ioe) {
       System.err.println("["+hostName+"-Wrapper.java]: Multi-threaded starter: exception" + ioe.getMessage());
       ioe.printStackTrace();
-    }
-
+    }*/
   }
 
   public void run() {

@@ -700,6 +700,8 @@ public class NIODevice implements Device {
       throw new XDevException(unkhe);
     }
 
+    // FK--> Point of code where device arguements are being parsed
+    // number of processes and protcol switch limit are being read here
     ConfigReader reader = null;
 
     try {
@@ -722,6 +724,7 @@ public class NIODevice implements Device {
       logger.info("protocolSwitchLimit :<" + psl);
     }
 
+    // FK --> Other argument such as port etc are being processed here
     String[] nodeList = new String[nprocs];
     int[] rPortList = new int[nprocs];
     int[] wPortList = new int[nprocs];
