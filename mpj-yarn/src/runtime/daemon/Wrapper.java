@@ -131,7 +131,7 @@ public class Wrapper extends Thread {
 
     c = Class.forName(className);
 
-    //try {
+    try {
       System.out.println("["+hostName+"]: Starting process <"+rank+">");
 
       String arvs[] = new String[nargs.length + 3];
