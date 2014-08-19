@@ -743,13 +743,17 @@ public class NIODevice implements Device {
           wPorts.add(Integer.parseInt(peerToken));
           logger.info("Value of peer token:"+peerToken);
 
-	  rPorts.add(new Integer(peer.nextToken()).intValue());
-          logger.info("Value of peer token:"+peer);
-          ranks.add(new Integer(peer.nextToken()).intValue());
-          logger.info("Value of peer token:"+peer);
+    	  peerToken = peer.nextToken();
+	  rPorts.add(Integer.parseInt(peerToken));
+          logger.info("Value of peer token:"+peerToken);
+
+	  peerToken = peer.nextToken();
+          ranks.add(Integer.parseInt(peerToken));
+          logger.info("Value of peer token:"+peerToken);
 
           logger.info("Value of initial token:"+token);
-          token = arguments.nextToken();
+          if(!arguments.hasMoreTokens())
+            token = arguments.nextToken();
           logger.info("Value of new token:"+token);
         }
       }
