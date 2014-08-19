@@ -67,8 +67,8 @@ public class MPJRun {
 
   final String DEFAULT_MACHINES_FILE_NAME = "machines";
   final int DEFAULT_PROTOCOL_SWITCH_LIMIT = 128 * 1024; // 128K
-  private String CONF_FILE_CONTENTS = "#temp line";
-  private String WRAPPER_INFO = "#HOST_NAME/IP@READPORT@WRITEPORT@RANK@DEBUGPORT";
+  private String CONF_FILE_CONTENTS;
+  private String WRAPPER_INFO = "#Peer Information";
   private int mxBoardNum = 0;
   private int D_SER_PORT = 0;
   private int DEBUG_PORT = 0;
@@ -647,9 +647,9 @@ public class MPJRun {
     // FK --> Make configuration file by adding contents one by one
     // first is the number of processes, then protocol switch, then ip/port
     // details of each host
-    CONF_FILE_CONTENTS += ";" + "# Number of Processes";
+    CONF_FILE_CONTENTS = "#Number of Processes";
     CONF_FILE_CONTENTS += ";" + nprocs;
-    CONF_FILE_CONTENTS += ";" + "# Protocol Switch Limit";
+    CONF_FILE_CONTENTS += ";" + "#Protocol Switch Limit";
     CONF_FILE_CONTENTS += ";" + psl +";";
     /* PORT, IP information removed
     CONF_FILE_CONTENTS += ";"
