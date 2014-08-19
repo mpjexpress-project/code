@@ -723,6 +723,9 @@ public class NIODevice implements Device {
         psl = new Integer(arguments.nextToken()).intValue();
       else if(token.equals("#Peer Information")) {
         for(int i = 0; i<nprocs; i++) {
+          logger.info("Peer info token: "+ token);
+          token = arguments.nextToken();
+          logger.info("Peer info next token:"+token);
           StringTokenizer peer= new StringTokenizer(token, "@");
           nodeList[i] = peer.nextToken();
           wPortList[i] = new Integer(peer.nextToken()).intValue();
