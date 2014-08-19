@@ -642,6 +642,11 @@ public class NIODevice implements Device {
    */
   public ProcessID[] init(String args[]) throws XDevException {
 
+    String[] nodeList = new String[nprocs];
+    int[] rPortList = new int[nprocs];
+    int[] wPortList = new int[nprocs];
+    int[] rankList = new int[nprocs];
+
     /*
      * 
      * The init method reads names/ports/ranks from a config file. It finds its
@@ -702,7 +707,31 @@ public class NIODevice implements Device {
 
     // FK--> Point of code where device arguements are being parsed
     // number of processes and protcol switch limit are being read here
-    ConfigReader reader = null;
+    
+    StringTokenizer arguments = new StringTokenizer(args[1],";");
+
+    logger.info("Parsing string arguments..");
+    while(arguments.hasMoreTokens()) {
+      String token = arguments.nextToken();
+      
+      if(token.equals("#Number of Processes"))
+        nprocs = new Integer(arguments.nextToken()).intValue();
+      else if(token.equals("#Protocol Swith Limit"))
+        psl = new Integer(arguments.nextToken()).intValue();
+      else if(token.equals("#Peer Information")) {
+        for(int i = 0; i<nprocs; i++) {
+          StringTokenizer peer= new StringTokenizer(token, "@");
+          nodeList[i] = peer.nextToken();
+          wPortList[i] = new Integer(peer.nextToken()).intValue();
+	  rPortList[i] = new Integer(peer.nextToken()).intValue();
+          rankList[i] = new Integer(peer.nextToken()).intValue();
+          token = arguments.nextToken();
+        }
+      }
+    } 
+        
+
+    /*ConfigReader reader = null;
 
     try {
       reader = new ConfigReader(args[1]);
@@ -716,7 +745,7 @@ public class NIODevice implements Device {
     catch (Exception config_error) {
       throw new XDevException(config_error);
     }
-
+    */
     pids = new ProcessID[nprocs];
 
     if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
@@ -725,14 +754,13 @@ public class NIODevice implements Device {
     }
 
     // FK --> Other argument such as port etc are being processed here
-    String[] nodeList = new String[nprocs];
-    int[] rPortList = new int[nprocs];
-    int[] wPortList = new int[nprocs];
-    int[] rankList = new int[nprocs];
+    //String[] nodeList = new String[nprocs];
+    //int[] rPortList = new int[nprocs];
+    //int[] wPortList = new int[nprocs];
+    //int[] rankList = new int[nprocs];
     int count = 0;
 
-    while (count < nprocs) {
-
+    /*while (count < nprocs) {
       String line = null;
 
       try {
@@ -756,7 +784,7 @@ public class NIODevice implements Device {
 
     }
 
-    reader.close();
+    reader.close();*/
 
     /* Open the selector */
     try {
