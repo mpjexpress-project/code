@@ -154,7 +154,7 @@ public class Wrapper extends Thread {
       in.close();
 */
       /* Temporarily commented until argument parsing can be sorted */
-      /*
+      
       Method m = c.getMethod("main", new Class[] { arvs.getClass() });
       m.setAccessible(true);
       int mods = m.getModifiers();
@@ -170,7 +170,7 @@ public class Wrapper extends Thread {
     catch (Exception ioe) {
       System.err.println("["+hostName+"-Wrapper.java]: Multi-threaded starter: exception" + ioe.getMessage());
       ioe.printStackTrace();
-    }*/
+    }
   }
 
   public void run() {
