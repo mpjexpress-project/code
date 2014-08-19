@@ -642,10 +642,10 @@ public class NIODevice implements Device {
    */
   public ProcessID[] init(String args[]) throws XDevException {
 
-    String[] nodeList = new String[nprocs];
-    int[] rPortList = new int[nprocs];
-    int[] wPortList = new int[nprocs];
-    int[] rankList = new int[nprocs];
+    List<String> nodes = new ArrayList<String>();
+    List<Integer> rPorts = new ArrayList<Integer>();
+    List<Integer> wPorts = new ArrayList<Integer>();
+    List<Integer> ranks = new ArrayList<Integer>();
 
     /*
      * 
@@ -733,16 +733,15 @@ public class NIODevice implements Device {
           token = arguments.nextToken();
           logger.info("Peer info next token:"+token);
           StringTokenizer peer= new StringTokenizer(token, "@");
-          String peerToken = peer.nextToken();
-          logger.info("Value of peer token:"+peerToken);
-          nodeList[i] = peerToken;
-          peerToken = peer.nextToken();
-          logger.info("Value of peer token:"+peerToken);
-          wPortList[i] = new Integer(peer.nextToken()).intValue();
           logger.info("Value of peer token:"+peer);
-	  rPortList[i] = new Integer(peer.nextToken()).intValue();
+          nodes.add(peer.nextToken());
+
           logger.info("Value of peer token:"+peer);
-          rankList[i] = new Integer(peer.nextToken()).intValue();
+          wPorts.add(new Integer(peer.nextToken()).intValue());
+          logger.info("Value of peer token:"+peer);
+	  rPorts.add(new Integer(peer.nextToken()).intValue());
+          logger.info("Value of peer token:"+peer);
+          ranks.add(new Integer(peer.nextToken()).intValue());
           logger.info("Value of peer token:"+peer);
           logger.info("Value of initial token:"+token);
           token = arguments.nextToken();
@@ -775,10 +774,18 @@ public class NIODevice implements Device {
     }
 
     // FK --> Other argument such as port etc are being processed here
-    //String[] nodeList = new String[nprocs];
-    //int[] rPortList = new int[nprocs];
-    //int[] wPortList = new int[nprocs];
-    //int[] rankList = new int[nprocs];
+    String[] nodeList = new String[nprocs];
+    int[] rPortList = new int[nprocs];
+    int[] wPortList = new int[nprocs];
+    int[] rankList = new int[nprocs];
+    
+    for(int i=0; i<nprocs; i++) {
+      nodeList[i] = nodes.get(i);
+      rPortList[i] = rPorts.get(i);
+      wPortList[i] = wPorts.get(i);
+      rankList[i] = ranks.get(i);
+    }
+
     int count = 0;
 
     /*while (count < nprocs) {
