@@ -719,7 +719,7 @@ public class NIODevice implements Device {
         nprocs = new Integer(arguments.nextToken()).intValue();
         logger.info("Value read for nproc: " + nprocs);
       }
-      else if(token.equals("#Protocol Swith Limit")) {
+      else if(token.equals("#Protocol Switch Limit")) {
         psl = new Integer(arguments.nextToken()).intValue();
         logger.info("Value read for psl: " + psl);
       }
