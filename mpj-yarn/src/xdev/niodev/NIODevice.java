@@ -713,9 +713,12 @@ public class NIODevice implements Device {
     logger.info("Parsing string arguments..");
     while(arguments.hasMoreTokens()) {
       String token = arguments.nextToken();
+      logger.info(token);
       
-      if(token.equals("#Number of Processes"))
+      if(token.equals("#Number of Processes")) {
         nprocs = new Integer(arguments.nextToken()).intValue();
+        logger.info("Value read for nproc: " + nprocs);
+      }
       else if(token.equals("#Protocol Swith Limit"))
         psl = new Integer(arguments.nextToken()).intValue();
       else if(token.equals("#Peer Information")) {
