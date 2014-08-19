@@ -719,8 +719,10 @@ public class NIODevice implements Device {
         nprocs = new Integer(arguments.nextToken()).intValue();
         logger.info("Value read for nproc: " + nprocs);
       }
-      else if(token.equals("#Protocol Swith Limit"))
+      else if(token.equals("#Protocol Swith Limit")) {
         psl = new Integer(arguments.nextToken()).intValue();
+        logger.info("Value read for psl: " + psl);
+      }
       else if(token.equals("#Peer Information")) {
         for(int i = 0; i<nprocs; i++) {
           logger.info("Peer info token: "+ token);
