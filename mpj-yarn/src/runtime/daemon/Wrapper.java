@@ -134,8 +134,6 @@ public class Wrapper extends Thread {
       arvs[1] = configFileName.concat(WRAPPER_INFO);
       arvs[2] = deviceName;
 
-      System.out.println("New string: " + tmpx);
-
       for (int i = 0; i < nargs.length; i++) {
 	arvs[i + 3] = nargs[i];
       }
@@ -147,7 +145,6 @@ public class Wrapper extends Thread {
         System.out.println(line);
       in.close();
 */
-      /* Temporarily commented until argument parsing can be sorted */
       
       Method m = c.getMethod("main", new Class[] { arvs.getClass() });
       m.setAccessible(true);
