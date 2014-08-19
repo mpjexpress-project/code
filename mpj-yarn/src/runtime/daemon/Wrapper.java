@@ -120,6 +120,12 @@ public class Wrapper extends Thread {
       e.printStackTrace();
     }*/
 
+    /* This code sengment appends the received port numbers into
+     * the argument string of device Init code.
+     */
+    String tmpx = configFileName.concat(WRAPPER_INFO);
+    
+
     nargs = new String[(args.length - 7)];
     System.arraycopy(args, 7, nargs, 0, nargs.length);
 
@@ -134,7 +140,7 @@ public class Wrapper extends Thread {
       arvs[1] = configFileName;
       arvs[2] = deviceName;
 
-      System.out.println("New string: " +configFileName);
+      System.out.println("New string: " + tmpx);
 
       for (int i = 0; i < nargs.length; i++) {
 	arvs[i + 3] = nargs[i];
