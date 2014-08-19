@@ -137,7 +137,7 @@ public class Wrapper extends Thread {
       String arvs[] = new String[nargs.length + 3];
 
       arvs[0] = rank;
-      arvs[1] = configFileName;
+      arvs[1] = tmpx;
       arvs[2] = deviceName;
 
       System.out.println("New string: " + tmpx);
