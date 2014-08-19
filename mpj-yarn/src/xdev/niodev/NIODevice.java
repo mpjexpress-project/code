@@ -709,6 +709,7 @@ public class NIODevice implements Device {
     // number of processes and protcol switch limit are being read here
     
     StringTokenizer arguments = new StringTokenizer(args[1],";");
+    logger.info("Original string: " + args[1]);
 
     logger.info("Parsing string arguments..");
     while(arguments.hasMoreTokens()) {
@@ -723,7 +724,8 @@ public class NIODevice implements Device {
         psl = new Integer(arguments.nextToken()).intValue();
         logger.info("Value read for psl: " + psl);
         logger.info(token);
-        logger.info(arguments);
+        logger.info(arguments.nextToken());
+        logger.info(arguments.nextToken());
       }
       else if(token.equals("#Peer Information")) {
         for(int i = 0; i<nprocs; i++) {
