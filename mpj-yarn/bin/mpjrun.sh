@@ -46,15 +46,6 @@ else
         CP=$CP:"$1"i
         shift;                                                         
         ;;
-## FK>> Adding YARN flag for cluster mode for native device
-      #-yarn)
-      #  shift;
-      #  echo $1
-      #  YARN="true"
-      #  echo $1
-      #  echo "HADOOP YARN selected"
-      #  shift;
-      #  ;;
 	
       -Djava.library.path=*)
 	oldIFS=$IFS

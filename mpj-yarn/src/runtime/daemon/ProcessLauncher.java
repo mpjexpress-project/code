@@ -263,7 +263,7 @@ public class ProcessLauncher extends Thread {
       e.printStackTrace();
     }
     if (DEBUG && logger.isDebugEnabled()) {
-      logger.debug("Ticket length  " + len);
+      logger.debug("Ticket length " + len);
       logger.debug("FK>> Where is this ticket being printed??");
     }
     byte[] xml = new byte[len];
