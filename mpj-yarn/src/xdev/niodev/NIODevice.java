@@ -1,10 +1,10 @@
 /*
  The MIT License
 
- Copyright (c) 2005 - 2008
-   1. Distributed Systems Group, University of Portsmouth (2005)
-   2. Aamir Shafi (2005 - 2008)
-   3. Bryan Carpenter (2005 - 2008)
+ Copyright (c) 2005 - 2014
+   1. Distributed Systems Group, University of Portsmouth (2014)
+   2. Aamir Shafi (2005 - 2014)
+   3. Bryan Carpenter (2005 - 2014)
    4. Mark Baker (2005 - 2008)
 
  Permission is hereby granted, free of charge, to any person obtaining
@@ -29,10 +29,10 @@
 
 /*
  * File         : NIODevice.java
- * Author       : Aamir Shafi, Bryan Carpenter
- * Created      : Thu Apr  9 12:22:15 BST 2004
- * Revision     : $Revision: 1.29 $
- * Updated      : $Date: 2013/12/17 17:24:47 $
+ * Author(s)    : Aamir Shafi, Bryan Carpenter, Farrukh Khan
+ * Created      : Apr 09, 2004
+ * Revision     : Revision: 1.30
+ * Updated      : Aug 27, 2014
  *
  */
 
@@ -649,8 +649,8 @@ public class NIODevice implements Device {
 
     /*
      * 
-     * The init method reads names/ports/ranks from a config file. It finds its
-     * own entry in the config file (by comparing ranks), and creates a server
+     * The init method reads names/ports/ranks from an input string. It finds 
+     * its own entry in the arguments (by comparing ranks), and creates a server
      * socket at the port specified for that entry. Also, it creates another
      * server socket at (portspecified+1). It connects to server sockets (not
      * one, two server sockets) of processes with rank higher than its own.
@@ -676,7 +676,7 @@ public class NIODevice implements Device {
     if (args.length < 3) {
 
       throw new XDevException("Usage: "
-	  + "java NIODevice <myrank> <conf_file> <device_name>"
+	  + "java NIODevice <myrank> <conf_file_arguments> <device_name>"
 	  + "conf_file can be, ../conf/xdev.conf <Local>"
 	  + "OR http://holly.dsg.port.ac.uk:15000/xdev.conf <Remote>");
 
@@ -704,7 +704,8 @@ public class NIODevice implements Device {
       throw new XDevException(unkhe);
     }
 
-    /* String arguments are being parsed here one by one to obtain
+    /*
+     * String arguments are being parsed here one by one to obtain
      * the values of (1) number of processes, (2) protocol switch
      * limit, (3) IPs of all nodes, (4) read and write ports for
      * all nodes and (5) ranks for all nodes.
@@ -750,7 +751,6 @@ public class NIODevice implements Device {
     } 
         
     /* Old code for reading information from mpjdev.conf commented out.
-
     ConfigReader reader = null;
 
     try {
@@ -768,10 +768,11 @@ public class NIODevice implements Device {
     */
 
     pids = new ProcessID[nprocs];
+    int count = 0;
 
     /* This segment of the code converts the dynamic lists into
      * fixed sized arrays. This is done so because rest of the code
-     * was working using arrays, and lists were a modification added
+     * was working with arrays, and lists were a modification added
      * by me - Farrukh.
      */
 
@@ -788,9 +789,8 @@ public class NIODevice implements Device {
     }
 
     /* Old code for reading information from mpjdev.conf commented out */
-    int count = 0;
-
-    /*while (count < nprocs) {
+    /*
+    while (count < nprocs) {
       String line = null;
 
       try {
@@ -811,7 +811,8 @@ public class NIODevice implements Device {
       rankList[count] = (new Integer(tokenizer.nextToken())).intValue();
       count++;
     }
-    reader.close();*/
+    reader.close();
+    *********/
 
     /* Open the selector */
     try {
