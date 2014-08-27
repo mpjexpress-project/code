@@ -3,7 +3,7 @@ package runtime.daemonmanager;
 /*
  The MIT License
 
- Copyright (c) 2013
+ Copyright (c) 2013 - 2014
  1. High Performance Computing Group, 
  School of Electrical Engineering and Computer Science (SEECS), 
  National University of Sciences and Technology (NUST)
