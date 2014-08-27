@@ -1,11 +1,11 @@
 /*
  The MIT License
 
- Copyright (c) 2005 - 2011
-   1. Distributed Systems Group, University of Portsmouth (2005)
-   2. Aamir Shafi (2005 - 2011)
-   3. Bryan Carpenter (2005 - 2011)
-   4. Mark Baker (2005 - 2011)
+ Copyright (c) 2005 - 2014
+   1. Distributed Systems Group, University of Portsmouth (2014)
+   2. Aamir Shafi (2005 - 2014)
+   3. Bryan Carpenter (2005 - 2014)
+   4. Mark Baker (2005 - 2014)
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -28,10 +28,11 @@
  */
 /*
  * File         : MPJRun.java 
- * Author       : Aamir Shafi, Bryan Carpenter,Khurram Shahzad, Mohsan Jameel, Aamir Shafi, Bryan Carpenter
+ * Author       : Aamir Shafi, Bryan Carpenter,Khurram Shahzad, Mohsan Jameel,
+ *		  Farrukh Khan
  * Created      : Sun Dec 12 12:22:15 BST 2004
  * Revision     : $Revision: 1.35 $
- * Updated      : $Date: Wed Nov  5 20:55:53 EST 2013$
+ * Updated      : $Date: Wed Aug 27 20:55:53 PKT 2014$
  */
 
 package runtime.starter;
@@ -80,7 +81,7 @@ public class MPJRun {
   private int SERVER_PORT = 0;
   private String localhostName = null; 
 
-  // FK>> Adding YARN related variables here
+  // Adding YARN related variables here
   private boolean isYarn = false;
   static String yarnHomeDir = null;
 
@@ -133,7 +134,6 @@ public class MPJRun {
       logger1.removeHandler(h);
     }
 
-    // FK--> #1 Checking for MPJ_HOME environment variable
     Map<String, String> map = System.getenv();
     try{
       mpjHomeDir = map.get("MPJ_HOME");
@@ -157,10 +157,10 @@ public class MPJRun {
       logger.debug("[MPJRun.java]: processInput called ...");
     }
 
-    // FK --> #2 Processing input
+    // Processing input
     processInput(args);
     
-    // FK>> Checking for HADOOP HOME: No use for this yet
+    // HADOOP_HOME check here!!
     if(isYarn) {
       try {
         yarnHomeDir = map.get("HADOOP_HOME");
@@ -178,7 +178,7 @@ public class MPJRun {
       }
     }
 
-    // FK--> #3 Check for MPJE configuration
+    // Check for MPJE configuration
     
     // Multicore mode
     if (deviceName.equals("multicore")) {
@@ -204,23 +204,19 @@ public class MPJRun {
 	  + "cluster configuration with " + deviceName);
     }
 
-    // FK--> #4 Read the machine file
+    // Read the machine file
     machineList = MPJUtil.readMachineFile(machinesFile);
     for (int i = machineList.size(); i > nprocs; i--) {
       machineList.remove(i - 1);
     }
-    // FK--> Check to see if hostnames resolve to IPs for machines
+
     machinesSanityCheck();
 
     // Changed to incorporate hybrid device configuration
     if (deviceName.equals("hybdev"))
       assignTasksHyb();
-    // FK--> #5 Calling assignTask()
     else
       assignTasks();
-
-    // FK--> Printing the conf file
-    //System.out.println("MPJDev.conf: " + CONF_FILE_CONTENTS);
 
     if (ADEBUG) {
       writeFile(CONF_FILE_CONTENTS + "\n");
