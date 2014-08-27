@@ -1,3 +1,42 @@
+/*
+ The MIT License
+
+ Copyright (c) 2013 - 2014
+   1. High Performance Computing Group, 
+   School of Electrical Engineering and Computer Science (SEECS), 
+   National University of Sciences and Technology (NUST)
+   2. Khurram Shahzad, Mohsan Jameel, Aamir Shafi, Bryan Carpenter (2013 - 2014)
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ "Software"), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be included
+ in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+ NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+ THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+/*
+ * File         : ProcessArgumentsManager.java 
+ * Author(s)    : Aamir Shafi, Bryan Carpenter, Khurram Shahzad,
+ *		  Farrukh Khan
+ * Created      : Oct 10, 2013
+ * Revision     : $
+ * Updated      : Aug 27, 2014
+ */
+
+
 package runtime.daemon;
 
 import java.io.File;
@@ -157,11 +196,8 @@ public class ProcessArgumentsManager {
       }
     }
 
-    /* ends Here */
-    /*
-     * FIX ME BY RIZWAN HANIF : making arguments to launch MPI Processes
-     */
-    // Incremented by 2 to include port and hostname
+    // This segment of the code reads values from ticket and makes an
+    // argument array
     int N_ARG_COUNT = 9;
     int increment = 1;
 
@@ -178,7 +214,7 @@ public class ProcessArgumentsManager {
       increment++;
     } else
       arguments[0] = "java";
-    // System.arraycopy ... can be used ..here ...
+
     for (int i = 0; i < pTicket.getJvmArgs().size(); i++) {
       arguments[i + increment] = pTicket.getJvmArgs().get(i);
     }
@@ -192,29 +228,29 @@ public class ProcessArgumentsManager {
 
     arguments[indx] = "runtime.daemon.Wrapper";
     indx++;
-    // FK --> Modifying argument processing for NIODevInit
+
+    // Modifying argument processing for NIODevInit
     arguments[indx] = pTicket.getConfFileContents();
-    //arguments[indx] = configFilePath;
+
     indx++;
     arguments[indx] = Integer.toString(pTicket.getProcessCount());
     indx++;
     arguments[indx] = pTicket.getDeviceName();
     indx++;
 
-    // FK --> Two extra arguments for Hadoop YARN
+    // Two extra arguments added to include MPJRun.java server
+    // IP and port number
     arguments[indx] = pTicket.getMasterNode();
     indx++;
     arguments[indx] = pTicket.getMasterPort();
     indx++;
+
     arguments[indx] = "" + (-1);
-    /*
-     * FIX ME BY RIZWAN HANIF : This index value is actually the rank of each
-     * MPI Processes
-     */
+    
     rankArgumentIndex = indx;
     indx++;
     arguments[indx] = pTicket.getMainClass();
-    // System.arraycopy ... can be used ..here ...
+    
     for (int i = 0; i < pTicket.getAppArgs().size(); i++) {
       arguments[i + N_ARG_COUNT + pTicket.getJvmArgs().size()
 	  + nArgumentIncrement] = pTicket.getAppArgs().get(i);
@@ -437,8 +473,6 @@ public class ProcessArgumentsManager {
 
       while (conf_file_tokenizer.hasMoreTokens()) {
 	String token = conf_file_tokenizer.nextToken();
-        // FK-->> Added to understand working
-        //System.out.println("Token:"+token);
 	if (token.contains("@") && !token.startsWith("#")) {
 	  String[] tokens = token.split("@");
 	  ports.add(Integer.parseInt(tokens[1]));
@@ -455,9 +489,8 @@ public class ProcessArgumentsManager {
       catch (IOException e1) {
 	e1.printStackTrace();
       }
-      // WHY and WHERE is this going?
-      return ports;
 
+      return ports;
     }
   }
 

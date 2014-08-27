@@ -1,11 +1,11 @@
 /*
  The MIT License
 
- Copyright (c) 2013 - 2013
+ Copyright (c) 2013 - 2014
    1. High Performance Computing Group, 
    School of Electrical Engineering and Computer Science (SEECS), 
    National University of Sciences and Technology (NUST)
-   2. Khurram Shahzad, Mohsan Jameel, Aamir Shafi, Bryan Carpenter (2013 - 2013)
+   2. Khurram Shahzad, Mohsan Jameel, Aamir Shafi, Bryan Carpenter (2013 - 2014)
 
 
  Permission is hereby granted, free of charge, to any person obtaining
@@ -29,10 +29,11 @@
  */
 /*
  * File         : ProcessLauncher.java 
- * Author       : Khurram Shahzad, Mohsan Jameel, Aamir Shafi, Bryan Carpenter
+ * Author       : Khurram Shahzad, Mohsan Jameel, Aamir Shafi, 
+ *		  Bryan Carpenter, Farrukh Khan
  * Created      : Oct 10, 2013
  * Revision     : $
- * Updated      : Nov 05, 2013 
+ * Updated      : Aug 27, 2014
  */
 
 package runtime.daemon;
@@ -75,10 +76,15 @@ public class ProcessLauncher extends Thread {
       logger.debug("Job Started");
 
     MPJProcessTicket pTicket = new MPJProcessTicket();
-    // FK --> #1 Takes socket as an input and reads the ticket on the socket
-    // being sent by the pack function on the other end
-    try {
 
+    /* The numbered comments followed by my name throughout this code 
+     * have been added for better understanding only. They can be 
+     * removed. (~ Farrukh)
+     */
+
+    // #1 Takes socket as an input and reads the ticket on the socket
+    // being sent by the pack function on the other end (Farrukh)
+    try {
       String ticketString = getStringFromInputStream(sockserver
 	  .getInputStream());
 
@@ -86,7 +92,6 @@ public class ProcessLauncher extends Thread {
 	pTicket.FromXML(ticketString);
       if (DEBUG && logger.isDebugEnabled()) {
 	logger.debug(pTicket.ToXML(false).toXmlString());
-        logger.debug("FK: Am I printing this?");
       }
 
     }
@@ -102,11 +107,11 @@ public class ProcessLauncher extends Thread {
       JvmProcessCount = 1;
     }
     
-    // FK--> #2 Initiate output handler thread to handle stdout
+    // #2 Initiate output handler thread to handle stdout (Farrukh)
     OutputHandler[] outputThreads = new OutputHandler[JvmProcessCount];
     p = new Process[JvmProcessCount];
 
-    // FK--> #3 Passing the ticket to arguments manager for parsing
+    // #3 Passing the ticket to arguments manager for parsing (Farrukh)
     argManager = new ProcessArgumentsManager(pTicket);
     String[] arguments = argManager.GetArguments(pTicket);
 
@@ -136,7 +141,7 @@ public class ProcessLauncher extends Thread {
 	}
       }
 
-      // FK --> Process builder is then used to launch the wrapper process
+      // Process builder is used to launch the wrapper process
       ProcessBuilder pb = new ProcessBuilder(arguments);
       pb.directory(new File(pTicket.getWorkingDirectory()));
       pb.redirectErrorStream(true);
@@ -152,7 +157,7 @@ public class ProcessLauncher extends Thread {
       }
 
       /*
-       * Step 4: Start a new thread to handle output from this particular JVM.
+       * Start a new thread to handle output from this particular JVM.
        * FIXME: Now this seems like a good amount of overhead. If we start 4
        * JVMs on a quad-core CPU, we also start 4 additional threads to handle
        * I/O. Is it possible to get rid of this overhead?
@@ -163,7 +168,7 @@ public class ProcessLauncher extends Thread {
       if (DEBUG && logger.isDebugEnabled()) {
 	logger.debug("started the process ");
       }
-    } // end for loop.
+    } 
 
     // Wait for the I/O threads to finish. They finish when
     // their corresponding JVMs finish.
@@ -224,7 +229,6 @@ public class ProcessLauncher extends Thread {
   }
 
   public void killProcesses() {
-    // Its important to kill all JVMs that we started ...
     synchronized (p) {
       for (int i = 0; i < JvmProcessCount; i++)
 	p[i].destroy();
@@ -264,7 +268,6 @@ public class ProcessLauncher extends Thread {
     }
     if (DEBUG && logger.isDebugEnabled()) {
       logger.debug("Ticket length " + len);
-      logger.debug("FK>> Where is this ticket being printed??");
     }
     byte[] xml = new byte[len];
     try {
