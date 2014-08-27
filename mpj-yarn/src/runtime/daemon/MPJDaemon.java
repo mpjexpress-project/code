@@ -1,11 +1,11 @@
 /*
  The MIT License
 
- Copyright (c) 2005 - 2011
-   1. Distributed Systems Group, University of Portsmouth (2005)
-   2. Aamir Shafi (2005 - 2011)
-   3. Bryan Carpenter (2005 - 2011)
-   4. Mark Baker (2005 - 2011)
+ Copyright (c) 2005 - 2014
+   1. Distributed Systems Group, University of Portsmouth (2014)
+   2. Aamir Shafi (2005 - 2014)
+   3. Bryan Carpenter (2005 - 2014)
+   4. Mark Baker (2005 - 2014)
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -29,10 +29,11 @@
 
 /*
  * File         : MPJDaemon.java 
- * Author       : Aamir Shafi, Bryan Carpenter, Khurram Shahzad, Mohsan Jameel
- * Created      : Sun Dec 12 12:22:15 BST 2004
- * Revision     : $Revision: 1.28 $
- * Updated      : $Date: 2013/11/05 17:24:47 $
+ * Author(s)    : Aamir Shafi, Bryan Carpenter, Khurram Shahzad, 
+ *		  Mohsan Jameel, Farrukh Khan
+ * Created      : Dec 12, 2004
+ * Revision     : $Revision: 1.29 $
+ * Updated      : Aug 27, 2014
  */
 
 package runtime.daemon;
@@ -81,7 +82,6 @@ public class MPJDaemon {
     servSockets = new ConcurrentHashMap<Socket, ProcessLauncher>();
     Map<String, String> map = System.getenv();
 
-    //1# FK> Making sure MPJ_HOME variable is set
     try {
       mpjHomeDir = map.get("MPJ_HOME");
       RTConstants.MPJ_HOME_DIR = mpjHomeDir;
@@ -95,7 +95,7 @@ public class MPJDaemon {
       return;
     }
 
-    //2# FK> Reading values from conf/mpjexpress.conf
+    // Reading values from conf/mpjexpress.conf
     readValuesFromMPJExpressConf();
 
     createLogger(mpjHomeDir, hostName);
@@ -103,7 +103,6 @@ public class MPJDaemon {
       logger.debug("mpjHomeDir " + mpjHomeDir);
     }
 
-    //3# FK> Checking if daemon port is specified in args
     if (args.length == 1) {
 
       if (DEBUG && logger.isDebugEnabled()) {
@@ -121,20 +120,20 @@ public class MPJDaemon {
     if (DEBUG && logger.isDebugEnabled())
         logger.debug("Starting PortManager thread .. ");
 
-    // FK --> #4 Invoking port manager. To be removed!
+    // Invoking port manager
     pManager = new PortManagerThread(portManagerPort);
     pManager.start();
 
     if (DEBUG && logger.isDebugEnabled())
         logger.debug("Starting ConnectionManager thread .. ");
 
-    // FK --> Invoking connection manager thread to make sure machines stay up
+    // Invoking connection manager thread 
     connectionManager = new ConnectionManager();
     connectionManager.start();
 
     if (DEBUG && logger.isDebugEnabled())
         logger.debug("serverSocketInit .. ");
-    // FK --> #5 main function of this class where MPJRun.java connection
+
     serverSocketInit();
 
   }
@@ -193,7 +192,7 @@ public class MPJDaemon {
 	  logger.debug("Accepted connection");
 	}
 
-	// FK--> Connection is accepted and the socket passed onto 
+	// Connection is accepted and the socket passed onto 
         // ProcessLauncher.java which takes care of the rest
 	ProcessLauncher pLaunch = new ProcessLauncher(servSock);
 	servSockets.put(servSock, pLaunch);
