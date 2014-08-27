@@ -1,11 +1,11 @@
 /*
  The MIT License
 
- Copyright (c) 2005 - 2010
-   1. Distributed Systems Group, University of Portsmouth (2005)
-   2. Aamir Shafi (2005 - 2010)
-   3. Bryan Carpenter (2005 - 2010)
-   4. Mark Baker (2005 - 2010)
+ Copyright (c) 2005 - 2014
+   1. Distributed Systems Group, University of Portsmouth (2014)
+   2. Aamir Shafi (2005 - 2014)
+   3. Bryan Carpenter (2005 - 2014)
+   4. Mark Baker (2005 - 2014)
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -29,10 +29,10 @@
 
 /*
  * File         : Wrapper.java 
- * Author       : Aamir Shafi, Bryan Carpenter
- * Created      : Sun Dec 12 12:22:15 BST 2004
- * Revision     : $Revision: 1.19 $
- * Updated      : $Date: Wed Mar 31 15:22:37 PKT 2010$
+ * Author       : Aamir Shafi, Bryan Carpenter, Farrukh Khan
+ * Created      : Dec 12, 2004
+ * Revision     : $Revision: 1.20 $
+ * Updated      : Aug 27, 2014
  */
 
 package runtime.daemon;
@@ -47,7 +47,7 @@ import java.net.ServerSocket;
 
 public class Wrapper extends Thread {
 
-  String configFileName = null;
+  String portInfo = null;
   int processes = 0;
   String className = null;
   Class c = null;
@@ -68,11 +68,10 @@ public class Wrapper extends Thread {
   /**
    * Executes MPJ program in a new JVM. This method is invoked in main
    * method of this class, which is started by MPJDaemon. This method 
-   * can start multiple threads in a JVM. This will also parse configuration
-   * file.
+   * can start multiple threads in a JVM.
    * 
    * @param args
-   *          Arguments to this method. args[0] is configFileName 'String',
+   *          Arguments to this method. args[0] is portInfo 'String',
    *          args[1] is number of processes, args[2] is deviceName, args[3] is
    *          hostname of MPJRun.java server, args[4] is the port number of
    *          MPJRun.java server, args[5] is rank, args[6] is className
@@ -81,9 +80,8 @@ public class Wrapper extends Thread {
 
     InetAddress localaddr = InetAddress.getLocalHost();
     hostName = localaddr.getHostName();
-    //System.out.println("FK[wrapper.java]:running on " + hostName);
 
-    configFileName = args[0];
+    portInfo = args[0];
     processes = (new Integer(args[1])).intValue();
     deviceName = args[2];
     serverName = args[3];
@@ -92,33 +90,6 @@ public class Wrapper extends Thread {
     className = args[6];
 
     int tmp = mpjrunConnect(findPort(), findPort());
-
-    /* This code segment is used to append the received mpjdev.conf 
-     * contents into the already existing mpjdev.conf file
-     */
-    /*StringTokenizer conf_file = new StringTokenizer(WRAPPER_INFO, ";");
-    FileOutputStream out = null;
-    try {
-      out = new FileOutputStream(configFileName, true);
-    }
-    catch (FileNotFoundException e) {
-      System.err.println("["+hostName+"-Wrapper.java]: mpjdev.conf not found..");
-      e.printStackTrace();
-    }
-    PrintStream cout = new PrintStream(out);
-    
-    while(conf_file.hasMoreTokens()) {
-      String token = conf_file.nextToken();
-      cout.println(token);
-    }
-    cout.close();
-    try {
-      out.close();
-    }
-    catch (IOException e){
-      System.err.println("["+hostName+"-Wrapper.java]: Error closing mpjdev.conf");
-      e.printStackTrace();
-    }*/
 
     nargs = new String[(args.length - 7)];
     System.arraycopy(args, 7, nargs, 0, nargs.length);
@@ -131,21 +102,13 @@ public class Wrapper extends Thread {
       String arvs[] = new String[nargs.length + 3];
 
       arvs[0] = rank;
-      arvs[1] = configFileName.concat(WRAPPER_INFO);
+      arvs[1] = portInfo.concat(WRAPPER_INFO);
       arvs[2] = deviceName;
 
       for (int i = 0; i < nargs.length; i++) {
 	arvs[i + 3] = nargs[i];
       }
 
-      /* FK -> Tmp code to read MPJDEV.conf */
-/*      BufferedReader in = new BufferedReader(new FileReader(arvs[1]));
-      String line;
-      while( (line = in.readLine()) != null )
-        System.out.println(line);
-      in.close();
-*/
-      
       Method m = c.getMethod("main", new Class[] { arvs.getClass() });
       m.setAccessible(true);
       int mods = m.getModifiers();
@@ -174,14 +137,15 @@ public class Wrapper extends Thread {
   }
 
   /**
-   * Returns an avaiable port on the system.
    * <p>
+   * Returns an avaiable port on the system.
+   * </p>
    * This method searches for a random port between 25,000 and 40,000.
    * It opens up a server socket on this port to confirm availability
    * and then passes it back. If the port is not available, another 
    * random port is generated.
    *
-   * @param selectedPort Integer value of the available port
+   * @param selectedPort Returns Integer value of the available port
    */
 
   private int findPort(){
@@ -222,10 +186,19 @@ public class Wrapper extends Thread {
   }
 
   /**
-  * #FK
-  * input: Two integers
-  * output: Integer (0 for success, 1 for error)
-  * description: function to send selected ports to MPJRun.java
+  * <p>
+  * This function connects with MPJRun.java server and sends the port
+  * information to the server.
+  * </p>
+  *
+  * This function takes the write and read port as inputs which
+  * Wrapper.java needs to communicate with MPJRun.java server.
+  * After sending the individual port numbers, the function waits
+  * for the broadcast message from the MPJRun.java server containing
+  * port information for all users.
+  *
+  * @param wport Write port for the wrapper process
+  *        rport Read port for the wrapper process
   *
   **/
   private int mpjrunConnect(int wport, int rport){
@@ -243,14 +216,10 @@ public class Wrapper extends Thread {
       out.writeInt(Integer.parseInt(rank));
       out.flush();
 
-      //int r = in.readInt();
-      //rank = Integer.toString(r);
-
       int len = in.readInt();
       byte[] dataFrame = new byte[len];
       in.readFully(dataFrame);
       WRAPPER_INFO = new String(dataFrame, "UTF-8");
-      //System.out.println("I received: " + WRAPPER_INFO);
       
       clientSock.close();
    }
