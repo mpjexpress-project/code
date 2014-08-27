@@ -29,10 +29,11 @@
  */
 /*
  * File         : MPJProcessTicket.java 
- * Author       : Khurram Shahzad, Mohsan Jameel, Aamir Shafi, Bryan Carpenter
+ * Author(s)    : Khurram Shahzad, Mohsan Jameel, Aamir Shafi, 
+ * 		  Bryan Carpenter, Farrukh Khan
  * Created      : Oct 10, 2013
  * Revision     : $
- * Updated      : Nov 05, 2013 
+ * Updated      : Aug 27, 2014 
  */
 
 package runtime.common;
@@ -58,8 +59,9 @@ public class MPJProcessTicket {
   private ArrayList<String> appArgs;
   private String userID;
 
-  // FK--> Variable introduced to communicate masterNode info
+  // masterNode is the IP for MPJRun.java server
   private String masterNode;
+  // masterNode is the port at which MPJRun.java server is listening
   private String masterPort;
 
   /* Hybrid Device */
@@ -72,7 +74,6 @@ public class MPJProcessTicket {
   private int debugPort;
   private String mpjHomeDir;
 
-  // FK--> Respective get and set functions for masterNode info
   public String getMasterNode() {
     return masterNode;
   }
@@ -88,7 +89,6 @@ public class MPJProcessTicket {
   public void setMasterPort(String masterPort){
     this.masterPort = masterPort;
   }
-  //-----------------------------------------
 
   public String getClassPath() {
     return classPath;
@@ -261,7 +261,6 @@ public class MPJProcessTicket {
     this.confFileContents = "";
     this.appArgs = new ArrayList<String>();
  
-    //FK -->> MasterNode Info
     this.masterNode = "";
     this.masterPort = "";
 
@@ -305,7 +304,6 @@ public class MPJProcessTicket {
     this.isProfiler = isProfiler;
     this.debugPort = debugPort;
     this.mpjHomeDir = mpjHomeDir;
-    // FK--> masterNode information
     this.masterNode = masterNode;
     this.masterPort = masterPort;
   }
@@ -327,7 +325,7 @@ public class MPJProcessTicket {
     classPathXML.setText(this.classPath);
     processInfoXML.appendChild(classPathXML);
 
-    // FK-->> MasterNode information
+    // MasterNode information
     MPJXml masterNodeXML = new MPJXml(getTag(RTConstants.MASTER_NODE));
     masterNodeXML.setText(this.masterNode);
     processInfoXML.appendChild(masterNodeXML);
@@ -436,7 +434,7 @@ public class MPJProcessTicket {
       MPJXml classPathXML = processInfoXml.getChild(RTConstants.CLASS_PATH);
       this.classPath = classPathXML.getText();
 
-      // FK-->> Adding this for masterNode recognition
+      // Obtaining masterNode information from XML 
       MPJXml masterNodeXML = processInfoXml.getChild(RTConstants.MASTER_NODE);
       this.masterNode = masterNodeXML.getText();
 
