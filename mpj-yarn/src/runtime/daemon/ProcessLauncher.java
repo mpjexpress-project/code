@@ -136,6 +136,7 @@ public class ProcessLauncher extends Thread {
       }
 
       if (DEBUG && logger.isDebugEnabled()) {
+	logger.debug("\n******************ARGUMENTS PASSED TO PB********************\n");
 	for (int i = 0; i < arguments.length; i++) {
 	  logger.debug("arguments[" + i + "] = " + arguments[i]);
 	}
