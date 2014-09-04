@@ -37,6 +37,8 @@
 
 package runtime.starter;
 
+//import org.apache.hadoop.yarn.api.ApplicationConstants;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.InetAddress;
@@ -50,6 +52,7 @@ import java.util.UUID;
 import java.util.Vector;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
+import java.util.*;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.DailyRollingFileAppender;
@@ -83,7 +86,7 @@ public class MPJRun {
 
   // Adding YARN related variables here
   private boolean isYarn = false;
-  static String yarnHomeDir = null;
+  static String hadoopHomeDir = null;
 
   String machinesFile = DEFAULT_MACHINES_FILE_NAME;
   private int psl = DEFAULT_PROTOCOL_SWITCH_LIMIT;
@@ -162,20 +165,59 @@ public class MPJRun {
     
     // HADOOP_HOME check here!!
     if(isYarn) {
+
+      hadoopHomeDir = map.get("HADOOP_HOME");
+      RTConstants.HADOOP_YARN_HOME = hadoopHomeDir;
+
+      if (hadoopHomeDir == null) {
+        throw new MPJRuntimeException("FK>> YARN flag passed"+
+						" but HADOOP_HOME not set");
+      } 
+
+      if (DEBUG && logger.isDebugEnabled()) {
+        logger.debug("HADOOP HOME is set to: " + hadoopHomeDir);
+        logger.debug(mpjHomeDir+"/lib/mpjyarnclient.jar");
+      }
+
+      List<String> commands = new ArrayList<String>();
+
+      commands.add(hadoopHomeDir+"/bin/hadoop");
+      commands.add("jar");
+      commands.add(mpjHomeDir+"/lib/mpjyarnclient.jar");
+      commands.add(Integer.toString(nprocs));
+      //commands.add("/simple-yarn-app-1.0-SNAPSHOT.jar");
+
+      java.lang.ProcessBuilder processBuilder = 
+					new java.lang.ProcessBuilder(commands);
+      java.lang.Process p = processBuilder.start();
+
+      InputStream is = p.getInputStream();
+      InputStreamReader isr = new InputStreamReader(is);
+      BufferedReader br = new BufferedReader(isr);
+
+      String line;
+      
+      if (DEBUG && logger.isDebugEnabled()) {
+        logger.debug(" Output of running Command: "+
+				    commands.toString()+"\n\n");
+      }
+
+      while ((line = br.readLine()) != null) {
+       System.out.println(line);
+       if (DEBUG && logger.isDebugEnabled())
+          logger.debug(line);
+      }
+        
       try {
-        yarnHomeDir = map.get("HADOOP_HOME");
-        RTConstants.HADOOP_YARN_HOME = yarnHomeDir;
-        if (yarnHomeDir == null) {
-          throw new Exception("FK>> YARN flag passed but HADOOP_HOME not set");
-        }
-        else
-          System.out.println("FK>> HADOOP HOME is set to: " + yarnHomeDir);
+        int exitValue = p.waitFor();
+
+        if (DEBUG && logger.isDebugEnabled())
+          logger.debug("\n\nExit Value is " + exitValue);
+
+      } catch (InterruptedException e) {
+          e.printStackTrace();
       }
-      catch (Exception exc) {
-        System.out.println("Error: " + exc.getMessage());
-        exc.printStackTrace();
-        return;
-      }
+			
     }
 
     // Check for MPJE configuration
@@ -221,6 +263,10 @@ public class MPJRun {
     if (ADEBUG) {
       writeFile(CONF_FILE_CONTENTS + "\n");
     }
+    
+     if (DEBUG && logger.isDebugEnabled()) {
+        logger.debug("conf file contents " + CONF_FILE_CONTENTS);
+      }
 
     //FK--> directory where class is present
     urlArray = applicationClassPathEntry.getBytes();
@@ -323,8 +369,12 @@ public class MPJRun {
 
       // FK>> Adding check for YARN flag
       else if (args[i].equals("-yarn")) {
+
         isYarn = true;
-        System.out.println("FK>> YARN Flag!");
+
+        if (DEBUG && logger.isDebugEnabled())
+          logger.debug("FK>> YARN Flag!");
+
         RTConstants.HADOOP_YARN = "true";
       } 
 
@@ -450,7 +500,7 @@ public class MPJRun {
 	  + ">");
       // FK>> Log statements for YARN
       logger.debug("-yarn: <" + isYarn + ">");
-      logger.debug("$HADOOP_HOME: <" + yarnHomeDir + ">");
+      logger.debug("$HADOOP_HOME: <" + hadoopHomeDir + ">");
 
       for (int i = 0; i < jArgs.length; i++) {
 	if (DEBUG && logger.isDebugEnabled())
@@ -1039,7 +1089,7 @@ public class MPJRun {
       WRAPPER_INFO += peers[i];
     }
 
-    //System.out.println("I am going to distribute:"+ WRAPPER_INFO);
+    System.out.println("I am going to distribute:"+ WRAPPER_INFO);
     try {
       dataFrame = new byte[WRAPPER_INFO.getBytes("UTF-8").length];
       dataFrame = WRAPPER_INFO.getBytes("UTF-8");

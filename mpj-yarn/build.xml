@@ -21,7 +21,9 @@
     <property environment="env"/>
     <property name="mx_home" value="${env.MX_HOME}"/>
     <property name="java_home" value="${env.JAVA_HOME}"/>
-
+    <!--HZ>> HADOOP HOME -->
+    <property name="hadoop_home" value="${env.HADOOP_HOME}"/>
+    
     <!-- <property name="mx_home" value="/usr/local/mx"/> 
     <property environment="env"/> -->
 
@@ -82,10 +84,9 @@
             depends="generateJava">
         
 	<javac srcdir="${src.dir}" 
-	classpath="lib/wrapper.jar:lib/org.mortbay.jetty.jar:lib/log4j-1.2.11.jar:lib/commons-cli-1.2.jar:lib\commons-codec-1.8.jar:lib\commons-io-2.4.jar" 
-	sourcepath="${src.dir}"
-	debug="true"
-	/>
+	classpath="lib/wrapper.jar:lib/org.mortbay.jetty.jar:lib/log4j-1.2.11.jar:lib/commons-cli-1.2.jar:lib\commons-codec-1.8.jar:lib\commons-io-2.4.jar:${hadoop_home}/share/hadoop/yarn/hadoop-yarn-api-2.5.0.jar:${hadoop_home}/share/hadoop/yarn/hadoop-yarn-client-2.5.0.jar:${hadoop_home}/share/hadoop/yarn/hadoop-yarn-common-2.5.0.jar:${hadoop_home}/share/hadoop/common/hadoop-common-2.5.0.jar:${hadoop_home}/share/hadoop/common/lib/hadoop-annotations-2.5.0.jar:${hadoop_home}/share/hadoop/tools/lib/commons-logging-1.1.3.jar"
+        sourcepath="${src.dir}"
+        debug="true"/>
     </target> 
 
     <target name="jars" description="builds jar files ..">
@@ -167,7 +168,7 @@
 
 
 
-<jar destfile="${lib.dir}/daemon.jar" basedir="src"
+    <jar destfile="${lib.dir}/daemon.jar" basedir="src"
 	          includes="runtime/daemon/*.class">
 				<manifest>
 					<attribute name="Main-class" 
@@ -176,6 +177,7 @@
 		    value="log4j-1.2.11.jar commons-codec-1.8.jar commons-io-2.4.jar runtimecommon.jar "/> 
 				</manifest>  
 			</jar>
+
 
      <jar destfile="${lib.dir}/loader1.jar" basedir="src"
           includes="runtime/daemon/*.class runtime/*.class">
@@ -186,41 +188,71 @@
 	    value="wrapper.jar log4j-1.2.11.jar mpj.jar"/>  -->
           </manifest> 
      </jar>
+    
 
-     <jar destfile="${lib.dir}/loader2.jar" basedir="src"
-          includes="runtime/daemon/*.class runtime/*.class">
+
+    <jar destfile="${lib.dir}/loader2.jar" basedir="src"
+         includes="runtime/daemon/*.class runtime/*.class">
 	  <manifest>
             <attribute name="Main-class" 
 	               value="runtime.daemon.ThreadedWrapper" /> 
         <!--    <attribute name="Class-path" 
 	    value="wrapper.jar log4j-1.2.11.jar mpj.jar"/>  -->
           </manifest>  
-     </jar>
+    </jar>
 
-		<jar destfile="${lib.dir}/starter.jar" basedir="src"
-          includes="runtime/starter/*.class"  >
-			<manifest>
-				<attribute name="Main-class" value="runtime.starter.MPJRun" />
-				<attribute name="Class-path" 
-	   value="org.mortbay.jetty.jar log4j-1.2.11.jar runtimecommon.jar"/> 
-			</manifest>  
-		</jar>
-     
-     		<jar destfile="${lib.dir}/daemonmanager.jar" basedir="src"
-    	          includes="runtime/daemonmanager/*.class">
-			<manifest>
-				<attribute name="Main-class" value="runtime.daemonmanager.MPJDaemonManager" />    
-				<attribute name="Class-path" 
+    <jar destfile="${lib.dir}/starter.jar" basedir="src"
+         includes="runtime/starter/*.class"  >
+          <manifest>
+         	<attribute name="Main-class" value="runtime.starter.MPJRun" />
+ 			<attribute name="Class-path" 
+	                           value="org.mortbay.jetty.jar log4j-1.2.11.jar runtimecommon.jar"/> 
+	  </manifest>  
+    </jar>
+
+    <!-- Yarn Client Jar -->         
+    <jar destfile="${lib.dir}/mpjyarnclient.jar" basedir="src"
+         includes="runtime/starter/MPJYarnClient.class">
+		 <manifest>
+                       <attribute name="Main-class" value="runtime.starter.MPJYarnClient" />
+                                
+                 </manifest>
+    </jar>
+
+    <!-- Application Master Jar -->
+    <jar destfile="${lib.dir}/AM.jar" basedir="src"
+         includes="runtime/starter/ApplicationMaster.class">
+                 <manifest>
+                       <attribute name="Main-class" 
+                                  value="runtime.starter.ApplicationMaster" />
+                       </manifest>
+    </jar>
+    
+    <!-- Yarn Wrapper Jar -->
+    <jar destfile="${lib.dir}/YarnWrapper.jar" basedir="src"
+         includes="runtime/starter/YarnWrapper.class">
+                 <manifest>
+                    <attribute name="Main-class" 
+                               value="runtime.starter.YarnWrapper" />
+                 </manifest>
+    </jar>
+  
+    <jar destfile="${lib.dir}/daemonmanager.jar" basedir="src"
+	 includes="runtime/daemonmanager/*.class">
+		<manifest>
+		     <attribute name="Main-class" value="runtime.daemonmanager.MPJDaemonManager" />    
+			<attribute name="Class-path" 
     		  		   value="commons-cli-1.2.jar runtimecommon.jar"/> 
-			</manifest>  
-		</jar>	
-		<jar destfile="${lib.dir}/runtimecommon.jar" basedir="src"
-	    	          includes="runtime/common/*.class">
-				<manifest>
-					<attribute name="Class-path" 
-	    		  		   value="commons-cli-1.2.jar commons-codec-1.8.jar"/> 
-				</manifest>  
-			</jar>	
+		</manifest>  
+    </jar>	
+
+    <jar destfile="${lib.dir}/runtimecommon.jar" basedir="src"
+	 includes="runtime/common/*.class">
+	        <manifest>
+		     <attribute name="Class-path" 
+	              	        value="commons-cli-1.2.jar commons-codec-1.8.jar"/> 
+		</manifest>  
+    </jar>	
      
      
     </target>
