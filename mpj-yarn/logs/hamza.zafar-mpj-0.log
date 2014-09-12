@@ -2,15 +2,15 @@
  INFO  mpj  - Address: compute-0-1.local/10.2.255.253
  INFO  mpj  - Name :compute-0-1.local
  INFO  mpj  - rank :0
- INFO  mpj  - Original string: #Number of Processes;2;#Protocol Switch Limit;131072;#Peer Information;10.2.255.253@35995@39698@0@0;10.2.255.253@29544@26479@1@0
+ INFO  mpj  - Original string: #Number of Processes;3;#Protocol Switch Limit;131072;#Peer Information;10.2.255.253@25962@30769@0@0;10.2.255.253@28784@39592@1@0;10.2.255.253@29344@37246@2@0
  INFO  mpj  - Parsing string arguments..
  INFO  mpj  - #Number of Processes
- INFO  mpj  - Number of processes:2
+ INFO  mpj  - Number of processes:3
  INFO  mpj  - #Protocol Switch Limit
  INFO  mpj  - Protocol Switch Limit:131072
  INFO  mpj  - #Peer Information
- DEBUG mpj  - created writableServerChannel on port 35995
- DEBUG mpj  - created readableServerChannel on port 39698
+ DEBUG mpj  - created writableServerChannel on port 25962
+ DEBUG mpj  - created readableServerChannel on port 30769
  DEBUG mpj  - Dont connect to itself, so contine;
  DEBUG mpj  - Starting the selector thread 
  DEBUG mpj  - testing if all peers are connected?
@@ -18,30 +18,55 @@
  DEBUG mpj  - ---selector EVENT---
  DEBUG mpj  - selector calling doAccept (data-channel) 
  DEBUG mpj  - ---doAccept---
- DEBUG mpj  - Added channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:35995 remote=/10.2.255.253:51786]
+ DEBUG mpj  - Added channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:25962 remote=/10.2.255.253:35986]
  DEBUG mpj  - Now the size is <1>
- DEBUG mpj  -  notifying and returning true
+ DEBUG mpj  - --doAccept ends--
+ DEBUG mpj  -  returning false
  DEBUG mpj  - ---selector EVENT---
  DEBUG mpj  - selector calling doAccept (ctrl-channel) 
  DEBUG mpj  - ---doAccept---
- DEBUG mpj  - Added channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:39698 remote=/10.2.255.253:40696]
+ DEBUG mpj  - Added channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:30769 remote=/10.2.255.253:60211]
  DEBUG mpj  - Now the size is <1>
+ DEBUG mpj  - --doAccept ends--
+ DEBUG mpj  -  returning false
+ DEBUG mpj  - ---selector EVENT---
+ DEBUG mpj  - WRITE_EVENT (should not see it)
+ DEBUG mpj  - In, WRITABLE, changing interestOps to READ_ONLY
+ DEBUG mpj  - ---selector EVENT---
+ DEBUG mpj  - selector calling doAccept (data-channel) 
+ DEBUG mpj  - ---doAccept---
+ DEBUG mpj  - Added channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:25962 remote=/10.2.255.253:36016]
+ DEBUG mpj  - Now the size is <2>
+ DEBUG mpj  -  notifying and returning true
+ DEBUG mpj  - ---selector EVENT---
+ DEBUG mpj  - ---READ_EVENT----21
+ DEBUG mpj  - ---barrierRead---
+ DEBUG mpj  - (after ck) trying to add rank 2into table {}
+ DEBUG mpj  - Adding rank 2into table {3437a87e-672e-4ca2-a6eb-f5e2e0b4a55a=java.nio.channels.SocketChannel[connected local=/10.2.255.253:30769 remote=/10.2.255.253:60211]}
+ DEBUG mpj  - ---selector EVENT---
+ DEBUG mpj  - selector calling doAccept (ctrl-channel) 
+ DEBUG mpj  - ---doAccept---
+ DEBUG mpj  - Added channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:30769 remote=/10.2.255.253:60217]
+ DEBUG mpj  - Now the size is <2>
  DEBUG mpj  -  notifying and returning true
  INFO  mpj  -  Yes all nodes are connected to each other 
+ DEBUG mpj  - ---selector EVENT---
+ DEBUG mpj  - WRITE_EVENT (should not see it)
  DEBUG mpj  - rank<0>is sending its rank,msb,lsb, to all data channels
+ DEBUG mpj  - In, WRITABLE, changing interestOps to READ_ONLY
  DEBUG mpj  - rank<0> testing if everything is received? 
  DEBUG mpj  - ---selector EVENT---
  DEBUG mpj  - ---READ_EVENT----21
  DEBUG mpj  - ---barrierRead---
- DEBUG mpj  - (after ck) trying to add rank 1into table {}
- DEBUG mpj  - Adding rank 1into table {0917baf5-87e1-4c21-98a1-b36be1566b2f=java.nio.channels.SocketChannel[connected local=/10.2.255.253:39698 remote=/10.2.255.253:40696]}
+ DEBUG mpj  - (after ck) trying to add rank 1into table {3437a87e-672e-4ca2-a6eb-f5e2e0b4a55a=java.nio.channels.SocketChannel[connected local=/10.2.255.253:30769 remote=/10.2.255.253:60211]}
+ DEBUG mpj  - Adding rank 1into table {c6aae391-bcb6-44c3-8608-4859a35d99cc=java.nio.channels.SocketChannel[connected local=/10.2.255.253:30769 remote=/10.2.255.253:60217], 3437a87e-672e-4ca2-a6eb-f5e2e0b4a55a=java.nio.channels.SocketChannel[connected local=/10.2.255.253:30769 remote=/10.2.255.253:60211]}
  DEBUG mpj  - worldReadableTable is filled 
  DEBUG mpj  - ---barrierRead---
- DEBUG mpj  - ---selector EVENT---
- DEBUG mpj  - WRITE_EVENT (should not see it)
- DEBUG mpj  - In, WRITABLE, changing interestOps to READ_ONLY
- DEBUG mpj  - (after ck) trying to add rank 1into table {}
- DEBUG mpj  - Adding rank 1into table {0917baf5-87e1-4c21-98a1-b36be1566b2f=java.nio.channels.SocketChannel[connected local=/10.2.255.253:35995 remote=/10.2.255.253:51786]}
+ DEBUG mpj  - (after ck) trying to add rank 2into table {}
+ DEBUG mpj  - Adding rank 2into table {3437a87e-672e-4ca2-a6eb-f5e2e0b4a55a=java.nio.channels.SocketChannel[connected local=/10.2.255.253:25962 remote=/10.2.255.253:35986]}
+ DEBUG mpj  - ---barrierRead---
+ DEBUG mpj  - (after ck) trying to add rank 1into table {3437a87e-672e-4ca2-a6eb-f5e2e0b4a55a=java.nio.channels.SocketChannel[connected local=/10.2.255.253:25962 remote=/10.2.255.253:35986]}
+ DEBUG mpj  - Adding rank 1into table {c6aae391-bcb6-44c3-8608-4859a35d99cc=java.nio.channels.SocketChannel[connected local=/10.2.255.253:25962 remote=/10.2.255.253:36016], 3437a87e-672e-4ca2-a6eb-f5e2e0b4a55a=java.nio.channels.SocketChannel[connected local=/10.2.255.253:25962 remote=/10.2.255.253:35986]}
  DEBUG mpj  - worldWritable is filled 
  DEBUG mpj  - 
 
@@ -55,7 +80,7 @@
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@6b7547a3
  DEBUG mpj  - position 0
  DEBUG mpj  - list.blockSize 4194304
  DEBUG mpj  - Adding buddy @ 4194304
@@ -106,59 +131,97 @@
  DEBUG mpj  - Adding buddy @ 128
  DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
  DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@52fad2a1
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@60b25572
  DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=1 lim=128 cap=8388608]
  DEBUG mpj  - position 0
  INFO  mpj  - ---isend---<34021>
- DEBUG mpj  - sender :6c16773c-9380-4f96-a387-67c801ab41ea
- DEBUG mpj  - receiver :0917baf5-87e1-4c21-98a1-b36be1566b2f
+ DEBUG mpj  - sender :534015a2-58e9-47a2-87a8-fb682b5e64da
+ DEBUG mpj  - receiver :c6aae391-bcb6-44c3-8608-4859a35d99cc
  DEBUG mpj  - tag :34021
  DEBUG mpj  - isend with remote process connections
- DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.253:35995 remote=/10.2.255.253:51786]
+ DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.253:25962 remote=/10.2.255.253:36016]
  DEBUG mpj  - get writeLock for this channel
  DEBUG mpj  - ---eagerSend---
  DEBUG mpj  -  request.bufoffset 81
  DEBUG mpj  - sendBuffer java.nio.DirectByteBuffer[pos=0 lim=81 cap=127]
- DEBUG mpj  - ---selector EVENT---
  DEBUG mpj  - request.staticBuffer (1)<java.nio.DirectByteBuffer[pos=0 lim=93 cap=127]> w=0
- DEBUG mpj  - ---READ_EVENT----24
- DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
  DEBUG mpj  - request.staticBuffer (2)<java.nio.DirectByteBuffer[pos=93 lim=93 cap=127]> w=93
- DEBUG mpj  - -- recvCtrlMsgFromSender ---
  DEBUG mpj  - request.dBufSize <0>
  DEBUG mpj  - --eagerSend finishes--
- DEBUG mpj  - Receiver getting the control message
  INFO  mpj  - ---isend ends---<34021>
- DEBUG mpj  - Could be rend, eager, posted b4 or not
+ DEBUG mpj  - 
+
+ createBuffer 104
+ DEBUG mpj  - required level 0
+ DEBUG mpj  - finding the right level 
+ DEBUG mpj  - freeList.size() 17
+ DEBUG mpj  - list @level <0>=mpjbuf.Buddy1RegionFreeList@60b25572
+ DEBUG mpj  - calling allocate ...
+ DEBUG mpj  - --allocate--
+ DEBUG mpj  -  level :0
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@60b25572
+ DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
+ DEBUG mpj  -  cap 128
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@60b25572
+ DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=129 lim=256 cap=8388608]
+ DEBUG mpj  - position 128
+ INFO  mpj  - ---isend---<34022>
+ DEBUG mpj  - sender :534015a2-58e9-47a2-87a8-fb682b5e64da
+ DEBUG mpj  - receiver :3437a87e-672e-4ca2-a6eb-f5e2e0b4a55a
+ DEBUG mpj  - tag :34022
+ DEBUG mpj  - isend with remote process connections
+ DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.253:25962 remote=/10.2.255.253:35986]
+ DEBUG mpj  - get writeLock for this channel
+ DEBUG mpj  - ---eagerSend---
+ DEBUG mpj  -  request.bufoffset 81
+ DEBUG mpj  - sendBuffer java.nio.DirectByteBuffer[pos=0 lim=81 cap=127]
+ DEBUG mpj  - request.staticBuffer (1)<java.nio.DirectByteBuffer[pos=0 lim=93 cap=127]> w=0
+ DEBUG mpj  - request.staticBuffer (2)<java.nio.DirectByteBuffer[pos=93 lim=93 cap=127]> w=93
+ DEBUG mpj  - request.dBufSize <0>
+ DEBUG mpj  - --eagerSend finishes--
+ INFO  mpj  - ---isend ends---<34022>
  DEBUG mpj  - 
 
  createBuffer 16
  DEBUG mpj  - required level 0
- DEBUG mpj  - msb :655197834515139617
  DEBUG mpj  - finding the right level 
- DEBUG mpj  - lsb :-7448475032770680017
  DEBUG mpj  - freeList.size() 17
- DEBUG mpj  - sendCounter :1
- DEBUG mpj  - list @level <0>=mpjbuf.Buddy1RegionFreeList@52fad2a1
- DEBUG mpj  - tag :34020
+ DEBUG mpj  - list @level <0>=null
+ DEBUG mpj  - list @level <1>=mpjbuf.Buddy1RegionFreeList@7bae9cec
  DEBUG mpj  - calling allocate ...
- DEBUG mpj  - staBufferSize :12
  DEBUG mpj  - --allocate--
- DEBUG mpj  - dynaBufferSize :0
  DEBUG mpj  -  level :0
- DEBUG mpj  - context :10
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@52fad2a1
- DEBUG mpj  - commMode :3
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@7bae9cec
+ DEBUG mpj  - position 256
+ DEBUG mpj  - list.blockSize 128
+ DEBUG mpj  - Adding buddy @ 384
  DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
- DEBUG mpj  - type :mpjbuf.Type@7ac0d228
  DEBUG mpj  -  cap 128
- DEBUG mpj  - sendCounter :1
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@52fad2a1
- DEBUG mpj  - numEls :1
- DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=129 lim=256 cap=8388608]
- DEBUG mpj  - position 128
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@60b25572
+ DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=257 lim=384 cap=8388608]
+ DEBUG mpj  - position 256
  INFO  mpj  - ---irecv---<34020>
  DEBUG mpj  - Looking whether this req has been posted or not
+ DEBUG mpj  - ---selector EVENT---
+ DEBUG mpj  - ---READ_EVENT----24
+ DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
+ DEBUG mpj  - -- recvCtrlMsgFromSender ---
+ DEBUG mpj  - Receiver getting the control message
+ DEBUG mpj  - Could be rend, eager, posted b4 or not
+ DEBUG mpj  - msb :3762661274541771938
+ DEBUG mpj  - lsb :-6418766489105160870
+ DEBUG mpj  - sendCounter :1
+ DEBUG mpj  - tag :34020
+ DEBUG mpj  - staBufferSize :12
+ DEBUG mpj  - dynaBufferSize :0
+ DEBUG mpj  - context :10
+ DEBUG mpj  - commMode :3
+ DEBUG mpj  - type :mpjbuf.Type@329a0466
+ DEBUG mpj  - sendCounter :1
+ DEBUG mpj  - numEls :1
+ DEBUG mpj  - No Matching req, so posting ourselves
+ DEBUG mpj  - request.staticBuffer (in recv) java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
+ DEBUG mpj  - Added request in irecv 
  DEBUG mpj  - setting the request.code to RECV_IN_DEV_MEMORY
  DEBUG mpj  - Calling eagerRecv2mpjMem
  DEBUG mpj  - ---eagerRecv2mpjMem_34020
@@ -170,42 +233,60 @@
  DEBUG mpj  - required level 0
  DEBUG mpj  - finding the right level 
  DEBUG mpj  - freeList.size() 17
- DEBUG mpj  - list @level <0>=null
- DEBUG mpj  - list @level <1>=mpjbuf.Buddy1RegionFreeList@c115a1e
+ DEBUG mpj  - list @level <0>=mpjbuf.Buddy1RegionFreeList@60b25572
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@c115a1e
- DEBUG mpj  - position 256
- DEBUG mpj  - list.blockSize 128
- DEBUG mpj  - Adding buddy @ 384
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@60b25572
  DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
  DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@52fad2a1
- DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=257 lim=384 cap=8388608]
- DEBUG mpj  - position 256
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@60b25572
+ DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=385 lim=512 cap=8388608]
+ DEBUG mpj  - position 384
  DEBUG mpj  -  creating eager bufferjava.nio.DirectByteBuffer[pos=0 lim=12 cap=127]
  DEBUG mpj  - Adding the request
- DEBUG mpj  - time_ready_sendrecv=0.002651
+ DEBUG mpj  - time_ready_sendrecv=0.005299
+ DEBUG mpj  - ---selector EVENT---
+ DEBUG mpj  - ---READ_EVENT----24
+ DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
+ DEBUG mpj  - -- recvCtrlMsgFromSender ---
+ DEBUG mpj  - Receiver getting the control message
+ DEBUG mpj  - Could be rend, eager, posted b4 or not
+ DEBUG mpj  - msb :-4131239493083183933
+ DEBUG mpj  - lsb :-8788695122983413300
+ DEBUG mpj  - sendCounter :1
+ DEBUG mpj  - tag :34020
+ DEBUG mpj  - staBufferSize :12
+ DEBUG mpj  - dynaBufferSize :0
+ DEBUG mpj  - context :10
+ DEBUG mpj  - commMode :3
+ DEBUG mpj  - type :mpjbuf.Type@329a0466
+ DEBUG mpj  - sendCounter :1
+ DEBUG mpj  - numEls :1
+ DEBUG mpj  - ---eagerRecv2UserMem---
+ DEBUG mpj  - request.sBufSize (is it zero?) 12
+ DEBUG mpj  - b(1) java.nio.DirectByteBuffer[pos=0 lim=12 cap=127]
+ DEBUG mpj  - b(2) java.nio.DirectByteBuffer[pos=12 lim=12 cap=127]
+ DEBUG mpj  - request.dBufSize 0
+ DEBUG mpj  - --eagerRecv2UserMem ends--
+ INFO  mpj  - ---irecv---<34020>
+ DEBUG mpj  - Looking whether this req has been posted or not
  DEBUG mpj  - 
 --free--
- DEBUG mpj  - buffer.list.front 384
+ DEBUG mpj  - buffer.list.front -1
  DEBUG mpj  -  list.level 0
- DEBUG mpj  -  position 256
+ DEBUG mpj  -  position 384
  DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy 384
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=384 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 0
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy 256
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=256 lim=8388608 cap=8388608]
  DEBUG mpj  -  buddy is not FREE 
- DEBUG mpj  -  adding the buffer at pos <256
- DEBUG mpj  - size of htis buffer is 256
+ DEBUG mpj  -  adding the buffer at pos <384
+ DEBUG mpj  - size of htis buffer is 128
  DEBUG mpj  - setting the buf size 12
  DEBUG mpj  - removed 
  DEBUG mpj  - 
 --free--
- DEBUG mpj  - buffer.list.front -1
+ DEBUG mpj  - buffer.list.front 384
  DEBUG mpj  -  list.level 0
  DEBUG mpj  -  position 0
  DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
@@ -225,6 +306,20 @@
  DEBUG mpj  -  buddy is free ...removing it ..
  DEBUG mpj  -  buddy 256
  DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=256 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is not FREE 
+ DEBUG mpj  -  adding the buffer at pos <0
+ DEBUG mpj  - size of htis buffer is 256
+ DEBUG mpj  - 
+--free--
+ DEBUG mpj  - buffer.list.front 384
+ DEBUG mpj  -  list.level 0
+ DEBUG mpj  -  position 256
+ DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy 384
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=384 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 0
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
  DEBUG mpj  -  buddy is free ...removing it ..
  DEBUG mpj  -  buddy 512
  DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=512 lim=8388608 cap=8388608]
@@ -270,6 +365,7 @@
  DEBUG mpj  -  buddy is free ...removing it ..
  DEBUG mpj  -  adding the buffer at pos <0
  DEBUG mpj  - size of htis buffer is 8388608
+ DEBUG mpj  - time_ready_sendrecv=0.005763
  DEBUG mpj  - 
 
  createBuffer 16
@@ -292,11 +388,11 @@
  DEBUG mpj  - list @level <13>=null
  DEBUG mpj  - list @level <14>=null
  DEBUG mpj  - list @level <15>=null
- DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@6b7547a3
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@6b7547a3
  DEBUG mpj  - position 0
  DEBUG mpj  - list.blockSize 4194304
  DEBUG mpj  - Adding buddy @ 4194304
@@ -347,7 +443,7 @@
  DEBUG mpj  - Adding buddy @ 128
  DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
  DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@52fad2a1
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@60b25572
  DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=1 lim=128 cap=8388608]
  DEBUG mpj  - position 0
  DEBUG mpj  - 
@@ -440,11 +536,11 @@
  DEBUG mpj  - list @level <13>=null
  DEBUG mpj  - list @level <14>=null
  DEBUG mpj  - list @level <15>=null
- DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@6b7547a3
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@6b7547a3
  DEBUG mpj  - position 0
  DEBUG mpj  - list.blockSize 4194304
  DEBUG mpj  - Adding buddy @ 4194304
@@ -495,7 +591,7 @@
  DEBUG mpj  - Adding buddy @ 128
  DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
  DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@52fad2a1
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@60b25572
  DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=1 lim=128 cap=8388608]
  DEBUG mpj  - position 0
  INFO  mpj  - ---irecv---<34000>
@@ -509,16 +605,16 @@
  DEBUG mpj  - -- recvCtrlMsgFromSender ---
  DEBUG mpj  - Receiver getting the control message
  DEBUG mpj  - Could be rend, eager, posted b4 or not
- DEBUG mpj  - msb :655197834515139617
- DEBUG mpj  - lsb :-7448475032770680017
- DEBUG mpj  - sendCounter :2
+ DEBUG mpj  - msb :-4131239493083183933
+ DEBUG mpj  - lsb :-8788695122983413300
+ DEBUG mpj  - sendCounter :3
  DEBUG mpj  - tag :34000
  DEBUG mpj  - staBufferSize :12
  DEBUG mpj  - dynaBufferSize :0
  DEBUG mpj  - context :9
  DEBUG mpj  - commMode :3
- DEBUG mpj  - type :mpjbuf.Type@7ac0d228
- DEBUG mpj  - sendCounter :2
+ DEBUG mpj  - type :mpjbuf.Type@329a0466
+ DEBUG mpj  - sendCounter :3
  DEBUG mpj  - numEls :1
  DEBUG mpj  - ---eagerRecv2UserMem---
  DEBUG mpj  - request.sBufSize (is it zero?) 12
@@ -527,6 +623,176 @@
  DEBUG mpj  - request.dBufSize 0
  DEBUG mpj  - --eagerRecv2UserMem ends--
  DEBUG mpj  - count_received 1
+ DEBUG mpj  - count 1
+ DEBUG mpj  - 
+--free--
+ DEBUG mpj  - buffer.list.front 128
+ DEBUG mpj  -  list.level 0
+ DEBUG mpj  -  position 0
+ DEBUG mpj  - time_ready_sendrecv=6.69E-4
+ DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy 128
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=128 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 256
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=256 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 512
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=512 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 1024
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=1024 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 2048
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=2048 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 4096
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=4096 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 8192
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=8192 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 16384
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=16384 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 32768
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=32768 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 65536
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=65536 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 131072
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=131072 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 262144
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=262144 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 524288
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=524288 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 1048576
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=1048576 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 2097152
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=2097152 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 4194304
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=4194304 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  adding the buffer at pos <0
+ DEBUG mpj  - size of htis buffer is 8388608
+ DEBUG mpj  - --Recv completed--34000
+ DEBUG mpj  - --Recv--33999
+ DEBUG mpj  - 
+
+ createBuffer 16
+ DEBUG mpj  - required level 0
+ DEBUG mpj  - finding the right level 
+ DEBUG mpj  - freeList.size() 17
+ DEBUG mpj  - list @level <0>=null
+ DEBUG mpj  - list @level <1>=null
+ DEBUG mpj  - list @level <2>=null
+ DEBUG mpj  - list @level <3>=null
+ DEBUG mpj  - list @level <4>=null
+ DEBUG mpj  - list @level <5>=null
+ DEBUG mpj  - list @level <6>=null
+ DEBUG mpj  - list @level <7>=null
+ DEBUG mpj  - list @level <8>=null
+ DEBUG mpj  - list @level <9>=null
+ DEBUG mpj  - list @level <10>=null
+ DEBUG mpj  - list @level <11>=null
+ DEBUG mpj  - list @level <12>=null
+ DEBUG mpj  - list @level <13>=null
+ DEBUG mpj  - list @level <14>=null
+ DEBUG mpj  - list @level <15>=null
+ DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@6b7547a3
+ DEBUG mpj  - calling allocate ...
+ DEBUG mpj  - --allocate--
+ DEBUG mpj  -  level :0
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@6b7547a3
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 4194304
+ DEBUG mpj  - Adding buddy @ 4194304
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 2097152
+ DEBUG mpj  - Adding buddy @ 2097152
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 1048576
+ DEBUG mpj  - Adding buddy @ 1048576
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 524288
+ DEBUG mpj  - Adding buddy @ 524288
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 262144
+ DEBUG mpj  - Adding buddy @ 262144
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 131072
+ DEBUG mpj  - Adding buddy @ 131072
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 65536
+ DEBUG mpj  - Adding buddy @ 65536
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 32768
+ DEBUG mpj  - Adding buddy @ 32768
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 16384
+ DEBUG mpj  - Adding buddy @ 16384
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 8192
+ DEBUG mpj  - Adding buddy @ 8192
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 4096
+ DEBUG mpj  - Adding buddy @ 4096
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 2048
+ DEBUG mpj  - Adding buddy @ 2048
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 1024
+ DEBUG mpj  - Adding buddy @ 1024
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 512
+ DEBUG mpj  - Adding buddy @ 512
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 256
+ DEBUG mpj  - Adding buddy @ 256
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 128
+ DEBUG mpj  - Adding buddy @ 128
+ DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
+ DEBUG mpj  -  cap 128
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@60b25572
+ DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=1 lim=128 cap=8388608]
+ DEBUG mpj  - position 0
+ INFO  mpj  - ---irecv---<33999>
+ DEBUG mpj  - Looking whether this req has been posted or not
+ DEBUG mpj  - No Matching req, so posting ourselves
+ DEBUG mpj  - request.staticBuffer (in recv) java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
+ DEBUG mpj  - Added request in irecv 
+ DEBUG mpj  - ---selector EVENT---
+ DEBUG mpj  - ---READ_EVENT----24
+ DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
+ DEBUG mpj  - -- recvCtrlMsgFromSender ---
+ DEBUG mpj  - Receiver getting the control message
+ DEBUG mpj  - Could be rend, eager, posted b4 or not
+ DEBUG mpj  - msb :3762661274541771938
+ DEBUG mpj  - lsb :-6418766489105160870
+ DEBUG mpj  - sendCounter :3
+ DEBUG mpj  - tag :33999
+ DEBUG mpj  - staBufferSize :12
+ DEBUG mpj  - dynaBufferSize :0
+ DEBUG mpj  - context :9
+ DEBUG mpj  - commMode :3
+ DEBUG mpj  - type :mpjbuf.Type@329a0466
+ DEBUG mpj  - sendCounter :3
+ DEBUG mpj  - numEls :1
+ DEBUG mpj  - ---eagerRecv2UserMem---
+ DEBUG mpj  - request.sBufSize (is it zero?) 12
+ DEBUG mpj  - b(1) java.nio.DirectByteBuffer[pos=0 lim=12 cap=127]
+ DEBUG mpj  - b(2) java.nio.DirectByteBuffer[pos=12 lim=12 cap=127]
+ DEBUG mpj  - request.dBufSize 0
+ DEBUG mpj  - --eagerRecv2UserMem ends--
+ DEBUG mpj  - count_received 1
+ DEBUG mpj  - time_ready_sendrecv=6.0E-4
  DEBUG mpj  - count 1
  DEBUG mpj  - 
 --free--
@@ -564,7 +830,6 @@
  DEBUG mpj  -  buddy 65536
  DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=65536 lim=8388608 cap=8388608]
  DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  - time_ready_sendrecv=0.001844
  DEBUG mpj  -  buddy 131072
  DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=131072 lim=8388608 cap=8388608]
  DEBUG mpj  -  buddy is free ...removing it ..
@@ -585,7 +850,7 @@
  DEBUG mpj  -  buddy is free ...removing it ..
  DEBUG mpj  -  adding the buffer at pos <0
  DEBUG mpj  - size of htis buffer is 8388608
- DEBUG mpj  - --Recv completed--34000
+ DEBUG mpj  - --Recv completed--33999
  DEBUG mpj  -  creatingBuffer 
  DEBUG mpj  - 
 
@@ -609,11 +874,11 @@
  DEBUG mpj  - list @level <13>=null
  DEBUG mpj  - list @level <14>=null
  DEBUG mpj  - list @level <15>=null
- DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@6b7547a3
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@6b7547a3
  DEBUG mpj  - position 0
  DEBUG mpj  - list.blockSize 4194304
  DEBUG mpj  - Adding buddy @ 4194304
@@ -664,18 +929,18 @@
  DEBUG mpj  - Adding buddy @ 128
  DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
  DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@52fad2a1
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@60b25572
  DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=1 lim=128 cap=8388608]
  DEBUG mpj  - position 0
  DEBUG mpj  - count 1
  DEBUG mpj  - offset0
  DEBUG mpj  - bufjava.nio.DirectByteBuffer[pos=82 lim=127 cap=127]
  INFO  mpj  - ---isend---<34000>
- DEBUG mpj  - sender :6c16773c-9380-4f96-a387-67c801ab41ea
- DEBUG mpj  - receiver :0917baf5-87e1-4c21-98a1-b36be1566b2f
+ DEBUG mpj  - sender :534015a2-58e9-47a2-87a8-fb682b5e64da
+ DEBUG mpj  - receiver :c6aae391-bcb6-44c3-8608-4859a35d99cc
  DEBUG mpj  - tag :34000
  DEBUG mpj  - isend with remote process connections
- DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.253:35995 remote=/10.2.255.253:51786]
+ DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.253:25962 remote=/10.2.255.253:36016]
  DEBUG mpj  - get writeLock for this channel
  DEBUG mpj  - ---eagerSend---
  DEBUG mpj  -  request.bufoffset 81
@@ -685,6 +950,164 @@
  DEBUG mpj  - request.dBufSize <0>
  DEBUG mpj  - --eagerSend finishes--
  INFO  mpj  - ---isend ends---<34000>
+ DEBUG mpj  - Calling request.iwait() in send method, it may not return
+ DEBUG mpj  - Called request.iwait() in sng this, means it returned
+ DEBUG mpj  -  destroying buffer 
+ DEBUG mpj  - 
+--free--
+ DEBUG mpj  - buffer.list.front 128
+ DEBUG mpj  -  list.level 0
+ DEBUG mpj  -  position 0
+ DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy 128
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=128 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 256
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=256 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 512
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=512 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 1024
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=1024 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 2048
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=2048 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 4096
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=4096 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 8192
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=8192 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 16384
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=16384 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 32768
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=32768 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 65536
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=65536 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 131072
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=131072 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 262144
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=262144 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 524288
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=524288 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 1048576
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=1048576 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 2097152
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=2097152 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 4194304
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=4194304 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  adding the buffer at pos <0
+ DEBUG mpj  - size of htis buffer is 8388608
+ DEBUG mpj  -  creatingBuffer 
+ DEBUG mpj  - 
+
+ createBuffer 97
+ DEBUG mpj  - required level 0
+ DEBUG mpj  - finding the right level 
+ DEBUG mpj  - freeList.size() 17
+ DEBUG mpj  - list @level <0>=null
+ DEBUG mpj  - list @level <1>=null
+ DEBUG mpj  - list @level <2>=null
+ DEBUG mpj  - list @level <3>=null
+ DEBUG mpj  - list @level <4>=null
+ DEBUG mpj  - list @level <5>=null
+ DEBUG mpj  - list @level <6>=null
+ DEBUG mpj  - list @level <7>=null
+ DEBUG mpj  - list @level <8>=null
+ DEBUG mpj  - list @level <9>=null
+ DEBUG mpj  - list @level <10>=null
+ DEBUG mpj  - list @level <11>=null
+ DEBUG mpj  - list @level <12>=null
+ DEBUG mpj  - list @level <13>=null
+ DEBUG mpj  - list @level <14>=null
+ DEBUG mpj  - list @level <15>=null
+ DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@6b7547a3
+ DEBUG mpj  - calling allocate ...
+ DEBUG mpj  - --allocate--
+ DEBUG mpj  -  level :0
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@6b7547a3
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 4194304
+ DEBUG mpj  - Adding buddy @ 4194304
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 2097152
+ DEBUG mpj  - Adding buddy @ 2097152
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 1048576
+ DEBUG mpj  - Adding buddy @ 1048576
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 524288
+ DEBUG mpj  - Adding buddy @ 524288
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 262144
+ DEBUG mpj  - Adding buddy @ 262144
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 131072
+ DEBUG mpj  - Adding buddy @ 131072
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 65536
+ DEBUG mpj  - Adding buddy @ 65536
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 32768
+ DEBUG mpj  - Adding buddy @ 32768
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 16384
+ DEBUG mpj  - Adding buddy @ 16384
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 8192
+ DEBUG mpj  - Adding buddy @ 8192
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 4096
+ DEBUG mpj  - Adding buddy @ 4096
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 2048
+ DEBUG mpj  - Adding buddy @ 2048
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 1024
+ DEBUG mpj  - Adding buddy @ 1024
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 512
+ DEBUG mpj  - Adding buddy @ 512
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 256
+ DEBUG mpj  - Adding buddy @ 256
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 128
+ DEBUG mpj  - Adding buddy @ 128
+ DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
+ DEBUG mpj  -  cap 128
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@60b25572
+ DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=1 lim=128 cap=8388608]
+ DEBUG mpj  - position 0
+ DEBUG mpj  - count 1
+ DEBUG mpj  - offset0
+ DEBUG mpj  - bufjava.nio.DirectByteBuffer[pos=82 lim=127 cap=127]
+ INFO  mpj  - ---isend---<33999>
+ DEBUG mpj  - sender :534015a2-58e9-47a2-87a8-fb682b5e64da
+ DEBUG mpj  - receiver :3437a87e-672e-4ca2-a6eb-f5e2e0b4a55a
+ DEBUG mpj  - tag :33999
+ DEBUG mpj  - isend with remote process connections
+ DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.253:25962 remote=/10.2.255.253:35986]
+ DEBUG mpj  - get writeLock for this channel
+ DEBUG mpj  - ---eagerSend---
+ DEBUG mpj  -  request.bufoffset 81
+ DEBUG mpj  - sendBuffer java.nio.DirectByteBuffer[pos=0 lim=81 cap=127]
+ DEBUG mpj  - request.staticBuffer (1)<java.nio.DirectByteBuffer[pos=0 lim=93 cap=127]> w=0
+ DEBUG mpj  - request.staticBuffer (2)<java.nio.DirectByteBuffer[pos=93 lim=93 cap=127]> w=93
+ DEBUG mpj  - request.dBufSize <0>
+ DEBUG mpj  - --eagerSend finishes--
+ INFO  mpj  - ---isend ends---<33999>
  DEBUG mpj  - Calling request.iwait() in send method, it may not return
  DEBUG mpj  - Called request.iwait() in sng this, means it returned
  DEBUG mpj  -  destroying buffer 
@@ -768,11 +1191,11 @@
  DEBUG mpj  - list @level <13>=null
  DEBUG mpj  - list @level <14>=null
  DEBUG mpj  - list @level <15>=null
- DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@6b7547a3
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@6b7547a3
  DEBUG mpj  - position 0
  DEBUG mpj  - list.blockSize 4194304
  DEBUG mpj  - Adding buddy @ 4194304
@@ -780,255 +1203,41 @@
  DEBUG mpj  - list.blockSize 2097152
  DEBUG mpj  - Adding buddy @ 2097152
  DEBUG mpj  - position 0
+ DEBUG mpj  - ---selector EVENT---
  DEBUG mpj  - list.blockSize 1048576
  DEBUG mpj  - Adding buddy @ 1048576
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 524288
- DEBUG mpj  - Adding buddy @ 524288
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 262144
- DEBUG mpj  - Adding buddy @ 262144
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 131072
- DEBUG mpj  - Adding buddy @ 131072
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 65536
- DEBUG mpj  - Adding buddy @ 65536
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 32768
- DEBUG mpj  - Adding buddy @ 32768
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 16384
- DEBUG mpj  - Adding buddy @ 16384
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 8192
- DEBUG mpj  - Adding buddy @ 8192
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 4096
- DEBUG mpj  - Adding buddy @ 4096
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 2048
- DEBUG mpj  - Adding buddy @ 2048
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 1024
- DEBUG mpj  - Adding buddy @ 1024
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 512
- DEBUG mpj  - Adding buddy @ 512
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 256
- DEBUG mpj  - Adding buddy @ 256
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 128
- DEBUG mpj  - Adding buddy @ 128
- DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
- DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@52fad2a1
- DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=1 lim=128 cap=8388608]
- DEBUG mpj  - position 0
- DEBUG mpj  - 
-
- createBuffer 16
- DEBUG mpj  - required level 0
- DEBUG mpj  - finding the right level 
- DEBUG mpj  - freeList.size() 17
- DEBUG mpj  - list @level <0>=mpjbuf.Buddy1RegionFreeList@52fad2a1
- DEBUG mpj  - calling allocate ...
- DEBUG mpj  - --allocate--
- DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@52fad2a1
- DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
- DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@52fad2a1
- DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=129 lim=256 cap=8388608]
- DEBUG mpj  - position 128
- INFO  mpj  - ---irecv---<-994576>
- DEBUG mpj  - Looking whether this req has been posted or not
- DEBUG mpj  - No Matching req, so posting ourselves
- DEBUG mpj  - request.staticBuffer (in recv) java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
- DEBUG mpj  - Added request in irecv 
- DEBUG mpj  - ---selector EVENT---
  DEBUG mpj  - ---READ_EVENT----24
+ DEBUG mpj  - position 0
  DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
+ DEBUG mpj  - list.blockSize 524288
  DEBUG mpj  - -- recvCtrlMsgFromSender ---
+ DEBUG mpj  - Adding buddy @ 524288
  DEBUG mpj  - Receiver getting the control message
+ DEBUG mpj  - position 0
  DEBUG mpj  - Could be rend, eager, posted b4 or not
- DEBUG mpj  - msb :655197834515139617
- DEBUG mpj  - lsb :-7448475032770680017
- DEBUG mpj  - sendCounter :3
+ DEBUG mpj  - msb :-4131239493083183933
+ DEBUG mpj  - lsb :-8788695122983413300
+ DEBUG mpj  - sendCounter :4
  DEBUG mpj  - tag :-994576
  DEBUG mpj  - staBufferSize :12
  DEBUG mpj  - dynaBufferSize :0
  DEBUG mpj  - context :50
  DEBUG mpj  - commMode :3
- DEBUG mpj  - type :mpjbuf.Type@7ac0d228
- DEBUG mpj  - sendCounter :3
- DEBUG mpj  - numEls :1
- DEBUG mpj  - ---eagerRecv2UserMem---
- DEBUG mpj  - request.sBufSize (is it zero?) 12
- DEBUG mpj  - b(1) java.nio.DirectByteBuffer[pos=0 lim=12 cap=127]
- DEBUG mpj  - b(2) java.nio.DirectByteBuffer[pos=12 lim=12 cap=127]
- DEBUG mpj  - request.dBufSize 0
- DEBUG mpj  - --eagerRecv2UserMem ends--
- DEBUG mpj  - ---finish---
- DEBUG mpj  - time_ready_sendrecv=5.76E-4
- DEBUG mpj  - Waking up the selector
- DEBUG mpj  -  last statement in selector thread
- DEBUG mpj  - Closed the two selectors
- DEBUG mpj  - peerChannelSize 1
- DEBUG mpj  - peerCtrlChannelSize 1
- DEBUG mpj  - closing data-channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:35995 remote=/10.2.255.253:51786]
- DEBUG mpj  - the channel was open, so closing it
- DEBUG mpj  - closing control-channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:39698 remote=/10.2.255.253:40696]
- DEBUG mpj  - the channel was open, so closing it
- DEBUG mpj  - closed all the channels
- DEBUG mpj  - selector thread notifying the user thread
- DEBUG mpj  - 
---free--
- DEBUG mpj  - buffer.list.front -1
- DEBUG mpj  -  list.level 0
- DEBUG mpj  -  position 0
- DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy 128
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=128 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is not FREE 
- DEBUG mpj  -  adding the buffer at pos <0
- DEBUG mpj  - size of htis buffer is 128
- DEBUG mpj  - 
---free--
- DEBUG mpj  - buffer.list.front 0
- DEBUG mpj  -  list.level 0
- DEBUG mpj  -  position 128
- DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy 0
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 256
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=256 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 512
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=512 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 1024
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=1024 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 2048
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=2048 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 4096
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=4096 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 8192
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=8192 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 16384
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=16384 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 32768
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=32768 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 65536
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=65536 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 131072
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=131072 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 262144
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=262144 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 524288
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=524288 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 1048576
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=1048576 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 2097152
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=2097152 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 4194304
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=4194304 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  adding the buffer at pos <0
- DEBUG mpj  - size of htis buffer is 8388608
- DEBUG mpj  - Called it ...
- INFO  mpj  - --init method of niodev is called--
- INFO  mpj  - Address: compute-0-1.local/10.2.255.253
- INFO  mpj  - Name :compute-0-1.local
- INFO  mpj  - rank :0
- INFO  mpj  - Original string: #Number of Processes;2;#Protocol Switch Limit;131072;#Peer Information;10.2.255.253@27094@33375@0@0;10.2.255.253@39319@30064@1@0
- INFO  mpj  - Parsing string arguments..
- INFO  mpj  - #Number of Processes
- INFO  mpj  - Number of processes:2
- INFO  mpj  - #Protocol Switch Limit
- INFO  mpj  - Protocol Switch Limit:131072
- INFO  mpj  - #Peer Information
- DEBUG mpj  - created writableServerChannel on port 27094
- DEBUG mpj  - created readableServerChannel on port 33375
- DEBUG mpj  - Dont connect to itself, so contine;
- DEBUG mpj  - Starting the selector thread 
- DEBUG mpj  - testing if all peers are connected?
- INFO  mpj  - selector Thread started 
- DEBUG mpj  - ---selector EVENT---
- DEBUG mpj  - selector calling doAccept (data-channel) 
- DEBUG mpj  - ---doAccept---
- DEBUG mpj  - Added channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:27094 remote=/10.2.255.253:41151]
- DEBUG mpj  - Now the size is <1>
- DEBUG mpj  -  notifying and returning true
- DEBUG mpj  - ---selector EVENT---
- DEBUG mpj  - selector calling doAccept (ctrl-channel) 
- DEBUG mpj  - ---doAccept---
- DEBUG mpj  - Added channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:33375 remote=/10.2.255.253:48636]
- DEBUG mpj  - Now the size is <1>
- DEBUG mpj  -  notifying and returning true
- INFO  mpj  -  Yes all nodes are connected to each other 
- DEBUG mpj  - rank<0>is sending its rank,msb,lsb, to all data channels
- DEBUG mpj  - ---selector EVENT---
- DEBUG mpj  - rank<0> testing if everything is received? 
- DEBUG mpj  - ---READ_EVENT----21
- DEBUG mpj  - ---barrierRead---
- DEBUG mpj  - (after ck) trying to add rank 1into table {}
- DEBUG mpj  - Adding rank 1into table {748a7f20-4293-49f2-878d-c41e6987f33c=java.nio.channels.SocketChannel[connected local=/10.2.255.253:33375 remote=/10.2.255.253:48636]}
- DEBUG mpj  - worldReadableTable is filled 
- DEBUG mpj  - ---selector EVENT---
- DEBUG mpj  - WRITE_EVENT (should not see it)
- DEBUG mpj  - ---barrierRead---
- DEBUG mpj  - In, WRITABLE, changing interestOps to READ_ONLY
- DEBUG mpj  - (after ck) trying to add rank 1into table {}
- DEBUG mpj  - Adding rank 1into table {748a7f20-4293-49f2-878d-c41e6987f33c=java.nio.channels.SocketChannel[connected local=/10.2.255.253:27094 remote=/10.2.255.253:41151]}
- DEBUG mpj  - worldWritable is filled 
- DEBUG mpj  - 
-
- createBuffer 104
- DEBUG mpj  - required level 0
- DEBUG mpj  - finding the right level 
- DEBUG mpj  - freeList.size() 0
- DEBUG mpj  - allocating a new region 
- DEBUG mpj  - --initializeRegion--
- DEBUG mpj  - size  8388608
- DEBUG mpj  - calling allocate ...
- DEBUG mpj  - --allocate--
- DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@52e42811
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 4194304
- DEBUG mpj  - Adding buddy @ 4194304
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 2097152
- DEBUG mpj  - Adding buddy @ 2097152
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 1048576
- DEBUG mpj  - Adding buddy @ 1048576
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 524288
- DEBUG mpj  - Adding buddy @ 524288
- DEBUG mpj  - position 0
+ DEBUG mpj  - type :mpjbuf.Type@329a0466
  DEBUG mpj  - list.blockSize 262144
+ DEBUG mpj  - sendCounter :4
  DEBUG mpj  - Adding buddy @ 262144
+ DEBUG mpj  - numEls :1
  DEBUG mpj  - position 0
+ DEBUG mpj  - setting the request.code to RECV_IN_DEV_MEMORY
  DEBUG mpj  - list.blockSize 131072
+ DEBUG mpj  - Calling eagerRecv2mpjMem
  DEBUG mpj  - Adding buddy @ 131072
+ DEBUG mpj  - ---eagerRecv2mpjMem_-994576
  DEBUG mpj  - position 0
+ DEBUG mpj  - static section ...
  DEBUG mpj  - list.blockSize 65536
+ DEBUG mpj  -  creating eager buffer 
  DEBUG mpj  - Adding buddy @ 65536
  DEBUG mpj  - position 0
  DEBUG mpj  - list.blockSize 32768
@@ -1059,60 +1268,23 @@
  DEBUG mpj  - Adding buddy @ 128
  DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
  DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@60b25572
  DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=1 lim=128 cap=8388608]
  DEBUG mpj  - position 0
- DEBUG mpj  - ---selector EVENT---
- DEBUG mpj  - ---READ_EVENT----24
- DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
- DEBUG mpj  - -- recvCtrlMsgFromSender ---
- DEBUG mpj  - Receiver getting the control message
- DEBUG mpj  - Could be rend, eager, posted b4 or not
- DEBUG mpj  - msb :8397664231718341106
- DEBUG mpj  - lsb :-8679065271974497476
- DEBUG mpj  - sendCounter :1
- DEBUG mpj  - tag :34020
- DEBUG mpj  - staBufferSize :12
- DEBUG mpj  - dynaBufferSize :0
- DEBUG mpj  - context :10
- DEBUG mpj  - commMode :3
- DEBUG mpj  - type :mpjbuf.Type@1288e720
- DEBUG mpj  - sendCounter :1
- DEBUG mpj  - numEls :1
- INFO  mpj  - ---isend---<34021>
- DEBUG mpj  - sender :4a63fb64-aaaa-4cf7-943f-efa6244ada42
- DEBUG mpj  - receiver :748a7f20-4293-49f2-878d-c41e6987f33c
- DEBUG mpj  - tag :34021
- DEBUG mpj  - isend with remote process connections
- DEBUG mpj  - setting the request.code to RECV_IN_DEV_MEMORY
- DEBUG mpj  - Calling eagerRecv2mpjMem
- DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.253:27094 remote=/10.2.255.253:41151]
- DEBUG mpj  - ---eagerRecv2mpjMem_34020
- DEBUG mpj  - get writeLock for this channel
- DEBUG mpj  - static section ...
- DEBUG mpj  - ---eagerSend---
- DEBUG mpj  -  creating eager buffer 
- DEBUG mpj  -  request.bufoffset 81
  DEBUG mpj  - 
 
  createBuffer 12
- DEBUG mpj  - sendBuffer java.nio.DirectByteBuffer[pos=0 lim=81 cap=127]
  DEBUG mpj  - required level 0
  DEBUG mpj  - finding the right level 
- DEBUG mpj  - request.staticBuffer (1)<java.nio.DirectByteBuffer[pos=0 lim=93 cap=127]> w=0
  DEBUG mpj  - freeList.size() 17
- DEBUG mpj  - request.staticBuffer (2)<java.nio.DirectByteBuffer[pos=93 lim=93 cap=127]> w=93
- DEBUG mpj  - list @level <0>=mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  - list @level <0>=mpjbuf.Buddy1RegionFreeList@60b25572
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
- DEBUG mpj  - request.dBufSize <0>
  DEBUG mpj  -  level :0
- DEBUG mpj  - --eagerSend finishes--
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@1029e9b
- INFO  mpj  - ---isend ends---<34021>
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@60b25572
  DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
  DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@60b25572
  DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=129 lim=256 cap=8388608]
  DEBUG mpj  - position 128
  DEBUG mpj  - 
@@ -1123,22 +1295,22 @@
  DEBUG mpj  - finding the right level 
  DEBUG mpj  - Adding the request
  DEBUG mpj  - freeList.size() 17
- DEBUG mpj  - time_ready_sendrecv=0.003796
  DEBUG mpj  - list @level <0>=null
- DEBUG mpj  - list @level <1>=mpjbuf.Buddy1RegionFreeList@47336dc2
+ DEBUG mpj  - list @level <1>=mpjbuf.Buddy1RegionFreeList@7bae9cec
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
+ DEBUG mpj  - time_ready_sendrecv=0.002442
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@47336dc2
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@7bae9cec
  DEBUG mpj  - position 256
  DEBUG mpj  - list.blockSize 128
  DEBUG mpj  - Adding buddy @ 384
  DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
  DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@60b25572
  DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=257 lim=384 cap=8388608]
  DEBUG mpj  - position 256
- INFO  mpj  - ---irecv---<34020>
+ INFO  mpj  - ---irecv---<-994576>
  DEBUG mpj  - Looking whether this req has been posted or not
  DEBUG mpj  - 
 --free--
@@ -1153,6 +1325,51 @@
  DEBUG mpj  - size of htis buffer is 128
  DEBUG mpj  - setting the buf size 12
  DEBUG mpj  - removed 
+ INFO  mpj  - ---irecv---<-994576>
+ DEBUG mpj  - Looking whether this req has been posted or not
+ DEBUG mpj  - No Matching req, so posting ourselves
+ DEBUG mpj  - ---selector EVENT---
+ DEBUG mpj  - request.staticBuffer (in recv) java.nio.DirectByteBuffer[pos=12 lim=12 cap=127]
+ DEBUG mpj  - Added request in irecv 
+ DEBUG mpj  - ---READ_EVENT----24
+ DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
+ DEBUG mpj  - -- recvCtrlMsgFromSender ---
+ DEBUG mpj  - Receiver getting the control message
+ DEBUG mpj  - Could be rend, eager, posted b4 or not
+ DEBUG mpj  - msb :3762661274541771938
+ DEBUG mpj  - lsb :-6418766489105160870
+ DEBUG mpj  - sendCounter :4
+ DEBUG mpj  - tag :-994576
+ DEBUG mpj  - staBufferSize :12
+ DEBUG mpj  - dynaBufferSize :0
+ DEBUG mpj  - context :50
+ DEBUG mpj  - commMode :3
+ DEBUG mpj  - type :mpjbuf.Type@329a0466
+ DEBUG mpj  - sendCounter :4
+ DEBUG mpj  - numEls :1
+ DEBUG mpj  - ---eagerRecv2UserMem---
+ DEBUG mpj  - request.sBufSize (is it zero?) 12
+ DEBUG mpj  - b(1) java.nio.DirectByteBuffer[pos=0 lim=12 cap=127]
+ DEBUG mpj  - b(2) java.nio.DirectByteBuffer[pos=12 lim=12 cap=127]
+ DEBUG mpj  - request.dBufSize 0
+ DEBUG mpj  - --eagerRecv2UserMem ends--
+ DEBUG mpj  - ---finish---
+ DEBUG mpj  - Waking up the selector
+ DEBUG mpj  - time_ready_sendrecv=5.58E-4
+ DEBUG mpj  -  last statement in selector thread
+ DEBUG mpj  - Closed the two selectors
+ DEBUG mpj  - peerChannelSize 2
+ DEBUG mpj  - peerCtrlChannelSize 2
+ DEBUG mpj  - closing data-channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:25962 remote=/10.2.255.253:35986]
+ DEBUG mpj  - the channel was open, so closing it
+ DEBUG mpj  - closing control-channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:30769 remote=/10.2.255.253:60211]
+ DEBUG mpj  - the channel was open, so closing it
+ DEBUG mpj  - closing data-channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:25962 remote=/10.2.255.253:36016]
+ DEBUG mpj  - the channel was open, so closing it
+ DEBUG mpj  - closing control-channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:30769 remote=/10.2.255.253:60217]
+ DEBUG mpj  - the channel was open, so closing it
+ DEBUG mpj  - closed all the channels
+ DEBUG mpj  - selector thread notifying the user thread
  DEBUG mpj  - 
 --free--
  DEBUG mpj  - buffer.list.front 128
@@ -1178,686 +1395,6 @@
  DEBUG mpj  -  buddy is free ...removing it ..
  DEBUG mpj  -  buddy 0
  DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 512
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=512 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 1024
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=1024 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 2048
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=2048 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 4096
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=4096 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 8192
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=8192 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 16384
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=16384 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 32768
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=32768 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 65536
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=65536 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 131072
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=131072 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 262144
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=262144 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 524288
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=524288 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 1048576
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=1048576 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 2097152
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=2097152 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 4194304
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=4194304 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  adding the buffer at pos <0
- DEBUG mpj  - size of htis buffer is 8388608
- DEBUG mpj  - 
-
- createBuffer 16
- DEBUG mpj  - required level 0
- DEBUG mpj  - finding the right level 
- DEBUG mpj  - freeList.size() 17
- DEBUG mpj  - list @level <0>=null
- DEBUG mpj  - list @level <1>=null
- DEBUG mpj  - list @level <2>=null
- DEBUG mpj  - list @level <3>=null
- DEBUG mpj  - list @level <4>=null
- DEBUG mpj  - list @level <5>=null
- DEBUG mpj  - list @level <6>=null
- DEBUG mpj  - list @level <7>=null
- DEBUG mpj  - list @level <8>=null
- DEBUG mpj  - list @level <9>=null
- DEBUG mpj  - list @level <10>=null
- DEBUG mpj  - list @level <11>=null
- DEBUG mpj  - list @level <12>=null
- DEBUG mpj  - list @level <13>=null
- DEBUG mpj  - list @level <14>=null
- DEBUG mpj  - list @level <15>=null
- DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@52e42811
- DEBUG mpj  - calling allocate ...
- DEBUG mpj  - --allocate--
- DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@52e42811
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 4194304
- DEBUG mpj  - Adding buddy @ 4194304
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 2097152
- DEBUG mpj  - Adding buddy @ 2097152
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 1048576
- DEBUG mpj  - Adding buddy @ 1048576
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 524288
- DEBUG mpj  - Adding buddy @ 524288
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 262144
- DEBUG mpj  - Adding buddy @ 262144
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 131072
- DEBUG mpj  - Adding buddy @ 131072
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 65536
- DEBUG mpj  - Adding buddy @ 65536
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 32768
- DEBUG mpj  - Adding buddy @ 32768
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 16384
- DEBUG mpj  - Adding buddy @ 16384
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 8192
- DEBUG mpj  - Adding buddy @ 8192
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 4096
- DEBUG mpj  - Adding buddy @ 4096
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 2048
- DEBUG mpj  - Adding buddy @ 2048
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 1024
- DEBUG mpj  - Adding buddy @ 1024
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 512
- DEBUG mpj  - Adding buddy @ 512
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 256
- DEBUG mpj  - Adding buddy @ 256
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 128
- DEBUG mpj  - Adding buddy @ 128
- DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
- DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@1029e9b
- DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=1 lim=128 cap=8388608]
- DEBUG mpj  - position 0
- DEBUG mpj  - 
---free--
- DEBUG mpj  - buffer.list.front 128
- DEBUG mpj  -  list.level 0
- DEBUG mpj  -  position 0
- DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy 128
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=128 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 256
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=256 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 512
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=512 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 1024
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=1024 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 2048
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=2048 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 4096
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=4096 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 8192
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=8192 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 16384
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=16384 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 32768
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=32768 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 65536
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=65536 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 131072
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=131072 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 262144
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=262144 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 524288
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=524288 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 1048576
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=1048576 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 2097152
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=2097152 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 4194304
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=4194304 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  adding the buffer at pos <0
- DEBUG mpj  - size of htis buffer is 8388608
- DEBUG mpj  - pendingQue.size 0
- DEBUG mpj  -  queue_size (init) 0
- DEBUG mpj  - calling detach
- DEBUG mpj  -  tailPtr 0
- DEBUG mpj  -  headPtr 0
- DEBUG mpj  -  tailPtr 0
- DEBUG mpj  -  headPtr 0
- DEBUG mpj  - called detach
- DEBUG mpj  -  queue_size (exit) 0
- DEBUG mpj  - pendingQue.size 0
- DEBUG mpj  - calling last barrier
- DEBUG mpj  - --Recv--34000
- DEBUG mpj  - 
-
- createBuffer 16
- DEBUG mpj  - required level 0
- DEBUG mpj  - finding the right level 
- DEBUG mpj  - freeList.size() 17
- DEBUG mpj  - list @level <0>=null
- DEBUG mpj  - list @level <1>=null
- DEBUG mpj  - list @level <2>=null
- DEBUG mpj  - list @level <3>=null
- DEBUG mpj  - list @level <4>=null
- DEBUG mpj  - list @level <5>=null
- DEBUG mpj  - list @level <6>=null
- DEBUG mpj  - list @level <7>=null
- DEBUG mpj  - list @level <8>=null
- DEBUG mpj  - list @level <9>=null
- DEBUG mpj  - list @level <10>=null
- DEBUG mpj  - list @level <11>=null
- DEBUG mpj  - list @level <12>=null
- DEBUG mpj  - list @level <13>=null
- DEBUG mpj  - list @level <14>=null
- DEBUG mpj  - list @level <15>=null
- DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@52e42811
- DEBUG mpj  - calling allocate ...
- DEBUG mpj  - --allocate--
- DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@52e42811
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 4194304
- DEBUG mpj  - Adding buddy @ 4194304
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 2097152
- DEBUG mpj  - Adding buddy @ 2097152
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 1048576
- DEBUG mpj  - Adding buddy @ 1048576
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 524288
- DEBUG mpj  - Adding buddy @ 524288
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 262144
- DEBUG mpj  - Adding buddy @ 262144
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 131072
- DEBUG mpj  - Adding buddy @ 131072
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 65536
- DEBUG mpj  - Adding buddy @ 65536
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 32768
- DEBUG mpj  - Adding buddy @ 32768
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 16384
- DEBUG mpj  - Adding buddy @ 16384
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 8192
- DEBUG mpj  - Adding buddy @ 8192
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 4096
- DEBUG mpj  - Adding buddy @ 4096
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 2048
- DEBUG mpj  - Adding buddy @ 2048
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 1024
- DEBUG mpj  - Adding buddy @ 1024
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 512
- DEBUG mpj  - Adding buddy @ 512
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 256
- DEBUG mpj  - Adding buddy @ 256
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 128
- DEBUG mpj  - Adding buddy @ 128
- DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
- DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@1029e9b
- DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=1 lim=128 cap=8388608]
- DEBUG mpj  - position 0
- INFO  mpj  - ---irecv---<34000>
- DEBUG mpj  - Looking whether this req has been posted or not
- DEBUG mpj  - No Matching req, so posting ourselves
- DEBUG mpj  - request.staticBuffer (in recv) java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
- DEBUG mpj  - Added request in irecv 
- DEBUG mpj  - ---selector EVENT---
- DEBUG mpj  - ---READ_EVENT----24
- DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
- DEBUG mpj  - -- recvCtrlMsgFromSender ---
- DEBUG mpj  - Receiver getting the control message
- DEBUG mpj  - Could be rend, eager, posted b4 or not
- DEBUG mpj  - msb :8397664231718341106
- DEBUG mpj  - lsb :-8679065271974497476
- DEBUG mpj  - sendCounter :2
- DEBUG mpj  - tag :34000
- DEBUG mpj  - staBufferSize :12
- DEBUG mpj  - dynaBufferSize :0
- DEBUG mpj  - context :9
- DEBUG mpj  - commMode :3
- DEBUG mpj  - type :mpjbuf.Type@1288e720
- DEBUG mpj  - sendCounter :2
- DEBUG mpj  - numEls :1
- DEBUG mpj  - ---eagerRecv2UserMem---
- DEBUG mpj  - request.sBufSize (is it zero?) 12
- DEBUG mpj  - b(1) java.nio.DirectByteBuffer[pos=0 lim=12 cap=127]
- DEBUG mpj  - b(2) java.nio.DirectByteBuffer[pos=12 lim=12 cap=127]
- DEBUG mpj  - request.dBufSize 0
- DEBUG mpj  - --eagerRecv2UserMem ends--
- DEBUG mpj  - count_received 1
- DEBUG mpj  - count 1
- DEBUG mpj  - 
---free--
- DEBUG mpj  - buffer.list.front 128
- DEBUG mpj  -  list.level 0
- DEBUG mpj  -  position 0
- DEBUG mpj  - time_ready_sendrecv=6.8E-4
- DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy 128
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=128 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 256
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=256 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 512
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=512 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 1024
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=1024 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 2048
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=2048 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 4096
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=4096 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 8192
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=8192 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 16384
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=16384 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 32768
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=32768 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 65536
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=65536 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 131072
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=131072 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 262144
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=262144 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 524288
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=524288 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 1048576
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=1048576 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 2097152
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=2097152 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 4194304
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=4194304 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  adding the buffer at pos <0
- DEBUG mpj  - size of htis buffer is 8388608
- DEBUG mpj  - --Recv completed--34000
- DEBUG mpj  -  creatingBuffer 
- DEBUG mpj  - 
-
- createBuffer 97
- DEBUG mpj  - required level 0
- DEBUG mpj  - finding the right level 
- DEBUG mpj  - freeList.size() 17
- DEBUG mpj  - list @level <0>=null
- DEBUG mpj  - list @level <1>=null
- DEBUG mpj  - list @level <2>=null
- DEBUG mpj  - list @level <3>=null
- DEBUG mpj  - list @level <4>=null
- DEBUG mpj  - list @level <5>=null
- DEBUG mpj  - list @level <6>=null
- DEBUG mpj  - list @level <7>=null
- DEBUG mpj  - list @level <8>=null
- DEBUG mpj  - list @level <9>=null
- DEBUG mpj  - list @level <10>=null
- DEBUG mpj  - list @level <11>=null
- DEBUG mpj  - list @level <12>=null
- DEBUG mpj  - list @level <13>=null
- DEBUG mpj  - list @level <14>=null
- DEBUG mpj  - list @level <15>=null
- DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@52e42811
- DEBUG mpj  - calling allocate ...
- DEBUG mpj  - --allocate--
- DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@52e42811
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 4194304
- DEBUG mpj  - Adding buddy @ 4194304
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 2097152
- DEBUG mpj  - Adding buddy @ 2097152
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 1048576
- DEBUG mpj  - Adding buddy @ 1048576
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 524288
- DEBUG mpj  - Adding buddy @ 524288
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 262144
- DEBUG mpj  - Adding buddy @ 262144
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 131072
- DEBUG mpj  - Adding buddy @ 131072
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 65536
- DEBUG mpj  - Adding buddy @ 65536
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 32768
- DEBUG mpj  - Adding buddy @ 32768
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 16384
- DEBUG mpj  - Adding buddy @ 16384
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 8192
- DEBUG mpj  - Adding buddy @ 8192
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 4096
- DEBUG mpj  - Adding buddy @ 4096
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 2048
- DEBUG mpj  - Adding buddy @ 2048
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 1024
- DEBUG mpj  - Adding buddy @ 1024
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 512
- DEBUG mpj  - Adding buddy @ 512
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 256
- DEBUG mpj  - Adding buddy @ 256
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 128
- DEBUG mpj  - Adding buddy @ 128
- DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
- DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@1029e9b
- DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=1 lim=128 cap=8388608]
- DEBUG mpj  - position 0
- DEBUG mpj  - count 1
- DEBUG mpj  - offset0
- DEBUG mpj  - bufjava.nio.DirectByteBuffer[pos=82 lim=127 cap=127]
- INFO  mpj  - ---isend---<34000>
- DEBUG mpj  - sender :4a63fb64-aaaa-4cf7-943f-efa6244ada42
- DEBUG mpj  - receiver :748a7f20-4293-49f2-878d-c41e6987f33c
- DEBUG mpj  - tag :34000
- DEBUG mpj  - isend with remote process connections
- DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.253:27094 remote=/10.2.255.253:41151]
- DEBUG mpj  - get writeLock for this channel
- DEBUG mpj  - ---eagerSend---
- DEBUG mpj  -  request.bufoffset 81
- DEBUG mpj  - sendBuffer java.nio.DirectByteBuffer[pos=0 lim=81 cap=127]
- DEBUG mpj  - request.staticBuffer (1)<java.nio.DirectByteBuffer[pos=0 lim=93 cap=127]> w=0
- DEBUG mpj  - request.staticBuffer (2)<java.nio.DirectByteBuffer[pos=93 lim=93 cap=127]> w=93
- DEBUG mpj  - request.dBufSize <0>
- DEBUG mpj  - --eagerSend finishes--
- INFO  mpj  - ---isend ends---<34000>
- DEBUG mpj  - Calling request.iwait() in send method, it may not return
- DEBUG mpj  - Called request.iwait() in sng this, means it returned
- DEBUG mpj  -  destroying buffer 
- DEBUG mpj  - 
---free--
- DEBUG mpj  - buffer.list.front 128
- DEBUG mpj  -  list.level 0
- DEBUG mpj  -  position 0
- DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy 128
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=128 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 256
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=256 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 512
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=512 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 1024
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=1024 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 2048
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=2048 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 4096
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=4096 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 8192
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=8192 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 16384
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=16384 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 32768
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=32768 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 65536
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=65536 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 131072
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=131072 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 262144
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=262144 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 524288
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=524288 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 1048576
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=1048576 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 2097152
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=2097152 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 4194304
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=4194304 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  adding the buffer at pos <0
- DEBUG mpj  - size of htis buffer is 8388608
- DEBUG mpj  - Called it
- DEBUG mpj  - Calling MPJDev finalize 
- DEBUG mpj  - 
-
- createBuffer 104
- DEBUG mpj  - required level 0
- DEBUG mpj  - finding the right level 
- DEBUG mpj  - freeList.size() 17
- DEBUG mpj  - list @level <0>=null
- DEBUG mpj  - list @level <1>=null
- DEBUG mpj  - list @level <2>=null
- DEBUG mpj  - list @level <3>=null
- DEBUG mpj  - list @level <4>=null
- DEBUG mpj  - list @level <5>=null
- DEBUG mpj  - list @level <6>=null
- DEBUG mpj  - list @level <7>=null
- DEBUG mpj  - list @level <8>=null
- DEBUG mpj  - list @level <9>=null
- DEBUG mpj  - list @level <10>=null
- DEBUG mpj  - list @level <11>=null
- DEBUG mpj  - list @level <12>=null
- DEBUG mpj  - list @level <13>=null
- DEBUG mpj  - list @level <14>=null
- DEBUG mpj  - list @level <15>=null
- DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@52e42811
- DEBUG mpj  - calling allocate ...
- DEBUG mpj  - --allocate--
- DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@52e42811
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 4194304
- DEBUG mpj  - Adding buddy @ 4194304
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 2097152
- DEBUG mpj  - Adding buddy @ 2097152
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 1048576
- DEBUG mpj  - Adding buddy @ 1048576
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 524288
- DEBUG mpj  - Adding buddy @ 524288
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 262144
- DEBUG mpj  - Adding buddy @ 262144
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 131072
- DEBUG mpj  - Adding buddy @ 131072
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 65536
- DEBUG mpj  - Adding buddy @ 65536
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 32768
- DEBUG mpj  - Adding buddy @ 32768
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 16384
- DEBUG mpj  - Adding buddy @ 16384
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 8192
- DEBUG mpj  - Adding buddy @ 8192
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 4096
- DEBUG mpj  - Adding buddy @ 4096
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 2048
- DEBUG mpj  - Adding buddy @ 2048
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 1024
- DEBUG mpj  - Adding buddy @ 1024
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 512
- DEBUG mpj  - Adding buddy @ 512
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 256
- DEBUG mpj  - Adding buddy @ 256
- DEBUG mpj  - position 0
- DEBUG mpj  - list.blockSize 128
- DEBUG mpj  - Adding buddy @ 128
- DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
- DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@1029e9b
- DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=1 lim=128 cap=8388608]
- DEBUG mpj  - position 0
- DEBUG mpj  - 
-
- createBuffer 16
- DEBUG mpj  - required level 0
- DEBUG mpj  - finding the right level 
- DEBUG mpj  - freeList.size() 17
- DEBUG mpj  - list @level <0>=mpjbuf.Buddy1RegionFreeList@1029e9b
- DEBUG mpj  - calling allocate ...
- DEBUG mpj  - --allocate--
- DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@1029e9b
- DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
- DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@1029e9b
- DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=129 lim=256 cap=8388608]
- DEBUG mpj  - position 128
- INFO  mpj  - ---irecv---<-994576>
- DEBUG mpj  - Looking whether this req has been posted or not
- DEBUG mpj  - No Matching req, so posting ourselves
- DEBUG mpj  - request.staticBuffer (in recv) java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
- DEBUG mpj  - Added request in irecv 
- DEBUG mpj  - ---selector EVENT---
- DEBUG mpj  - ---READ_EVENT----24
- DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
- DEBUG mpj  - -- recvCtrlMsgFromSender ---
- DEBUG mpj  - Receiver getting the control message
- DEBUG mpj  - Could be rend, eager, posted b4 or not
- DEBUG mpj  - msb :8397664231718341106
- DEBUG mpj  - lsb :-8679065271974497476
- DEBUG mpj  - sendCounter :3
- DEBUG mpj  - tag :-994576
- DEBUG mpj  - staBufferSize :12
- DEBUG mpj  - dynaBufferSize :0
- DEBUG mpj  - context :50
- DEBUG mpj  - commMode :3
- DEBUG mpj  - type :mpjbuf.Type@1288e720
- DEBUG mpj  - sendCounter :3
- DEBUG mpj  - numEls :1
- DEBUG mpj  - ---eagerRecv2UserMem---
- DEBUG mpj  - request.sBufSize (is it zero?) 12
- DEBUG mpj  - b(1) java.nio.DirectByteBuffer[pos=0 lim=12 cap=127]
- DEBUG mpj  - b(2) java.nio.DirectByteBuffer[pos=12 lim=12 cap=127]
- DEBUG mpj  - request.dBufSize 0
- DEBUG mpj  - --eagerRecv2UserMem ends--
- DEBUG mpj  - ---finish---
- DEBUG mpj  - time_ready_sendrecv=6.2E-4
- DEBUG mpj  - Waking up the selector
- DEBUG mpj  -  last statement in selector thread
- DEBUG mpj  - Closed the two selectors
- DEBUG mpj  - peerChannelSize 1
- DEBUG mpj  - peerCtrlChannelSize 1
- DEBUG mpj  - closing data-channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:27094 remote=/10.2.255.253:41151]
- DEBUG mpj  - the channel was open, so closing it
- DEBUG mpj  - closing control-channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:33375 remote=/10.2.255.253:48636]
- DEBUG mpj  - the channel was open, so closing it
- DEBUG mpj  - closed all the channels
- DEBUG mpj  - selector thread notifying the user thread
- DEBUG mpj  - 
---free--
- DEBUG mpj  - buffer.list.front -1
- DEBUG mpj  -  list.level 0
- DEBUG mpj  -  position 0
- DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy 128
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=128 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is not FREE 
- DEBUG mpj  -  adding the buffer at pos <0
- DEBUG mpj  - size of htis buffer is 128
- DEBUG mpj  - 
---free--
- DEBUG mpj  - buffer.list.front 0
- DEBUG mpj  -  list.level 0
- DEBUG mpj  -  position 128
- DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy 0
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 256
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=256 lim=8388608 cap=8388608]
  DEBUG mpj  -  buddy is free ...removing it ..
  DEBUG mpj  -  buddy 512
  DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=512 lim=8388608 cap=8388608]
@@ -1908,15 +1445,15 @@
  INFO  mpj  - Address: compute-0-1.local/10.2.255.253
  INFO  mpj  - Name :compute-0-1.local
  INFO  mpj  - rank :0
- INFO  mpj  - Original string: #Number of Processes;2;#Protocol Switch Limit;131072;#Peer Information;10.2.255.253@38019@32000@0@0;10.2.255.253@33848@36731@1@0
+ INFO  mpj  - Original string: #Number of Processes;3;#Protocol Switch Limit;131072;#Peer Information;10.2.255.253@36347@25989@0@0;10.2.255.253@25977@35057@1@0;10.2.255.253@35761@35981@2@0
  INFO  mpj  - Parsing string arguments..
  INFO  mpj  - #Number of Processes
- INFO  mpj  - Number of processes:2
+ INFO  mpj  - Number of processes:3
  INFO  mpj  - #Protocol Switch Limit
  INFO  mpj  - Protocol Switch Limit:131072
  INFO  mpj  - #Peer Information
- DEBUG mpj  - created writableServerChannel on port 38019
- DEBUG mpj  - created readableServerChannel on port 32000
+ DEBUG mpj  - created writableServerChannel on port 36347
+ DEBUG mpj  - created readableServerChannel on port 25989
  DEBUG mpj  - Dont connect to itself, so contine;
  DEBUG mpj  - Starting the selector thread 
  DEBUG mpj  - testing if all peers are connected?
@@ -1924,30 +1461,55 @@
  DEBUG mpj  - ---selector EVENT---
  DEBUG mpj  - selector calling doAccept (data-channel) 
  DEBUG mpj  - ---doAccept---
- DEBUG mpj  - Added channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:38019 remote=/10.2.255.253:44647]
+ DEBUG mpj  - Added channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:36347 remote=/10.2.255.253:49686]
  DEBUG mpj  - Now the size is <1>
+ DEBUG mpj  - --doAccept ends--
+ DEBUG mpj  -  returning false
+ DEBUG mpj  - ---selector EVENT---
+ DEBUG mpj  - selector calling doAccept (ctrl-channel) 
+ DEBUG mpj  - ---doAccept---
+ DEBUG mpj  - Added channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:25989 remote=/10.2.255.253:41079]
+ DEBUG mpj  - Now the size is <1>
+ DEBUG mpj  - --doAccept ends--
+ DEBUG mpj  -  returning false
+ DEBUG mpj  - ---selector EVENT---
+ DEBUG mpj  - WRITE_EVENT (should not see it)
+ DEBUG mpj  - In, WRITABLE, changing interestOps to READ_ONLY
+ DEBUG mpj  - ---selector EVENT---
+ DEBUG mpj  - selector calling doAccept (data-channel) 
+ DEBUG mpj  - ---doAccept---
+ DEBUG mpj  - Added channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:36347 remote=/10.2.255.253:49688]
+ DEBUG mpj  - Now the size is <2>
  DEBUG mpj  -  notifying and returning true
  DEBUG mpj  - ---selector EVENT---
  DEBUG mpj  - selector calling doAccept (ctrl-channel) 
  DEBUG mpj  - ---doAccept---
- DEBUG mpj  - Added channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:32000 remote=/10.2.255.253:37826]
- DEBUG mpj  - Now the size is <1>
+ DEBUG mpj  - Added channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:25989 remote=/10.2.255.253:41082]
+ DEBUG mpj  - Now the size is <2>
  DEBUG mpj  -  notifying and returning true
  INFO  mpj  -  Yes all nodes are connected to each other 
  DEBUG mpj  - rank<0>is sending its rank,msb,lsb, to all data channels
  DEBUG mpj  - ---selector EVENT---
+ DEBUG mpj  - WRITE_EVENT (should not see it)
+ DEBUG mpj  - In, WRITABLE, changing interestOps to READ_ONLY
  DEBUG mpj  - rank<0> testing if everything is received? 
+ DEBUG mpj  - ---selector EVENT---
  DEBUG mpj  - ---READ_EVENT----21
  DEBUG mpj  - ---barrierRead---
  DEBUG mpj  - (after ck) trying to add rank 1into table {}
- DEBUG mpj  - Adding rank 1into table {7cf4fcd5-42ac-4a7b-bda7-df2675af85a4=java.nio.channels.SocketChannel[connected local=/10.2.255.253:32000 remote=/10.2.255.253:37826]}
- DEBUG mpj  - worldReadableTable is filled 
+ DEBUG mpj  - Adding rank 1into table {0f0effb1-2bfa-4096-ad54-9f4803df38f6=java.nio.channels.SocketChannel[connected local=/10.2.255.253:25989 remote=/10.2.255.253:41079]}
  DEBUG mpj  - ---selector EVENT---
- DEBUG mpj  - WRITE_EVENT (should not see it)
+ DEBUG mpj  - ---READ_EVENT----21
  DEBUG mpj  - ---barrierRead---
- DEBUG mpj  - In, WRITABLE, changing interestOps to READ_ONLY
+ DEBUG mpj  - (after ck) trying to add rank 2into table {0f0effb1-2bfa-4096-ad54-9f4803df38f6=java.nio.channels.SocketChannel[connected local=/10.2.255.253:25989 remote=/10.2.255.253:41079]}
+ DEBUG mpj  - Adding rank 2into table {0f0effb1-2bfa-4096-ad54-9f4803df38f6=java.nio.channels.SocketChannel[connected local=/10.2.255.253:25989 remote=/10.2.255.253:41079], e635555e-2153-450c-9a6d-85b12e55a998=java.nio.channels.SocketChannel[connected local=/10.2.255.253:25989 remote=/10.2.255.253:41082]}
+ DEBUG mpj  - worldReadableTable is filled 
+ DEBUG mpj  - ---barrierRead---
  DEBUG mpj  - (after ck) trying to add rank 1into table {}
- DEBUG mpj  - Adding rank 1into table {7cf4fcd5-42ac-4a7b-bda7-df2675af85a4=java.nio.channels.SocketChannel[connected local=/10.2.255.253:38019 remote=/10.2.255.253:44647]}
+ DEBUG mpj  - Adding rank 1into table {0f0effb1-2bfa-4096-ad54-9f4803df38f6=java.nio.channels.SocketChannel[connected local=/10.2.255.253:36347 remote=/10.2.255.253:49686]}
+ DEBUG mpj  - ---barrierRead---
+ DEBUG mpj  - (after ck) trying to add rank 2into table {0f0effb1-2bfa-4096-ad54-9f4803df38f6=java.nio.channels.SocketChannel[connected local=/10.2.255.253:36347 remote=/10.2.255.253:49686]}
+ DEBUG mpj  - Adding rank 2into table {0f0effb1-2bfa-4096-ad54-9f4803df38f6=java.nio.channels.SocketChannel[connected local=/10.2.255.253:36347 remote=/10.2.255.253:49686], e635555e-2153-450c-9a6d-85b12e55a998=java.nio.channels.SocketChannel[connected local=/10.2.255.253:36347 remote=/10.2.255.253:49688]}
  DEBUG mpj  - worldWritable is filled 
  DEBUG mpj  - 
 
@@ -1961,7 +1523,7 @@
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@3ca55242
  DEBUG mpj  - position 0
  DEBUG mpj  - list.blockSize 4194304
  DEBUG mpj  - Adding buddy @ 4194304
@@ -2012,106 +1574,162 @@
  DEBUG mpj  - Adding buddy @ 128
  DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
  DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@52fad2a1
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@9bb8a29
  DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=1 lim=128 cap=8388608]
  DEBUG mpj  - position 0
  INFO  mpj  - ---isend---<34021>
- DEBUG mpj  - sender :4d19c5b1-dbb8-478c-80ce-3b73395110d3
- DEBUG mpj  - receiver :7cf4fcd5-42ac-4a7b-bda7-df2675af85a4
+ DEBUG mpj  - sender :99eaf75b-d3e2-44cc-b1b6-6c1cedb5859d
+ DEBUG mpj  - receiver :0f0effb1-2bfa-4096-ad54-9f4803df38f6
  DEBUG mpj  - tag :34021
  DEBUG mpj  - isend with remote process connections
- DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.253:38019 remote=/10.2.255.253:44647]
+ DEBUG mpj  - ---selector EVENT---
+ DEBUG mpj  - ---READ_EVENT----24
+ DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
+ DEBUG mpj  - -- recvCtrlMsgFromSender ---
+ DEBUG mpj  - Receiver getting the control message
+ DEBUG mpj  - Could be rend, eager, posted b4 or not
+ DEBUG mpj  - msb :1085085696654983318
+ DEBUG mpj  - lsb :-5956961275452901130
+ DEBUG mpj  - sendCounter :1
+ DEBUG mpj  - tag :34020
+ DEBUG mpj  - staBufferSize :12
+ DEBUG mpj  - dynaBufferSize :0
+ DEBUG mpj  - context :10
+ DEBUG mpj  - commMode :3
+ DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.253:36347 remote=/10.2.255.253:49686]
+ DEBUG mpj  - type :mpjbuf.Type@1f202b71
  DEBUG mpj  - get writeLock for this channel
+ DEBUG mpj  - sendCounter :1
  DEBUG mpj  - ---eagerSend---
+ DEBUG mpj  - numEls :1
  DEBUG mpj  -  request.bufoffset 81
  DEBUG mpj  - sendBuffer java.nio.DirectByteBuffer[pos=0 lim=81 cap=127]
  DEBUG mpj  - request.staticBuffer (1)<java.nio.DirectByteBuffer[pos=0 lim=93 cap=127]> w=0
- DEBUG mpj  - ---selector EVENT---
  DEBUG mpj  - request.staticBuffer (2)<java.nio.DirectByteBuffer[pos=93 lim=93 cap=127]> w=93
- DEBUG mpj  - ---READ_EVENT----24
  DEBUG mpj  - request.dBufSize <0>
- DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
  DEBUG mpj  - --eagerSend finishes--
- DEBUG mpj  - -- recvCtrlMsgFromSender ---
  INFO  mpj  - ---isend ends---<34021>
- DEBUG mpj  - Receiver getting the control message
  DEBUG mpj  - 
 
- createBuffer 16
- DEBUG mpj  - Could be rend, eager, posted b4 or not
+ createBuffer 104
  DEBUG mpj  - required level 0
  DEBUG mpj  - finding the right level 
- DEBUG mpj  - msb :9004099547897285243
  DEBUG mpj  - freeList.size() 17
- DEBUG mpj  - lsb :-4780607123154303580
- DEBUG mpj  - list @level <0>=mpjbuf.Buddy1RegionFreeList@52fad2a1
- DEBUG mpj  - sendCounter :1
+ DEBUG mpj  - list @level <0>=mpjbuf.Buddy1RegionFreeList@9bb8a29
  DEBUG mpj  - calling allocate ...
- DEBUG mpj  - tag :34020
  DEBUG mpj  - --allocate--
- DEBUG mpj  - staBufferSize :12
  DEBUG mpj  -  level :0
- DEBUG mpj  - dynaBufferSize :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@52fad2a1
- DEBUG mpj  - context :10
- DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
- DEBUG mpj  - commMode :3
- DEBUG mpj  -  cap 128
- DEBUG mpj  - type :mpjbuf.Type@7cb874d2
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@52fad2a1
- DEBUG mpj  - sendCounter :1
- DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=129 lim=256 cap=8388608]
- DEBUG mpj  - numEls :1
- DEBUG mpj  - position 128
- INFO  mpj  - ---irecv---<34020>
- DEBUG mpj  - Looking whether this req has been posted or not
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@9bb8a29
  DEBUG mpj  - setting the request.code to RECV_IN_DEV_MEMORY
  DEBUG mpj  - Calling eagerRecv2mpjMem
  DEBUG mpj  - ---eagerRecv2mpjMem_34020
  DEBUG mpj  - static section ...
  DEBUG mpj  -  creating eager buffer 
+ DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
+ DEBUG mpj  -  cap 128
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@9bb8a29
+ DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=129 lim=256 cap=8388608]
+ DEBUG mpj  - position 128
+ INFO  mpj  - ---isend---<34022>
  DEBUG mpj  - 
 
  createBuffer 12
+ DEBUG mpj  - sender :99eaf75b-d3e2-44cc-b1b6-6c1cedb5859d
+ DEBUG mpj  - required level 0
+ DEBUG mpj  - receiver :e635555e-2153-450c-9a6d-85b12e55a998
+ DEBUG mpj  - finding the right level 
+ DEBUG mpj  - tag :34022
+ DEBUG mpj  - freeList.size() 17
+ DEBUG mpj  - isend with remote process connections
+ DEBUG mpj  - list @level <0>=null
+ DEBUG mpj  - list @level <1>=mpjbuf.Buddy1RegionFreeList@7c7c06ab
+ DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.253:36347 remote=/10.2.255.253:49688]
+ DEBUG mpj  - calling allocate ...
+ DEBUG mpj  - get writeLock for this channel
+ DEBUG mpj  - --allocate--
+ DEBUG mpj  - ---eagerSend---
+ DEBUG mpj  -  level :0
+ DEBUG mpj  -  request.bufoffset 81
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@7c7c06ab
+ DEBUG mpj  - sendBuffer java.nio.DirectByteBuffer[pos=0 lim=81 cap=127]
+ DEBUG mpj  - position 256
+ DEBUG mpj  - request.staticBuffer (1)<java.nio.DirectByteBuffer[pos=0 lim=93 cap=127]> w=0
+ DEBUG mpj  - list.blockSize 128
+ DEBUG mpj  - Adding buddy @ 384
+ DEBUG mpj  - request.staticBuffer (2)<java.nio.DirectByteBuffer[pos=93 lim=93 cap=127]> w=93
+ DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
+ DEBUG mpj  - request.dBufSize <0>
+ DEBUG mpj  -  cap 128
+ DEBUG mpj  - --eagerSend finishes--
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@9bb8a29
+ INFO  mpj  - ---isend ends---<34022>
+ DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=257 lim=384 cap=8388608]
+ DEBUG mpj  - position 256
+ DEBUG mpj  - 
+
+ createBuffer 16
  DEBUG mpj  - required level 0
  DEBUG mpj  - finding the right level 
  DEBUG mpj  - freeList.size() 17
- DEBUG mpj  - list @level <0>=null
- DEBUG mpj  - list @level <1>=mpjbuf.Buddy1RegionFreeList@16b0013
+ DEBUG mpj  - list @level <0>=mpjbuf.Buddy1RegionFreeList@9bb8a29
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@16b0013
- DEBUG mpj  - position 256
- DEBUG mpj  - list.blockSize 128
- DEBUG mpj  - Adding buddy @ 384
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@9bb8a29
  DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
  DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@52fad2a1
- DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=257 lim=384 cap=8388608]
- DEBUG mpj  - position 256
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@9bb8a29
+ DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=385 lim=512 cap=8388608]
+ DEBUG mpj  - position 384
+ INFO  mpj  - ---irecv---<34020>
+ DEBUG mpj  - Looking whether this req has been posted or not
  DEBUG mpj  -  creating eager bufferjava.nio.DirectByteBuffer[pos=0 lim=12 cap=127]
  DEBUG mpj  - Adding the request
- DEBUG mpj  - time_ready_sendrecv=0.002676
  DEBUG mpj  - 
 --free--
- DEBUG mpj  - buffer.list.front 384
+ DEBUG mpj  - buffer.list.front -1
  DEBUG mpj  -  list.level 0
  DEBUG mpj  -  position 256
  DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
  DEBUG mpj  -  buddy 384
  DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=384 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 0
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
  DEBUG mpj  -  buddy is not FREE 
  DEBUG mpj  -  adding the buffer at pos <256
- DEBUG mpj  - size of htis buffer is 256
+ DEBUG mpj  - size of htis buffer is 128
  DEBUG mpj  - setting the buf size 12
  DEBUG mpj  - removed 
+ INFO  mpj  - ---irecv---<34020>
+ DEBUG mpj  - Looking whether this req has been posted or not
+ DEBUG mpj  - No Matching req, so posting ourselves
+ DEBUG mpj  - request.staticBuffer (in recv) java.nio.DirectByteBuffer[pos=8 lim=127 cap=127]
+ DEBUG mpj  - Added request in irecv 
+ DEBUG mpj  - time_ready_sendrecv=0.009058
+ DEBUG mpj  - ---selector EVENT---
+ DEBUG mpj  - ---READ_EVENT----24
+ DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
+ DEBUG mpj  - -- recvCtrlMsgFromSender ---
+ DEBUG mpj  - Receiver getting the control message
+ DEBUG mpj  - Could be rend, eager, posted b4 or not
+ DEBUG mpj  - msb :-1858485408446069492
+ DEBUG mpj  - lsb :-7319046823374116456
+ DEBUG mpj  - sendCounter :1
+ DEBUG mpj  - tag :34020
+ DEBUG mpj  - staBufferSize :12
+ DEBUG mpj  - dynaBufferSize :0
+ DEBUG mpj  - context :10
+ DEBUG mpj  - commMode :3
+ DEBUG mpj  - type :mpjbuf.Type@1f202b71
+ DEBUG mpj  - sendCounter :1
+ DEBUG mpj  - numEls :1
+ DEBUG mpj  - ---eagerRecv2UserMem---
+ DEBUG mpj  - request.sBufSize (is it zero?) 12
+ DEBUG mpj  - b(1) java.nio.DirectByteBuffer[pos=0 lim=12 cap=127]
+ DEBUG mpj  - b(2) java.nio.DirectByteBuffer[pos=12 lim=12 cap=127]
+ DEBUG mpj  - request.dBufSize 0
+ DEBUG mpj  - --eagerRecv2UserMem ends--
  DEBUG mpj  - 
 --free--
- DEBUG mpj  - buffer.list.front -1
+ DEBUG mpj  - buffer.list.front 256
  DEBUG mpj  -  list.level 0
  DEBUG mpj  -  position 0
  DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
@@ -2131,6 +1749,20 @@
  DEBUG mpj  -  buddy is free ...removing it ..
  DEBUG mpj  -  buddy 256
  DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=256 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is not FREE 
+ DEBUG mpj  -  adding the buffer at pos <0
+ DEBUG mpj  - size of htis buffer is 256
+ DEBUG mpj  - 
+--free--
+ DEBUG mpj  - buffer.list.front 256
+ DEBUG mpj  -  list.level 0
+ DEBUG mpj  -  position 384
+ DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy 256
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=256 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 0
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
  DEBUG mpj  -  buddy is free ...removing it ..
  DEBUG mpj  -  buddy 512
  DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=512 lim=8388608 cap=8388608]
@@ -2176,6 +1808,7 @@
  DEBUG mpj  -  buddy is free ...removing it ..
  DEBUG mpj  -  adding the buffer at pos <0
  DEBUG mpj  - size of htis buffer is 8388608
+ DEBUG mpj  - time_ready_sendrecv=0.007272
  DEBUG mpj  - 
 
  createBuffer 16
@@ -2198,11 +1831,11 @@
  DEBUG mpj  - list @level <13>=null
  DEBUG mpj  - list @level <14>=null
  DEBUG mpj  - list @level <15>=null
- DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@3ca55242
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@3ca55242
  DEBUG mpj  - position 0
  DEBUG mpj  - list.blockSize 4194304
  DEBUG mpj  - Adding buddy @ 4194304
@@ -2253,7 +1886,7 @@
  DEBUG mpj  - Adding buddy @ 128
  DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
  DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@52fad2a1
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@9bb8a29
  DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=1 lim=128 cap=8388608]
  DEBUG mpj  - position 0
  DEBUG mpj  - 
@@ -2346,11 +1979,11 @@
  DEBUG mpj  - list @level <13>=null
  DEBUG mpj  - list @level <14>=null
  DEBUG mpj  - list @level <15>=null
- DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@3ca55242
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@3ca55242
  DEBUG mpj  - position 0
  DEBUG mpj  - list.blockSize 4194304
  DEBUG mpj  - Adding buddy @ 4194304
@@ -2401,30 +2034,30 @@
  DEBUG mpj  - Adding buddy @ 128
  DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
  DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@52fad2a1
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@9bb8a29
  DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=1 lim=128 cap=8388608]
  DEBUG mpj  - position 0
+ INFO  mpj  - ---irecv---<34000>
+ DEBUG mpj  - Looking whether this req has been posted or not
+ DEBUG mpj  - No Matching req, so posting ourselves
+ DEBUG mpj  - request.staticBuffer (in recv) java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
+ DEBUG mpj  - Added request in irecv 
  DEBUG mpj  - ---selector EVENT---
  DEBUG mpj  - ---READ_EVENT----24
  DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
  DEBUG mpj  - -- recvCtrlMsgFromSender ---
  DEBUG mpj  - Receiver getting the control message
  DEBUG mpj  - Could be rend, eager, posted b4 or not
- DEBUG mpj  - msb :9004099547897285243
- DEBUG mpj  - lsb :-4780607123154303580
- DEBUG mpj  - sendCounter :2
+ DEBUG mpj  - msb :1085085696654983318
+ DEBUG mpj  - lsb :-5956961275452901130
+ DEBUG mpj  - sendCounter :3
  DEBUG mpj  - tag :34000
  DEBUG mpj  - staBufferSize :12
  DEBUG mpj  - dynaBufferSize :0
  DEBUG mpj  - context :9
  DEBUG mpj  - commMode :3
- INFO  mpj  - ---irecv---<34000>
- DEBUG mpj  - Looking whether this req has been posted or not
- DEBUG mpj  - No Matching req, so posting ourselves
- DEBUG mpj  - request.staticBuffer (in recv) java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
- DEBUG mpj  - Added request in irecv 
- DEBUG mpj  - type :mpjbuf.Type@7cb874d2
- DEBUG mpj  - sendCounter :2
+ DEBUG mpj  - type :mpjbuf.Type@1f202b71
+ DEBUG mpj  - sendCounter :3
  DEBUG mpj  - numEls :1
  DEBUG mpj  - ---eagerRecv2UserMem---
  DEBUG mpj  - request.sBufSize (is it zero?) 12
@@ -2432,8 +2065,177 @@
  DEBUG mpj  - b(2) java.nio.DirectByteBuffer[pos=12 lim=12 cap=127]
  DEBUG mpj  - request.dBufSize 0
  DEBUG mpj  - --eagerRecv2UserMem ends--
- DEBUG mpj  - time_ready_sendrecv=0.002286
  DEBUG mpj  - count_received 1
+ DEBUG mpj  - count 1
+ DEBUG mpj  - 
+--free--
+ DEBUG mpj  - buffer.list.front 128
+ DEBUG mpj  -  list.level 0
+ DEBUG mpj  -  position 0
+ DEBUG mpj  - time_ready_sendrecv=6.84E-4
+ DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy 128
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=128 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 256
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=256 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 512
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=512 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 1024
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=1024 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 2048
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=2048 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 4096
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=4096 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 8192
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=8192 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 16384
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=16384 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 32768
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=32768 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 65536
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=65536 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 131072
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=131072 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 262144
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=262144 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 524288
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=524288 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 1048576
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=1048576 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 2097152
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=2097152 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 4194304
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=4194304 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  adding the buffer at pos <0
+ DEBUG mpj  - size of htis buffer is 8388608
+ DEBUG mpj  - --Recv completed--34000
+ DEBUG mpj  - --Recv--33999
+ DEBUG mpj  - 
+
+ createBuffer 16
+ DEBUG mpj  - required level 0
+ DEBUG mpj  - finding the right level 
+ DEBUG mpj  - freeList.size() 17
+ DEBUG mpj  - list @level <0>=null
+ DEBUG mpj  - list @level <1>=null
+ DEBUG mpj  - list @level <2>=null
+ DEBUG mpj  - list @level <3>=null
+ DEBUG mpj  - list @level <4>=null
+ DEBUG mpj  - list @level <5>=null
+ DEBUG mpj  - list @level <6>=null
+ DEBUG mpj  - list @level <7>=null
+ DEBUG mpj  - list @level <8>=null
+ DEBUG mpj  - list @level <9>=null
+ DEBUG mpj  - list @level <10>=null
+ DEBUG mpj  - list @level <11>=null
+ DEBUG mpj  - list @level <12>=null
+ DEBUG mpj  - list @level <13>=null
+ DEBUG mpj  - list @level <14>=null
+ DEBUG mpj  - list @level <15>=null
+ DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@3ca55242
+ DEBUG mpj  - calling allocate ...
+ DEBUG mpj  - --allocate--
+ DEBUG mpj  -  level :0
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@3ca55242
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 4194304
+ DEBUG mpj  - Adding buddy @ 4194304
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 2097152
+ DEBUG mpj  - Adding buddy @ 2097152
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 1048576
+ DEBUG mpj  - Adding buddy @ 1048576
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 524288
+ DEBUG mpj  - Adding buddy @ 524288
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 262144
+ DEBUG mpj  - Adding buddy @ 262144
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 131072
+ DEBUG mpj  - Adding buddy @ 131072
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 65536
+ DEBUG mpj  - Adding buddy @ 65536
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 32768
+ DEBUG mpj  - Adding buddy @ 32768
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 16384
+ DEBUG mpj  - Adding buddy @ 16384
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 8192
+ DEBUG mpj  - Adding buddy @ 8192
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 4096
+ DEBUG mpj  - Adding buddy @ 4096
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 2048
+ DEBUG mpj  - Adding buddy @ 2048
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 1024
+ DEBUG mpj  - Adding buddy @ 1024
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 512
+ DEBUG mpj  - Adding buddy @ 512
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 256
+ DEBUG mpj  - Adding buddy @ 256
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 128
+ DEBUG mpj  - Adding buddy @ 128
+ DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
+ DEBUG mpj  -  cap 128
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@9bb8a29
+ DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=1 lim=128 cap=8388608]
+ DEBUG mpj  - position 0
+ INFO  mpj  - ---irecv---<33999>
+ DEBUG mpj  - Looking whether this req has been posted or not
+ DEBUG mpj  - No Matching req, so posting ourselves
+ DEBUG mpj  - request.staticBuffer (in recv) java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
+ DEBUG mpj  - Added request in irecv 
+ DEBUG mpj  - ---selector EVENT---
+ DEBUG mpj  - ---READ_EVENT----24
+ DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
+ DEBUG mpj  - -- recvCtrlMsgFromSender ---
+ DEBUG mpj  - Receiver getting the control message
+ DEBUG mpj  - Could be rend, eager, posted b4 or not
+ DEBUG mpj  - msb :-1858485408446069492
+ DEBUG mpj  - lsb :-7319046823374116456
+ DEBUG mpj  - sendCounter :3
+ DEBUG mpj  - tag :33999
+ DEBUG mpj  - staBufferSize :12
+ DEBUG mpj  - dynaBufferSize :0
+ DEBUG mpj  - context :9
+ DEBUG mpj  - commMode :3
+ DEBUG mpj  - type :mpjbuf.Type@1f202b71
+ DEBUG mpj  - sendCounter :3
+ DEBUG mpj  - numEls :1
+ DEBUG mpj  - ---eagerRecv2UserMem---
+ DEBUG mpj  - request.sBufSize (is it zero?) 12
+ DEBUG mpj  - b(1) java.nio.DirectByteBuffer[pos=0 lim=12 cap=127]
+ DEBUG mpj  - b(2) java.nio.DirectByteBuffer[pos=12 lim=12 cap=127]
+ DEBUG mpj  - request.dBufSize 0
+ DEBUG mpj  - --eagerRecv2UserMem ends--
+ DEBUG mpj  - count_received 1
+ DEBUG mpj  - time_ready_sendrecv=6.23E-4
  DEBUG mpj  - count 1
  DEBUG mpj  - 
 --free--
@@ -2491,7 +2293,7 @@
  DEBUG mpj  -  buddy is free ...removing it ..
  DEBUG mpj  -  adding the buffer at pos <0
  DEBUG mpj  - size of htis buffer is 8388608
- DEBUG mpj  - --Recv completed--34000
+ DEBUG mpj  - --Recv completed--33999
  DEBUG mpj  -  creatingBuffer 
  DEBUG mpj  - 
 
@@ -2515,11 +2317,11 @@
  DEBUG mpj  - list @level <13>=null
  DEBUG mpj  - list @level <14>=null
  DEBUG mpj  - list @level <15>=null
- DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@3ca55242
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@3ca55242
  DEBUG mpj  - position 0
  DEBUG mpj  - list.blockSize 4194304
  DEBUG mpj  - Adding buddy @ 4194304
@@ -2570,18 +2372,18 @@
  DEBUG mpj  - Adding buddy @ 128
  DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
  DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@52fad2a1
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@9bb8a29
  DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=1 lim=128 cap=8388608]
  DEBUG mpj  - position 0
  DEBUG mpj  - count 1
  DEBUG mpj  - offset0
  DEBUG mpj  - bufjava.nio.DirectByteBuffer[pos=82 lim=127 cap=127]
  INFO  mpj  - ---isend---<34000>
- DEBUG mpj  - sender :4d19c5b1-dbb8-478c-80ce-3b73395110d3
- DEBUG mpj  - receiver :7cf4fcd5-42ac-4a7b-bda7-df2675af85a4
+ DEBUG mpj  - sender :99eaf75b-d3e2-44cc-b1b6-6c1cedb5859d
+ DEBUG mpj  - receiver :0f0effb1-2bfa-4096-ad54-9f4803df38f6
  DEBUG mpj  - tag :34000
  DEBUG mpj  - isend with remote process connections
- DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.253:38019 remote=/10.2.255.253:44647]
+ DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.253:36347 remote=/10.2.255.253:49686]
  DEBUG mpj  - get writeLock for this channel
  DEBUG mpj  - ---eagerSend---
  DEBUG mpj  -  request.bufoffset 81
@@ -2650,11 +2452,10 @@
  DEBUG mpj  -  buddy is free ...removing it ..
  DEBUG mpj  -  adding the buffer at pos <0
  DEBUG mpj  - size of htis buffer is 8388608
- DEBUG mpj  - Called it
- DEBUG mpj  - Calling MPJDev finalize 
+ DEBUG mpj  -  creatingBuffer 
  DEBUG mpj  - 
 
- createBuffer 104
+ createBuffer 97
  DEBUG mpj  - required level 0
  DEBUG mpj  - finding the right level 
  DEBUG mpj  - freeList.size() 17
@@ -2674,11 +2475,11 @@
  DEBUG mpj  - list @level <13>=null
  DEBUG mpj  - list @level <14>=null
  DEBUG mpj  - list @level <15>=null
- DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@3ca55242
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@1029e9b
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@3ca55242
  DEBUG mpj  - position 0
  DEBUG mpj  - list.blockSize 4194304
  DEBUG mpj  - Adding buddy @ 4194304
@@ -2729,70 +2530,234 @@
  DEBUG mpj  - Adding buddy @ 128
  DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
  DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@52fad2a1
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@9bb8a29
  DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=1 lim=128 cap=8388608]
  DEBUG mpj  - position 0
+ DEBUG mpj  - count 1
+ DEBUG mpj  - offset0
+ DEBUG mpj  - bufjava.nio.DirectByteBuffer[pos=82 lim=127 cap=127]
+ INFO  mpj  - ---isend---<33999>
+ DEBUG mpj  - sender :99eaf75b-d3e2-44cc-b1b6-6c1cedb5859d
+ DEBUG mpj  - ---selector EVENT---
+ DEBUG mpj  - receiver :e635555e-2153-450c-9a6d-85b12e55a998
+ DEBUG mpj  - tag :33999
+ DEBUG mpj  - ---READ_EVENT----24
+ DEBUG mpj  - isend with remote process connections
+ DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
+ DEBUG mpj  - -- recvCtrlMsgFromSender ---
+ DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.253:36347 remote=/10.2.255.253:49688]
+ DEBUG mpj  - Receiver getting the control message
+ DEBUG mpj  - Could be rend, eager, posted b4 or not
+ DEBUG mpj  - get writeLock for this channel
+ DEBUG mpj  - msb :1085085696654983318
+ DEBUG mpj  - ---eagerSend---
+ DEBUG mpj  - lsb :-5956961275452901130
+ DEBUG mpj  -  request.bufoffset 81
+ DEBUG mpj  - sendCounter :4
+ DEBUG mpj  - sendBuffer java.nio.DirectByteBuffer[pos=0 lim=81 cap=127]
+ DEBUG mpj  - tag :-994576
+ DEBUG mpj  - request.staticBuffer (1)<java.nio.DirectByteBuffer[pos=0 lim=93 cap=127]> w=0
+ DEBUG mpj  - staBufferSize :12
+ DEBUG mpj  - dynaBufferSize :0
+ DEBUG mpj  - request.staticBuffer (2)<java.nio.DirectByteBuffer[pos=93 lim=93 cap=127]> w=93
+ DEBUG mpj  - context :50
+ DEBUG mpj  - request.dBufSize <0>
+ DEBUG mpj  - --eagerSend finishes--
+ DEBUG mpj  - commMode :3
+ INFO  mpj  - ---isend ends---<33999>
+ DEBUG mpj  - Calling request.iwait() in send method, it may not return
+ DEBUG mpj  - type :mpjbuf.Type@1f202b71
+ DEBUG mpj  - Called request.iwait() in sng this, means it returned
+ DEBUG mpj  - sendCounter :4
+ DEBUG mpj  -  destroying buffer 
+ DEBUG mpj  - numEls :1
+ DEBUG mpj  - 
+--free--
+ DEBUG mpj  - setting the request.code to RECV_IN_DEV_MEMORY
+ DEBUG mpj  - buffer.list.front 128
+ DEBUG mpj  - Calling eagerRecv2mpjMem
+ DEBUG mpj  -  list.level 0
+ DEBUG mpj  - ---eagerRecv2mpjMem_-994576
+ DEBUG mpj  -  position 0
+ DEBUG mpj  - static section ...
+ DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
+ DEBUG mpj  -  creating eager buffer 
+ DEBUG mpj  -  buddy 128
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=128 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 256
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=256 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 512
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=512 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 1024
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=1024 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 2048
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=2048 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 4096
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=4096 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 8192
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=8192 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 16384
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=16384 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 32768
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=32768 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 65536
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=65536 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 131072
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=131072 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 262144
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=262144 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 524288
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=524288 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 1048576
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=1048576 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 2097152
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=2097152 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 4194304
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=4194304 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  adding the buffer at pos <0
+ DEBUG mpj  - size of htis buffer is 8388608
+ DEBUG mpj  - Called it
+ DEBUG mpj  - 
+
+ createBuffer 12
+ DEBUG mpj  - Calling MPJDev finalize 
+ DEBUG mpj  - required level 0
+ DEBUG mpj  - finding the right level 
+ DEBUG mpj  - freeList.size() 17
+ DEBUG mpj  - list @level <0>=null
+ DEBUG mpj  - list @level <1>=null
+ DEBUG mpj  - list @level <2>=null
+ DEBUG mpj  - list @level <3>=null
+ DEBUG mpj  - list @level <4>=null
+ DEBUG mpj  - list @level <5>=null
+ DEBUG mpj  - list @level <6>=null
+ DEBUG mpj  - list @level <7>=null
+ DEBUG mpj  - list @level <8>=null
+ DEBUG mpj  - list @level <9>=null
+ DEBUG mpj  - list @level <10>=null
+ DEBUG mpj  - list @level <11>=null
+ DEBUG mpj  - list @level <12>=null
+ DEBUG mpj  - list @level <13>=null
+ DEBUG mpj  - list @level <14>=null
+ DEBUG mpj  - list @level <15>=null
+ DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@3ca55242
+ DEBUG mpj  - calling allocate ...
+ DEBUG mpj  - --allocate--
+ DEBUG mpj  -  level :0
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@3ca55242
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 4194304
+ DEBUG mpj  - Adding buddy @ 4194304
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 2097152
+ DEBUG mpj  - Adding buddy @ 2097152
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 1048576
+ DEBUG mpj  - Adding buddy @ 1048576
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 524288
+ DEBUG mpj  - Adding buddy @ 524288
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 262144
+ DEBUG mpj  - Adding buddy @ 262144
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 131072
+ DEBUG mpj  - Adding buddy @ 131072
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 65536
+ DEBUG mpj  - Adding buddy @ 65536
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 32768
+ DEBUG mpj  - Adding buddy @ 32768
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 16384
+ DEBUG mpj  - Adding buddy @ 16384
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 8192
+ DEBUG mpj  - Adding buddy @ 8192
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 4096
+ DEBUG mpj  - Adding buddy @ 4096
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 2048
+ DEBUG mpj  - Adding buddy @ 2048
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 1024
+ DEBUG mpj  - Adding buddy @ 1024
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 512
+ DEBUG mpj  - Adding buddy @ 512
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 256
+ DEBUG mpj  - Adding buddy @ 256
+ DEBUG mpj  - position 0
+ DEBUG mpj  - list.blockSize 128
+ DEBUG mpj  - Adding buddy @ 128
+ DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
+ DEBUG mpj  -  cap 128
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@9bb8a29
+ DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=1 lim=128 cap=8388608]
+ DEBUG mpj  - position 0
+ DEBUG mpj  - 
+
+ createBuffer 104
+ DEBUG mpj  -  creating eager bufferjava.nio.DirectByteBuffer[pos=0 lim=12 cap=127]
+ DEBUG mpj  - required level 0
+ DEBUG mpj  - finding the right level 
+ DEBUG mpj  - Adding the request
+ DEBUG mpj  - freeList.size() 17
+ DEBUG mpj  - time_ready_sendrecv=0.005407
+ DEBUG mpj  - list @level <0>=mpjbuf.Buddy1RegionFreeList@9bb8a29
+ DEBUG mpj  - calling allocate ...
+ DEBUG mpj  - --allocate--
+ DEBUG mpj  -  level :0
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@9bb8a29
+ DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
+ DEBUG mpj  -  cap 128
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@9bb8a29
+ DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=129 lim=256 cap=8388608]
+ DEBUG mpj  - position 128
  DEBUG mpj  - 
 
  createBuffer 16
  DEBUG mpj  - required level 0
  DEBUG mpj  - finding the right level 
  DEBUG mpj  - freeList.size() 17
- DEBUG mpj  - list @level <0>=mpjbuf.Buddy1RegionFreeList@52fad2a1
+ DEBUG mpj  - list @level <0>=null
+ DEBUG mpj  - list @level <1>=mpjbuf.Buddy1RegionFreeList@7c7c06ab
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@52fad2a1
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@7c7c06ab
+ DEBUG mpj  - position 256
+ DEBUG mpj  - list.blockSize 128
+ DEBUG mpj  - Adding buddy @ 384
  DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
  DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@52fad2a1
- DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=129 lim=256 cap=8388608]
- DEBUG mpj  - position 128
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@9bb8a29
+ DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=257 lim=384 cap=8388608]
+ DEBUG mpj  - position 256
  INFO  mpj  - ---irecv---<-994576>
  DEBUG mpj  - Looking whether this req has been posted or not
- DEBUG mpj  - No Matching req, so posting ourselves
- DEBUG mpj  - request.staticBuffer (in recv) java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
- DEBUG mpj  - Added request in irecv 
- DEBUG mpj  - ---selector EVENT---
- DEBUG mpj  - ---READ_EVENT----24
- DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
- DEBUG mpj  - -- recvCtrlMsgFromSender ---
- DEBUG mpj  - Receiver getting the control message
- DEBUG mpj  - Could be rend, eager, posted b4 or not
- DEBUG mpj  - msb :9004099547897285243
- DEBUG mpj  - lsb :-4780607123154303580
- DEBUG mpj  - sendCounter :3
- DEBUG mpj  - tag :-994576
- DEBUG mpj  - staBufferSize :12
- DEBUG mpj  - dynaBufferSize :0
- DEBUG mpj  - context :50
- DEBUG mpj  - commMode :3
- DEBUG mpj  - type :mpjbuf.Type@7cb874d2
- DEBUG mpj  - sendCounter :3
- DEBUG mpj  - numEls :1
- DEBUG mpj  - ---eagerRecv2UserMem---
- DEBUG mpj  - request.sBufSize (is it zero?) 12
- DEBUG mpj  - b(1) java.nio.DirectByteBuffer[pos=0 lim=12 cap=127]
- DEBUG mpj  - b(2) java.nio.DirectByteBuffer[pos=12 lim=12 cap=127]
- DEBUG mpj  - request.dBufSize 0
- DEBUG mpj  - --eagerRecv2UserMem ends--
- DEBUG mpj  - time_ready_sendrecv=5.79E-4
- DEBUG mpj  - ---finish---
- DEBUG mpj  - Waking up the selector
- DEBUG mpj  - Closed the two selectors
- DEBUG mpj  -  error in selector thread null
- DEBUG mpj  -  last statement in selector thread
- DEBUG mpj  - peerChannelSize 1
- DEBUG mpj  - peerCtrlChannelSize 1
- DEBUG mpj  - closing data-channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:38019 remote=/10.2.255.253:44647]
- DEBUG mpj  - the channel was open, so closing it
- DEBUG mpj  - closing control-channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:32000 remote=/10.2.255.253:37826]
- DEBUG mpj  - the channel was open, so closing it
- DEBUG mpj  - closed all the channels
- DEBUG mpj  - selector thread notifying the user thread
  DEBUG mpj  - 
 --free--
- DEBUG mpj  - buffer.list.front -1
+ DEBUG mpj  - buffer.list.front 384
  DEBUG mpj  -  list.level 0
  DEBUG mpj  -  position 0
  DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
@@ -2801,6 +2766,53 @@
  DEBUG mpj  -  buddy is not FREE 
  DEBUG mpj  -  adding the buffer at pos <0
  DEBUG mpj  - size of htis buffer is 128
+ DEBUG mpj  - setting the buf size 12
+ DEBUG mpj  - removed 
+ INFO  mpj  - ---irecv---<-994576>
+ DEBUG mpj  - Looking whether this req has been posted or not
+ DEBUG mpj  - No Matching req, so posting ourselves
+ DEBUG mpj  - request.staticBuffer (in recv) java.nio.DirectByteBuffer[pos=12 lim=12 cap=127]
+ DEBUG mpj  - Added request in irecv 
+ DEBUG mpj  - ---selector EVENT---
+ DEBUG mpj  - ---READ_EVENT----24
+ DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
+ DEBUG mpj  - -- recvCtrlMsgFromSender ---
+ DEBUG mpj  - Receiver getting the control message
+ DEBUG mpj  - Could be rend, eager, posted b4 or not
+ DEBUG mpj  - msb :-1858485408446069492
+ DEBUG mpj  - lsb :-7319046823374116456
+ DEBUG mpj  - sendCounter :4
+ DEBUG mpj  - tag :-994576
+ DEBUG mpj  - staBufferSize :12
+ DEBUG mpj  - dynaBufferSize :0
+ DEBUG mpj  - context :50
+ DEBUG mpj  - commMode :3
+ DEBUG mpj  - type :mpjbuf.Type@1f202b71
+ DEBUG mpj  - sendCounter :4
+ DEBUG mpj  - numEls :1
+ DEBUG mpj  - ---eagerRecv2UserMem---
+ DEBUG mpj  - request.sBufSize (is it zero?) 12
+ DEBUG mpj  - b(1) java.nio.DirectByteBuffer[pos=0 lim=12 cap=127]
+ DEBUG mpj  - b(2) java.nio.DirectByteBuffer[pos=12 lim=12 cap=127]
+ DEBUG mpj  - request.dBufSize 0
+ DEBUG mpj  - --eagerRecv2UserMem ends--
+ DEBUG mpj  - ---finish---
+ DEBUG mpj  - time_ready_sendrecv=5.57E-4
+ DEBUG mpj  - Waking up the selector
+ DEBUG mpj  -  last statement in selector thread
+ DEBUG mpj  - Closed the two selectors
+ DEBUG mpj  - peerChannelSize 2
+ DEBUG mpj  - peerCtrlChannelSize 2
+ DEBUG mpj  - closing data-channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:36347 remote=/10.2.255.253:49686]
+ DEBUG mpj  - the channel was open, so closing it
+ DEBUG mpj  - closing control-channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:25989 remote=/10.2.255.253:41079]
+ DEBUG mpj  - the channel was open, so closing it
+ DEBUG mpj  - closing data-channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:36347 remote=/10.2.255.253:49688]
+ DEBUG mpj  - the channel was open, so closing it
+ DEBUG mpj  - closing control-channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:25989 remote=/10.2.255.253:41082]
+ DEBUG mpj  - the channel was open, so closing it
+ DEBUG mpj  - closed all the channels
+ DEBUG mpj  - selector thread notifying the user thread
  DEBUG mpj  - 
 --free--
  DEBUG mpj  - buffer.list.front 0
@@ -2812,6 +2824,20 @@
  DEBUG mpj  -  buddy is free ...removing it ..
  DEBUG mpj  -  buddy 256
  DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=256 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is not FREE 
+ DEBUG mpj  -  adding the buffer at pos <0
+ DEBUG mpj  - size of htis buffer is 256
+ DEBUG mpj  - 
+--free--
+ DEBUG mpj  - buffer.list.front 384
+ DEBUG mpj  -  list.level 0
+ DEBUG mpj  -  position 256
+ DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy 384
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=384 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 0
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
  DEBUG mpj  -  buddy is free ...removing it ..
  DEBUG mpj  -  buddy 512
  DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=512 lim=8388608 cap=8388608]

@@ -38,48 +38,44 @@ import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
+
+
 public class ApplicationMaster {
 
   Configuration conf = new YarnConfiguration();
   String mpjHomeDir;
- 
+  int rank = 0;
   public static void main(String[] args) throws Exception {
-	ApplicationMaster am =new ApplicationMaster();
-   	am.run(args);
+    ApplicationMaster am =new ApplicationMaster();
+    am.run(args);
         
   }
 
   public void run(String[] args) throws Exception {
   
     Map<String, String> map = System.getenv();
-  
-    try{
-  	  mpjHomeDir = map.get("MPJ_HOME");
-      
-	  if (mpjHomeDir == null) {
-                 throw new Exception("[MPJRun.java]:MPJ_HOME environment found..");
-      	  }
-      }
-      catch (Exception exc) {
-  	  System.out.println("[MPJRun.java]:" + exc.getMessage());
-      	  exc.printStackTrace();
-      	  return;
-      }
+    mpjHomeDir = map.get("MPJ_HOME");
+    
+    if (mpjHomeDir == null) {
+      throw new Exception("[MPJRun.java]:MPJ_HOME "+
+						  "environment not found..");
+    }
+   
 
     // number of container to be launched
-  
     final int n = Integer.valueOf(args[0]);
     System.out.println("Number of containers to Launch : "+n);
 
     // Uploading YarnWrapper.jar to HDFS
     // FIXME: I will workout some way to upload jars in local Filesystem
-  
+    
     FileSystem fs = FileSystem.get(conf);
     Path source = new Path(mpjHomeDir+"/lib/YarnWrapper.jar");
     String pathSuffix = "/YarnWrapper.jar";
     Path dest = new Path(fs.getHomeDirectory(), pathSuffix);
     fs.copyFromLocalFile(false, true, source, dest);
     FileStatus destStatus = fs.getFileStatus(dest);
+   
 
     // Initialize AM <--> RM communication protocol
     AMRMClient<ContainerRequest> rmClient = AMRMClient.createAMRMClient();
@@ -106,11 +102,11 @@ public class ApplicationMaster {
 
     // Make container requests to ResourceManager
     for (int i = 0; i < n; ++i) {
-      	  ContainerRequest containerAsk =
-                   new ContainerRequest(capability, null, null, priority);
+      ContainerRequest containerAsk =
+        		new ContainerRequest(capability, null, null, priority);
       
-	  System.out.println("Making container request " + i);
-      	  rmClient.addContainerRequest(containerAsk);
+      System.out.println("Making container request " + i);
+      rmClient.addContainerRequest(containerAsk);
     }	
   
     // Creating Local Resource for Wrapper   
@@ -128,76 +124,94 @@ public class ApplicationMaster {
     	
     while (allocatedContainers < n) {
 		
-         AllocateResponse response = rmClient.allocate(0);
+      AllocateResponse response = rmClient.allocate(0);
       		
-    	 for (Container container : response.getAllocatedContainers()) {
+      for (Container container : response.getAllocatedContainers()) {
         	   
-               ++allocatedContainers;
-	       System.out.println("Container at: " +container.getNodeHttpAddress()+
-                    		  " Allocated !");
+        ++allocatedContainers;
+	System.out.println("Container at: " +container.getNodeHttpAddress()+
+        			              		      " Allocated !");
 
-       	       ContainerLaunchContext ctx = 
-            	 	         Records.newRecord(ContainerLaunchContext.class);
+       	ContainerLaunchContext ctx = 
+			      Records.newRecord(ContainerLaunchContext.class);
+                   
        		 
-	       ctx.setCommands(Collections.singletonList(
-         	    " $JAVA_HOME/bin/java" +                                                              " -Xmx128M" +
-                    " runtime.starter.YarnWrapper" +
-                    " 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/stdout" +                      " 2>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/stderr" 
-               ));
+	ctx.setCommands(Collections.singletonList(
+           " $JAVA_HOME/bin/java" + 
+           " -Xmx128M" +
+           " -cp " +"." 
+            + File.pathSeparator + "" + mpjHomeDir + "/lib/loader1.jar"
+            + File.pathSeparator + "" + mpjHomeDir + "/lib/mpj.jar"
+            + File.pathSeparator + "" + mpjHomeDir + "/lib/log4j-1.2.11.jar"
+            + File.pathSeparator + "" + mpjHomeDir + "/lib/YarnWrapper.jar"
+            + File.pathSeparator + args[6] + File.pathSeparator
+            + args[5] + File.pathSeparator 
+	    + " runtime.starter.YarnWrapper" 
+            + " " + args[1]  // server name
+            + " " + args[2]  // server port
+            + " " + args[3]  // device name
+            + " " + args[4]  // class name
+            + " " + args[7]  // protocol switch limit
+            + " " + args[0]  // no. of containers 
+            + " " + Integer.toString(rank++) // rank
+            + " 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/stdout"                + " 2>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/stderr"));
+           
        		
-	       System.out.println("Launching container " + allocatedContainers);
+	System.out.println("Launching container " + allocatedContainers);
 
-	       // Set local resource for containers
-	       ctx.setLocalResources(
-		     Collections.singletonMap("YarnWrapper.jar", wrapperJar));
+	// Set local resource for containers
+	ctx.setLocalResources(
+	         Collections.singletonMap("YarnWrapper.jar", wrapperJar));
       
-       	       // Set environment for container
-       	       Map<String, String> containerEnv = new HashMap<String, String>();
-       	       setupEnv(containerEnv);
-       	       ctx.setEnvironment(containerEnv);
+       	// Set environment for container
+       	Map<String, String> containerEnv = new HashMap<String, String>();
+       	setupEnv(containerEnv);
+       	ctx.setEnvironment(containerEnv);
 
-               // Time to start the container
-	       nmClient.startContainer(container, ctx);
-      		
-	   }	
+        // Time to start the container
+	nmClient.startContainer(container, ctx);
+      }	
       
-	   for (ContainerStatus status : response.getCompletedContainersStatuses()){
-        	     
-                 ++completedContainers;
-        	 System.out.println("Completed container " + completedContainers);
-	   }
-     	   Thread.sleep(100);
+      for (ContainerStatus status : response.getCompletedContainersStatuses()) {
+        ++completedContainers;
+        System.out.println("Completed container " + completedContainers);
+      }
 
-     } // end While
+      Thread.sleep(100);
 
-     // Now wait for containers to complete
-     while (completedContainers < n) {
-      	   AllocateResponse response = rmClient.allocate(completedContainers/n);
-      	   for (ContainerStatus status : response.getCompletedContainersStatuses()) {
-        	   ++completedContainers;
-        	   System.out.println("Completed container " + completedContainers);
-      	   }
+    } // end While
+
+    // Now wait for containers to complete
+    while (completedContainers < n) {
+      AllocateResponse response = rmClient.allocate(completedContainers/n);
+
+      for (ContainerStatus status : response.getCompletedContainersStatuses()) {
+        ++completedContainers;
+        System.out.println("Completed container " + completedContainers);
+      }
 	
-           Thread.sleep(100);
-     }
+      Thread.sleep(100);
+    }
 
-     // Un-register with ResourceManager 
-     rmClient.unregisterApplicationMaster(FinalApplicationStatus.SUCCEEDED, "", "");
+    // Un-register with ResourceManager 
+    rmClient.unregisterApplicationMaster(FinalApplicationStatus.SUCCEEDED, 
+								     "", "");
   
-  }//end run
+  } //end run()
 
   private void setupEnv(Map<String, String> containerEnv) {
     for (String c : conf.getStrings(
-               YarnConfiguration.YARN_APPLICATION_CLASSPATH,
-               YarnConfiguration.DEFAULT_YARN_APPLICATION_CLASSPATH)) {
+      YarnConfiguration.YARN_APPLICATION_CLASSPATH,
+      YarnConfiguration.DEFAULT_YARN_APPLICATION_CLASSPATH)) {
                     
-                    Apps.addToEnvironment(containerEnv, Environment.CLASSPATH.name(),
-                    c.trim());
-         }
+      Apps.addToEnvironment(containerEnv, 
+					Environment.CLASSPATH.name(), c.trim());
+                    
+    }
 
     Apps.addToEnvironment(containerEnv,
                           Environment.CLASSPATH.name(),
                           Environment.PWD.$() + File.separator + "*");
-  }
+  } //end setupEnv()
 
 }//end class

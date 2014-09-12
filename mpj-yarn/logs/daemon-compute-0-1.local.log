@@ -1,10 +1,262 @@
  DEBUG mpjdaemon  - Accepted connection
  DEBUG mpjdaemon  - Accepting connection ..
  DEBUG mpjdaemon  - Job Started
- DEBUG mpjdaemon  - Ticket length  894
- DEBUG mpjdaemon  - FK>> Where is this ticket being printed??
+ DEBUG mpjdaemon  - Ticket length 0
+ DEBUG mpjdaemon  - Error 0.. 
+ DEBUG mpjdaemon  - Accepted connection
+ DEBUG mpjdaemon  - Accepting connection ..
+ DEBUG mpjdaemon  - Job Started
+ DEBUG mpjdaemon  - Ticket length 894
  DEBUG mpjdaemon  - <MPJProcessInfo>
-<TicketID>8a811648-36f5-41aa-9c13-0edad27b09b0</TicketID>
+<TicketID>1c2f46c0-a23e-4697-b572-dba3ec8fdfbc</TicketID>
+<ClassPath>/state/partition1/home/hamza.zafar/mpjusr</ClassPath>
+<MasterNode>barq.seecs.edu.pk</MasterNode>
+<MasterPort>40003</MasterPort>
+<ProcessCount>1</ProcessCount>
+<StartingRank>0</StartingRank>
+<JvmArgs/>
+<WorkingDirectory>/export/home/hamza.zafar/mpjusr</WorkingDirectory>
+<ZippedSource>false</ZippedSource>
+<MainClass>HelloWorld</MainClass>
+<DeviceName>niodev</DeviceName>
+<ConfFileContents>#Number of Processes;2;#Protocol Switch Limit;131072;</ConfFileContents>
+<AppArgs/>
+<UserID>hamza.zafar</UserID>
+<NetworkProcessCount>-1</NetworkProcessCount>
+<TotalProcessCount>-1</TotalProcessCount>
+<NetworkDevice>niodev</NetworkDevice>
+<MPJ_HOME>/export/home/hamza.zafar/mpjexpress-code/mpj-yarn</MPJ_HOME>
+<Debug>false</Debug>
+<DebugPort>24500</DebugPort>
+<Profiler>false</Profiler>
+</MPJProcessInfo>
+
+ DEBUG mpjdaemon  - configFilePath
+ DEBUG mpjdaemon  - Config file created :
+ DEBUG mpjdaemon  - modified: jArgs[0]=-cp
+ DEBUG mpjdaemon  - modified: jArgs[1]=.:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - 
+******************ARGUMENTS PASSED TO PB********************
+
+ DEBUG mpjdaemon  - arguments[0] = java
+ DEBUG mpjdaemon  - arguments[1] = -cp
+ DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
+ DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
+ DEBUG mpjdaemon  - arguments[5] = 1
+ DEBUG mpjdaemon  - arguments[6] = niodev
+ DEBUG mpjdaemon  - arguments[7] = barq.seecs.edu.pk
+ DEBUG mpjdaemon  - arguments[8] = 40003
+ DEBUG mpjdaemon  - arguments[9] = 0
+ DEBUG mpjdaemon  - arguments[10] = HelloWorld
+ DEBUG mpjdaemon  - starting the process 
+ DEBUG mpjdaemon  - started the process 
+ DEBUG mpjdaemon  - outputting ...
+ DEBUG mpjdaemon  - Stopping the output
+ DEBUG mpjdaemon  - Job Finished
+ DEBUG mpjdaemon  - 
+
+ ** .. execution ends .. ** 
+
+
+ DEBUG mpjdaemon  - Accepted connection
+ DEBUG mpjdaemon  - Accepting connection ..
+ DEBUG mpjdaemon  - Job Started
+ DEBUG mpjdaemon  - Ticket length 894
+ DEBUG mpjdaemon  - <MPJProcessInfo>
+<TicketID>5f22ad7c-e490-4f29-86a9-55676452b560</TicketID>
+<ClassPath>/state/partition1/home/hamza.zafar/mpjusr</ClassPath>
+<MasterNode>barq.seecs.edu.pk</MasterNode>
+<MasterPort>40003</MasterPort>
+<ProcessCount>2</ProcessCount>
+<StartingRank>0</StartingRank>
+<JvmArgs/>
+<WorkingDirectory>/export/home/hamza.zafar/mpjusr</WorkingDirectory>
+<ZippedSource>false</ZippedSource>
+<MainClass>HelloWorld</MainClass>
+<DeviceName>niodev</DeviceName>
+<ConfFileContents>#Number of Processes;4;#Protocol Switch Limit;131072;</ConfFileContents>
+<AppArgs/>
+<UserID>hamza.zafar</UserID>
+<NetworkProcessCount>-1</NetworkProcessCount>
+<TotalProcessCount>-1</TotalProcessCount>
+<NetworkDevice>niodev</NetworkDevice>
+<MPJ_HOME>/export/home/hamza.zafar/mpjexpress-code/mpj-yarn</MPJ_HOME>
+<Debug>false</Debug>
+<DebugPort>24500</DebugPort>
+<Profiler>false</Profiler>
+</MPJProcessInfo>
+
+ DEBUG mpjdaemon  - configFilePath
+ DEBUG mpjdaemon  - Config file created :
+ DEBUG mpjdaemon  - modified: jArgs[0]=-cp
+ DEBUG mpjdaemon  - modified: jArgs[1]=.:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - 
+******************ARGUMENTS PASSED TO PB********************
+
+ DEBUG mpjdaemon  - arguments[0] = java
+ DEBUG mpjdaemon  - arguments[1] = -cp
+ DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
+ DEBUG mpjdaemon  - arguments[4] = #Number of Processes;4;#Protocol Switch Limit;131072;
+ DEBUG mpjdaemon  - arguments[5] = 2
+ DEBUG mpjdaemon  - arguments[6] = niodev
+ DEBUG mpjdaemon  - arguments[7] = barq.seecs.edu.pk
+ DEBUG mpjdaemon  - arguments[8] = 40003
+ DEBUG mpjdaemon  - arguments[9] = 0
+ DEBUG mpjdaemon  - arguments[10] = HelloWorld
+ DEBUG mpjdaemon  - starting the process 
+ DEBUG mpjdaemon  - started the process 
+ DEBUG mpjdaemon  - 
+******************ARGUMENTS PASSED TO PB********************
+
+ DEBUG mpjdaemon  - arguments[0] = java
+ DEBUG mpjdaemon  - arguments[1] = -cp
+ DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
+ DEBUG mpjdaemon  - arguments[4] = #Number of Processes;4;#Protocol Switch Limit;131072;
+ DEBUG mpjdaemon  - arguments[5] = 2
+ DEBUG mpjdaemon  - arguments[6] = niodev
+ DEBUG mpjdaemon  - arguments[7] = barq.seecs.edu.pk
+ DEBUG mpjdaemon  - arguments[8] = 40003
+ DEBUG mpjdaemon  - arguments[9] = 1
+ DEBUG mpjdaemon  - arguments[10] = HelloWorld
+ DEBUG mpjdaemon  - starting the process 
+ DEBUG mpjdaemon  - outputting ...
+ DEBUG mpjdaemon  - started the process 
+ DEBUG mpjdaemon  - outputting ...
+ DEBUG mpjdaemon  - Stopping the output
+ DEBUG mpjdaemon  - Job Finished
+ DEBUG mpjdaemon  - 
+
+ ** .. execution ends .. ** 
+
+
+ DEBUG mpjdaemon  - Accepted connection
+ DEBUG mpjdaemon  - Accepting connection ..
+ DEBUG mpjdaemon  - Job Started
+ DEBUG mpjdaemon  - Ticket length 894
+ DEBUG mpjdaemon  - <MPJProcessInfo>
+<TicketID>b6735e48-a27f-4c16-bb6f-28e68792342b</TicketID>
+<ClassPath>/state/partition1/home/hamza.zafar/mpjusr</ClassPath>
+<MasterNode>barq.seecs.edu.pk</MasterNode>
+<MasterPort>40003</MasterPort>
+<ProcessCount>2</ProcessCount>
+<StartingRank>0</StartingRank>
+<JvmArgs/>
+<WorkingDirectory>/export/home/hamza.zafar/mpjusr</WorkingDirectory>
+<ZippedSource>false</ZippedSource>
+<MainClass>HelloWorld</MainClass>
+<DeviceName>niodev</DeviceName>
+<ConfFileContents>#Number of Processes;3;#Protocol Switch Limit;131072;</ConfFileContents>
+<AppArgs/>
+<UserID>hamza.zafar</UserID>
+<NetworkProcessCount>-1</NetworkProcessCount>
+<TotalProcessCount>-1</TotalProcessCount>
+<NetworkDevice>niodev</NetworkDevice>
+<MPJ_HOME>/export/home/hamza.zafar/mpjexpress-code/mpj-yarn</MPJ_HOME>
+<Debug>false</Debug>
+<DebugPort>24500</DebugPort>
+<Profiler>false</Profiler>
+</MPJProcessInfo>
+
+ DEBUG mpjdaemon  - configFilePath
+ DEBUG mpjdaemon  - Config file created :
+ DEBUG mpjdaemon  - modified: jArgs[0]=-cp
+ DEBUG mpjdaemon  - modified: jArgs[1]=.:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - 
+******************ARGUMENTS PASSED TO PB********************
+
+ DEBUG mpjdaemon  - arguments[0] = java
+ DEBUG mpjdaemon  - arguments[1] = -cp
+ DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
+ DEBUG mpjdaemon  - arguments[4] = #Number of Processes;3;#Protocol Switch Limit;131072;
+ DEBUG mpjdaemon  - arguments[5] = 2
+ DEBUG mpjdaemon  - arguments[6] = niodev
+ DEBUG mpjdaemon  - arguments[7] = barq.seecs.edu.pk
+ DEBUG mpjdaemon  - arguments[8] = 40003
+ DEBUG mpjdaemon  - arguments[9] = 0
+ DEBUG mpjdaemon  - arguments[10] = HelloWorld
+ DEBUG mpjdaemon  - starting the process 
+ DEBUG mpjdaemon  - started the process 
+ DEBUG mpjdaemon  - 
+******************ARGUMENTS PASSED TO PB********************
+
+ DEBUG mpjdaemon  - outputting ...
+ DEBUG mpjdaemon  - arguments[0] = java
+ DEBUG mpjdaemon  - arguments[1] = -cp
+ DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
+ DEBUG mpjdaemon  - arguments[4] = #Number of Processes;3;#Protocol Switch Limit;131072;
+ DEBUG mpjdaemon  - arguments[5] = 2
+ DEBUG mpjdaemon  - arguments[6] = niodev
+ DEBUG mpjdaemon  - arguments[7] = barq.seecs.edu.pk
+ DEBUG mpjdaemon  - arguments[8] = 40003
+ DEBUG mpjdaemon  - arguments[9] = 1
+ DEBUG mpjdaemon  - arguments[10] = HelloWorld
+ DEBUG mpjdaemon  - starting the process 
+ DEBUG mpjdaemon  - started the process 
+ DEBUG mpjdaemon  - outputting ...
+ DEBUG mpjdaemon  - Stopping the output
+ DEBUG mpjdaemon  - Job Finished
+ DEBUG mpjdaemon  - 
+
+ ** .. execution ends .. ** 
+
+
+ DEBUG mpjdaemon  - mpjHomeDir /export/home/hamza.zafar/mpjexpress-code/mpj-yarn
+ DEBUG mpjdaemon  -  args[0] 40000
+ DEBUG mpjdaemon  - setting daemon port to40000
+ DEBUG mpjdaemon  - Starting PortManager thread .. 
+ DEBUG mpjdaemon  - Starting ConnectionManager thread .. 
+ DEBUG mpjdaemon  - serverSocketInit .. 
+ DEBUG mpjdaemon  - serverSocketInit called .. 
+ DEBUG mpjdaemon  - Accepting connection ..
+ DEBUG mpjdaemon  - Accepted connection
+ DEBUG mpjdaemon  - Accepting connection ..
+ DEBUG mpjdaemon  - Job Started
+ DEBUG mpjdaemon  - Ticket length 927
+ DEBUG mpjdaemon  - <MPJProcessInfo>
+<TicketID>ae96a173-2d0a-4f3b-9506-d0542592f395</TicketID>
+<ClassPath>/state/partition1/home/hamza.zafar/mpjusr</ClassPath>
+<MasterNode>barq.seecs.edu.pk</MasterNode>
+<MasterPort>40003</MasterPort>
+<ProcessCount>2</ProcessCount>
+<StartingRank>0</StartingRank>
+<JvmArgs/>
+<WorkingDirectory>/export/home/hamza.zafar/mpjusr</WorkingDirectory>
+<ZippedSource>false</ZippedSource>
+<MainClass>HelloWorld</MainClass>
+<DeviceName>niodev</DeviceName>
+<ConfFileContents>#Number of Processes;2;#Protocol Switch Limit;131072;</ConfFileContents>
+<AppArgs>
+<Argument>3</Argument>
+</AppArgs>
+<UserID>hamza.zafar</UserID>
+<NetworkProcessCount>-1</NetworkProcessCount>
+<TotalProcessCount>-1</TotalProcessCount>
+<NetworkDevice>niodev</NetworkDevice>
+<MPJ_HOME>/export/home/hamza.zafar/mpjexpress-code/mpj-yarn</MPJ_HOME>
+<Debug>false</Debug>
+<DebugPort>24500</DebugPort>
+<Profiler>false</Profiler>
+</MPJProcessInfo>
+
+ DEBUG mpjdaemon  - mpjHomeDir /export/home/hamza.zafar/mpjexpress-code/mpj-yarn
+ DEBUG mpjdaemon  -  args[0] 40000
+ DEBUG mpjdaemon  - setting daemon port to40000
+ DEBUG mpjdaemon  - Starting PortManager thread .. 
+ DEBUG mpjdaemon  - Starting ConnectionManager thread .. 
+ DEBUG mpjdaemon  - serverSocketInit .. 
+ DEBUG mpjdaemon  - serverSocketInit called .. 
+ DEBUG mpjdaemon  - Accepting connection ..
+ DEBUG mpjdaemon  - Accepted connection
+ DEBUG mpjdaemon  - Accepting connection ..
+ DEBUG mpjdaemon  - Job Started
+ DEBUG mpjdaemon  - Ticket length 894
+ DEBUG mpjdaemon  - <MPJProcessInfo>
+<TicketID>cac1a61a-588f-4089-89cc-e20ee8da02e6</TicketID>
 <ClassPath>/state/partition1/home/hamza.zafar/mpjusr</ClassPath>
 <MasterNode>barq.seecs.edu.pk</MasterNode>
 <MasterPort>40003</MasterPort>
@@ -27,7 +279,6 @@
 <Profiler>false</Profiler>
 </MPJProcessInfo>
 
- DEBUG mpjdaemon  - FK: Am I printing this?
  DEBUG mpjdaemon  - configFilePath
  DEBUG mpjdaemon  - Config file created :
  DEBUG mpjdaemon  - modified: jArgs[0]=-cp
@@ -76,12 +327,11 @@
  DEBUG mpjdaemon  - Accepted connection
  DEBUG mpjdaemon  - Accepting connection ..
  DEBUG mpjdaemon  - Job Started
- DEBUG mpjdaemon  - Ticket length  884
- DEBUG mpjdaemon  - FK>> Where is this ticket being printed??
+ DEBUG mpjdaemon  - Ticket length 927
  DEBUG mpjdaemon  - <MPJProcessInfo>
-<TicketID>7cf4bec0-ea1e-464b-b349-146ef3f1a77a</TicketID>
-<ClassPath>/export/home/hamza.zafar/mpjusr</ClassPath>
-<MasterNode>compute-0-1.local</MasterNode>
+<TicketID>4e81c2fc-d959-4905-af27-c3da7dbb7b75</TicketID>
+<ClassPath>/state/partition1/home/hamza.zafar/mpjusr</ClassPath>
+<MasterNode>barq.seecs.edu.pk</MasterNode>
 <MasterPort>40003</MasterPort>
 <ProcessCount>2</ProcessCount>
 <StartingRank>0</StartingRank>
@@ -91,7 +341,9 @@
 <MainClass>HelloWorld</MainClass>
 <DeviceName>niodev</DeviceName>
 <ConfFileContents>#Number of Processes;2;#Protocol Switch Limit;131072;</ConfFileContents>
-<AppArgs/>
+<AppArgs>
+<Argument>1</Argument>
+</AppArgs>
 <UserID>hamza.zafar</UserID>
 <NetworkProcessCount>-1</NetworkProcessCount>
 <TotalProcessCount>-1</TotalProcessCount>
@@ -102,25 +354,25 @@
 <Profiler>false</Profiler>
 </MPJProcessInfo>
 
- DEBUG mpjdaemon  - FK: Am I printing this?
  DEBUG mpjdaemon  - configFilePath
  DEBUG mpjdaemon  - Config file created :
  DEBUG mpjdaemon  - modified: jArgs[0]=-cp
- DEBUG mpjdaemon  - modified: jArgs[1]=.:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - modified: jArgs[1]=.:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
  DEBUG mpjdaemon  - 
 ******************ARGUMENTS PASSED TO PB********************
 
  DEBUG mpjdaemon  - arguments[0] = java
  DEBUG mpjdaemon  - arguments[1] = -cp
- DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
  DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
  DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
  DEBUG mpjdaemon  - arguments[5] = 2
  DEBUG mpjdaemon  - arguments[6] = niodev
- DEBUG mpjdaemon  - arguments[7] = compute-0-1.local
+ DEBUG mpjdaemon  - arguments[7] = barq.seecs.edu.pk
  DEBUG mpjdaemon  - arguments[8] = 40003
  DEBUG mpjdaemon  - arguments[9] = 0
  DEBUG mpjdaemon  - arguments[10] = HelloWorld
+ DEBUG mpjdaemon  - arguments[11] = 1
  DEBUG mpjdaemon  - starting the process 
  DEBUG mpjdaemon  - started the process 
  DEBUG mpjdaemon  - 
@@ -128,15 +380,16 @@
 
  DEBUG mpjdaemon  - arguments[0] = java
  DEBUG mpjdaemon  - arguments[1] = -cp
- DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
  DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
  DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
  DEBUG mpjdaemon  - arguments[5] = 2
  DEBUG mpjdaemon  - arguments[6] = niodev
- DEBUG mpjdaemon  - arguments[7] = compute-0-1.local
+ DEBUG mpjdaemon  - arguments[7] = barq.seecs.edu.pk
  DEBUG mpjdaemon  - arguments[8] = 40003
  DEBUG mpjdaemon  - arguments[9] = 1
  DEBUG mpjdaemon  - arguments[10] = HelloWorld
+ DEBUG mpjdaemon  - arguments[11] = 1
  DEBUG mpjdaemon  - starting the process 
  DEBUG mpjdaemon  - outputting ...
  DEBUG mpjdaemon  - started the process 
@@ -151,535 +404,9 @@
  DEBUG mpjdaemon  - Accepted connection
  DEBUG mpjdaemon  - Accepting connection ..
  DEBUG mpjdaemon  - Job Started
- DEBUG mpjdaemon  - Ticket length  884
- DEBUG mpjdaemon  - FK>> Where is this ticket being printed??
+ DEBUG mpjdaemon  - Ticket length 894
  DEBUG mpjdaemon  - <MPJProcessInfo>
-<TicketID>69f17865-c254-46b5-891c-8e6aacdb67c5</TicketID>
-<ClassPath>/export/home/hamza.zafar/mpjusr</ClassPath>
-<MasterNode>compute-0-1.local</MasterNode>
-<MasterPort>40003</MasterPort>
-<ProcessCount>2</ProcessCount>
-<StartingRank>0</StartingRank>
-<JvmArgs/>
-<WorkingDirectory>/export/home/hamza.zafar/mpjusr</WorkingDirectory>
-<ZippedSource>false</ZippedSource>
-<MainClass>HelloWorld</MainClass>
-<DeviceName>niodev</DeviceName>
-<ConfFileContents>#Number of Processes;2;#Protocol Switch Limit;131072;</ConfFileContents>
-<AppArgs/>
-<UserID>hamza.zafar</UserID>
-<NetworkProcessCount>-1</NetworkProcessCount>
-<TotalProcessCount>-1</TotalProcessCount>
-<NetworkDevice>niodev</NetworkDevice>
-<MPJ_HOME>/export/home/hamza.zafar/mpjexpress-code/mpj-yarn</MPJ_HOME>
-<Debug>false</Debug>
-<DebugPort>24500</DebugPort>
-<Profiler>false</Profiler>
-</MPJProcessInfo>
-
- DEBUG mpjdaemon  - FK: Am I printing this?
- DEBUG mpjdaemon  - configFilePath
- DEBUG mpjdaemon  - Config file created :
- DEBUG mpjdaemon  - modified: jArgs[0]=-cp
- DEBUG mpjdaemon  - modified: jArgs[1]=.:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - 
-******************ARGUMENTS PASSED TO PB********************
-
- DEBUG mpjdaemon  - arguments[0] = java
- DEBUG mpjdaemon  - arguments[1] = -cp
- DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
- DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
- DEBUG mpjdaemon  - arguments[5] = 2
- DEBUG mpjdaemon  - arguments[6] = niodev
- DEBUG mpjdaemon  - arguments[7] = compute-0-1.local
- DEBUG mpjdaemon  - arguments[8] = 40003
- DEBUG mpjdaemon  - arguments[9] = 0
- DEBUG mpjdaemon  - arguments[10] = HelloWorld
- DEBUG mpjdaemon  - starting the process 
- DEBUG mpjdaemon  - started the process 
- DEBUG mpjdaemon  - 
-******************ARGUMENTS PASSED TO PB********************
-
- DEBUG mpjdaemon  - arguments[0] = java
- DEBUG mpjdaemon  - arguments[1] = -cp
- DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
- DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
- DEBUG mpjdaemon  - arguments[5] = 2
- DEBUG mpjdaemon  - arguments[6] = niodev
- DEBUG mpjdaemon  - arguments[7] = compute-0-1.local
- DEBUG mpjdaemon  - arguments[8] = 40003
- DEBUG mpjdaemon  - arguments[9] = 1
- DEBUG mpjdaemon  - arguments[10] = HelloWorld
- DEBUG mpjdaemon  - starting the process 
- DEBUG mpjdaemon  - outputting ...
- DEBUG mpjdaemon  - started the process 
- DEBUG mpjdaemon  - outputting ...
- DEBUG mpjdaemon  - Stopping the output
- DEBUG mpjdaemon  - Job Finished
- DEBUG mpjdaemon  - 
-
- ** .. execution ends .. ** 
-
-
- DEBUG mpjdaemon  - Accepted connection
- DEBUG mpjdaemon  - Accepting connection ..
- DEBUG mpjdaemon  - Job Started
- DEBUG mpjdaemon  - Ticket length  884
- DEBUG mpjdaemon  - FK>> Where is this ticket being printed??
- DEBUG mpjdaemon  - <MPJProcessInfo>
-<TicketID>06d09353-07ba-4f4d-989c-ca568420d099</TicketID>
-<ClassPath>/export/home/hamza.zafar/mpjusr</ClassPath>
-<MasterNode>compute-0-1.local</MasterNode>
-<MasterPort>40003</MasterPort>
-<ProcessCount>2</ProcessCount>
-<StartingRank>0</StartingRank>
-<JvmArgs/>
-<WorkingDirectory>/export/home/hamza.zafar/mpjusr</WorkingDirectory>
-<ZippedSource>false</ZippedSource>
-<MainClass>HelloWorld</MainClass>
-<DeviceName>niodev</DeviceName>
-<ConfFileContents>#Number of Processes;2;#Protocol Switch Limit;131072;</ConfFileContents>
-<AppArgs/>
-<UserID>hamza.zafar</UserID>
-<NetworkProcessCount>-1</NetworkProcessCount>
-<TotalProcessCount>-1</TotalProcessCount>
-<NetworkDevice>niodev</NetworkDevice>
-<MPJ_HOME>/export/home/hamza.zafar/mpjexpress-code/mpj-yarn</MPJ_HOME>
-<Debug>false</Debug>
-<DebugPort>24500</DebugPort>
-<Profiler>false</Profiler>
-</MPJProcessInfo>
-
- DEBUG mpjdaemon  - FK: Am I printing this?
- DEBUG mpjdaemon  - configFilePath
- DEBUG mpjdaemon  - Config file created :
- DEBUG mpjdaemon  - modified: jArgs[0]=-cp
- DEBUG mpjdaemon  - modified: jArgs[1]=.:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - 
-******************ARGUMENTS PASSED TO PB********************
-
- DEBUG mpjdaemon  - arguments[0] = java
- DEBUG mpjdaemon  - arguments[1] = -cp
- DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
- DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
- DEBUG mpjdaemon  - arguments[5] = 2
- DEBUG mpjdaemon  - arguments[6] = niodev
- DEBUG mpjdaemon  - arguments[7] = compute-0-1.local
- DEBUG mpjdaemon  - arguments[8] = 40003
- DEBUG mpjdaemon  - arguments[9] = 0
- DEBUG mpjdaemon  - arguments[10] = HelloWorld
- DEBUG mpjdaemon  - starting the process 
- DEBUG mpjdaemon  - started the process 
- DEBUG mpjdaemon  - 
-******************ARGUMENTS PASSED TO PB********************
-
- DEBUG mpjdaemon  - arguments[0] = java
- DEBUG mpjdaemon  - arguments[1] = -cp
- DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
- DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
- DEBUG mpjdaemon  - arguments[5] = 2
- DEBUG mpjdaemon  - arguments[6] = niodev
- DEBUG mpjdaemon  - arguments[7] = compute-0-1.local
- DEBUG mpjdaemon  - arguments[8] = 40003
- DEBUG mpjdaemon  - arguments[9] = 1
- DEBUG mpjdaemon  - arguments[10] = HelloWorld
- DEBUG mpjdaemon  - starting the process 
- DEBUG mpjdaemon  - outputting ...
- DEBUG mpjdaemon  - started the process 
- DEBUG mpjdaemon  - outputting ...
- DEBUG mpjdaemon  - Stopping the output
- DEBUG mpjdaemon  - Job Finished
- DEBUG mpjdaemon  - 
-
- ** .. execution ends .. ** 
-
-
- DEBUG mpjdaemon  - Accepted connection
- DEBUG mpjdaemon  - Accepting connection ..
- DEBUG mpjdaemon  - Job Started
- DEBUG mpjdaemon  - Ticket length  884
- DEBUG mpjdaemon  - FK>> Where is this ticket being printed??
- DEBUG mpjdaemon  - <MPJProcessInfo>
-<TicketID>7ad731d5-8125-484a-8a4f-27930bc95678</TicketID>
-<ClassPath>/export/home/hamza.zafar/mpjusr</ClassPath>
-<MasterNode>compute-0-1.local</MasterNode>
-<MasterPort>40003</MasterPort>
-<ProcessCount>2</ProcessCount>
-<StartingRank>0</StartingRank>
-<JvmArgs/>
-<WorkingDirectory>/export/home/hamza.zafar/mpjusr</WorkingDirectory>
-<ZippedSource>false</ZippedSource>
-<MainClass>HelloWorld</MainClass>
-<DeviceName>niodev</DeviceName>
-<ConfFileContents>#Number of Processes;2;#Protocol Switch Limit;131072;</ConfFileContents>
-<AppArgs/>
-<UserID>hamza.zafar</UserID>
-<NetworkProcessCount>-1</NetworkProcessCount>
-<TotalProcessCount>-1</TotalProcessCount>
-<NetworkDevice>niodev</NetworkDevice>
-<MPJ_HOME>/export/home/hamza.zafar/mpjexpress-code/mpj-yarn</MPJ_HOME>
-<Debug>false</Debug>
-<DebugPort>24500</DebugPort>
-<Profiler>false</Profiler>
-</MPJProcessInfo>
-
- DEBUG mpjdaemon  - FK: Am I printing this?
- DEBUG mpjdaemon  - configFilePath
- DEBUG mpjdaemon  - Config file created :
- DEBUG mpjdaemon  - modified: jArgs[0]=-cp
- DEBUG mpjdaemon  - modified: jArgs[1]=.:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - 
-******************ARGUMENTS PASSED TO PB********************
-
- DEBUG mpjdaemon  - arguments[0] = java
- DEBUG mpjdaemon  - arguments[1] = -cp
- DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
- DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
- DEBUG mpjdaemon  - arguments[5] = 2
- DEBUG mpjdaemon  - arguments[6] = niodev
- DEBUG mpjdaemon  - arguments[7] = compute-0-1.local
- DEBUG mpjdaemon  - arguments[8] = 40003
- DEBUG mpjdaemon  - arguments[9] = 0
- DEBUG mpjdaemon  - arguments[10] = HelloWorld
- DEBUG mpjdaemon  - starting the process 
- DEBUG mpjdaemon  - started the process 
- DEBUG mpjdaemon  - 
-******************ARGUMENTS PASSED TO PB********************
-
- DEBUG mpjdaemon  - arguments[0] = java
- DEBUG mpjdaemon  - arguments[1] = -cp
- DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
- DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
- DEBUG mpjdaemon  - arguments[5] = 2
- DEBUG mpjdaemon  - arguments[6] = niodev
- DEBUG mpjdaemon  - arguments[7] = compute-0-1.local
- DEBUG mpjdaemon  - arguments[8] = 40003
- DEBUG mpjdaemon  - arguments[9] = 1
- DEBUG mpjdaemon  - arguments[10] = HelloWorld
- DEBUG mpjdaemon  - starting the process 
- DEBUG mpjdaemon  - outputting ...
- DEBUG mpjdaemon  - started the process 
- DEBUG mpjdaemon  - outputting ...
- DEBUG mpjdaemon  - Stopping the output
- DEBUG mpjdaemon  - Job Finished
- DEBUG mpjdaemon  - 
-
- ** .. execution ends .. ** 
-
-
- DEBUG mpjdaemon  - Accepted connection
- DEBUG mpjdaemon  - Accepting connection ..
- DEBUG mpjdaemon  - Job Started
- DEBUG mpjdaemon  - Ticket length  884
- DEBUG mpjdaemon  - FK>> Where is this ticket being printed??
- DEBUG mpjdaemon  - <MPJProcessInfo>
-<TicketID>9869f030-cba2-44fa-bc6c-1ab304f4434a</TicketID>
-<ClassPath>/export/home/hamza.zafar/mpjusr</ClassPath>
-<MasterNode>compute-0-1.local</MasterNode>
-<MasterPort>40003</MasterPort>
-<ProcessCount>2</ProcessCount>
-<StartingRank>0</StartingRank>
-<JvmArgs/>
-<WorkingDirectory>/export/home/hamza.zafar/mpjusr</WorkingDirectory>
-<ZippedSource>false</ZippedSource>
-<MainClass>HelloWorld</MainClass>
-<DeviceName>niodev</DeviceName>
-<ConfFileContents>#Number of Processes;2;#Protocol Switch Limit;131072;</ConfFileContents>
-<AppArgs/>
-<UserID>hamza.zafar</UserID>
-<NetworkProcessCount>-1</NetworkProcessCount>
-<TotalProcessCount>-1</TotalProcessCount>
-<NetworkDevice>niodev</NetworkDevice>
-<MPJ_HOME>/export/home/hamza.zafar/mpjexpress-code/mpj-yarn</MPJ_HOME>
-<Debug>false</Debug>
-<DebugPort>24500</DebugPort>
-<Profiler>false</Profiler>
-</MPJProcessInfo>
-
- DEBUG mpjdaemon  - FK: Am I printing this?
- DEBUG mpjdaemon  - configFilePath
- DEBUG mpjdaemon  - Config file created :
- DEBUG mpjdaemon  - modified: jArgs[0]=-cp
- DEBUG mpjdaemon  - modified: jArgs[1]=.:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - 
-******************ARGUMENTS PASSED TO PB********************
-
- DEBUG mpjdaemon  - arguments[0] = java
- DEBUG mpjdaemon  - arguments[1] = -cp
- DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
- DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
- DEBUG mpjdaemon  - arguments[5] = 2
- DEBUG mpjdaemon  - arguments[6] = niodev
- DEBUG mpjdaemon  - arguments[7] = compute-0-1.local
- DEBUG mpjdaemon  - arguments[8] = 40003
- DEBUG mpjdaemon  - arguments[9] = 0
- DEBUG mpjdaemon  - arguments[10] = HelloWorld
- DEBUG mpjdaemon  - starting the process 
- DEBUG mpjdaemon  - started the process 
- DEBUG mpjdaemon  - 
-******************ARGUMENTS PASSED TO PB********************
-
- DEBUG mpjdaemon  - arguments[0] = java
- DEBUG mpjdaemon  - arguments[1] = -cp
- DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
- DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
- DEBUG mpjdaemon  - arguments[5] = 2
- DEBUG mpjdaemon  - arguments[6] = niodev
- DEBUG mpjdaemon  - arguments[7] = compute-0-1.local
- DEBUG mpjdaemon  - arguments[8] = 40003
- DEBUG mpjdaemon  - arguments[9] = 1
- DEBUG mpjdaemon  - arguments[10] = HelloWorld
- DEBUG mpjdaemon  - starting the process 
- DEBUG mpjdaemon  - outputting ...
- DEBUG mpjdaemon  - started the process 
- DEBUG mpjdaemon  - outputting ...
- DEBUG mpjdaemon  - Stopping the output
- DEBUG mpjdaemon  - Job Finished
- DEBUG mpjdaemon  - 
-
- ** .. execution ends .. ** 
-
-
- DEBUG mpjdaemon  - Accepted connection
- DEBUG mpjdaemon  - Accepting connection ..
- DEBUG mpjdaemon  - Job Started
- DEBUG mpjdaemon  - Ticket length  884
- DEBUG mpjdaemon  - FK>> Where is this ticket being printed??
- DEBUG mpjdaemon  - <MPJProcessInfo>
-<TicketID>3d9a6038-5105-4ac6-825c-11d1ae539182</TicketID>
-<ClassPath>/export/home/hamza.zafar/mpjusr</ClassPath>
-<MasterNode>compute-0-1.local</MasterNode>
-<MasterPort>40003</MasterPort>
-<ProcessCount>2</ProcessCount>
-<StartingRank>0</StartingRank>
-<JvmArgs/>
-<WorkingDirectory>/export/home/hamza.zafar/mpjusr</WorkingDirectory>
-<ZippedSource>false</ZippedSource>
-<MainClass>HelloWorld</MainClass>
-<DeviceName>niodev</DeviceName>
-<ConfFileContents>#Number of Processes;2;#Protocol Switch Limit;131072;</ConfFileContents>
-<AppArgs/>
-<UserID>hamza.zafar</UserID>
-<NetworkProcessCount>-1</NetworkProcessCount>
-<TotalProcessCount>-1</TotalProcessCount>
-<NetworkDevice>niodev</NetworkDevice>
-<MPJ_HOME>/export/home/hamza.zafar/mpjexpress-code/mpj-yarn</MPJ_HOME>
-<Debug>false</Debug>
-<DebugPort>24500</DebugPort>
-<Profiler>false</Profiler>
-</MPJProcessInfo>
-
- DEBUG mpjdaemon  - FK: Am I printing this?
- DEBUG mpjdaemon  - configFilePath
- DEBUG mpjdaemon  - Config file created :
- DEBUG mpjdaemon  - modified: jArgs[0]=-cp
- DEBUG mpjdaemon  - modified: jArgs[1]=.:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - 
-******************ARGUMENTS PASSED TO PB********************
-
- DEBUG mpjdaemon  - arguments[0] = java
- DEBUG mpjdaemon  - arguments[1] = -cp
- DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
- DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
- DEBUG mpjdaemon  - arguments[5] = 2
- DEBUG mpjdaemon  - arguments[6] = niodev
- DEBUG mpjdaemon  - arguments[7] = compute-0-1.local
- DEBUG mpjdaemon  - arguments[8] = 40003
- DEBUG mpjdaemon  - arguments[9] = 0
- DEBUG mpjdaemon  - arguments[10] = HelloWorld
- DEBUG mpjdaemon  - starting the process 
- DEBUG mpjdaemon  - started the process 
- DEBUG mpjdaemon  - 
-******************ARGUMENTS PASSED TO PB********************
-
- DEBUG mpjdaemon  - arguments[0] = java
- DEBUG mpjdaemon  - arguments[1] = -cp
- DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
- DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
- DEBUG mpjdaemon  - arguments[5] = 2
- DEBUG mpjdaemon  - arguments[6] = niodev
- DEBUG mpjdaemon  - arguments[7] = compute-0-1.local
- DEBUG mpjdaemon  - arguments[8] = 40003
- DEBUG mpjdaemon  - arguments[9] = 1
- DEBUG mpjdaemon  - arguments[10] = HelloWorld
- DEBUG mpjdaemon  - starting the process 
- DEBUG mpjdaemon  - outputting ...
- DEBUG mpjdaemon  - started the process 
- DEBUG mpjdaemon  - outputting ...
- DEBUG mpjdaemon  - Stopping the output
- DEBUG mpjdaemon  - Job Finished
- DEBUG mpjdaemon  - 
-
- ** .. execution ends .. ** 
-
-
- DEBUG mpjdaemon  - Accepted connection
- DEBUG mpjdaemon  - Accepting connection ..
- DEBUG mpjdaemon  - Job Started
- DEBUG mpjdaemon  - Ticket length  884
- DEBUG mpjdaemon  - FK>> Where is this ticket being printed??
- DEBUG mpjdaemon  - <MPJProcessInfo>
-<TicketID>7ba8287b-4c02-4005-a068-d1c879b14ffc</TicketID>
-<ClassPath>/export/home/hamza.zafar/mpjusr</ClassPath>
-<MasterNode>compute-0-1.local</MasterNode>
-<MasterPort>40003</MasterPort>
-<ProcessCount>2</ProcessCount>
-<StartingRank>0</StartingRank>
-<JvmArgs/>
-<WorkingDirectory>/export/home/hamza.zafar/mpjusr</WorkingDirectory>
-<ZippedSource>false</ZippedSource>
-<MainClass>HelloWorld</MainClass>
-<DeviceName>niodev</DeviceName>
-<ConfFileContents>#Number of Processes;2;#Protocol Switch Limit;131072;</ConfFileContents>
-<AppArgs/>
-<UserID>hamza.zafar</UserID>
-<NetworkProcessCount>-1</NetworkProcessCount>
-<TotalProcessCount>-1</TotalProcessCount>
-<NetworkDevice>niodev</NetworkDevice>
-<MPJ_HOME>/export/home/hamza.zafar/mpjexpress-code/mpj-yarn</MPJ_HOME>
-<Debug>false</Debug>
-<DebugPort>24500</DebugPort>
-<Profiler>false</Profiler>
-</MPJProcessInfo>
-
- DEBUG mpjdaemon  - FK: Am I printing this?
- DEBUG mpjdaemon  - configFilePath
- DEBUG mpjdaemon  - Config file created :
- DEBUG mpjdaemon  - modified: jArgs[0]=-cp
- DEBUG mpjdaemon  - modified: jArgs[1]=.:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - 
-******************ARGUMENTS PASSED TO PB********************
-
- DEBUG mpjdaemon  - arguments[0] = java
- DEBUG mpjdaemon  - arguments[1] = -cp
- DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
- DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
- DEBUG mpjdaemon  - arguments[5] = 2
- DEBUG mpjdaemon  - arguments[6] = niodev
- DEBUG mpjdaemon  - arguments[7] = compute-0-1.local
- DEBUG mpjdaemon  - arguments[8] = 40003
- DEBUG mpjdaemon  - arguments[9] = 0
- DEBUG mpjdaemon  - arguments[10] = HelloWorld
- DEBUG mpjdaemon  - starting the process 
- DEBUG mpjdaemon  - started the process 
- DEBUG mpjdaemon  - 
-******************ARGUMENTS PASSED TO PB********************
-
- DEBUG mpjdaemon  - arguments[0] = java
- DEBUG mpjdaemon  - arguments[1] = -cp
- DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
- DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
- DEBUG mpjdaemon  - arguments[5] = 2
- DEBUG mpjdaemon  - arguments[6] = niodev
- DEBUG mpjdaemon  - arguments[7] = compute-0-1.local
- DEBUG mpjdaemon  - arguments[8] = 40003
- DEBUG mpjdaemon  - arguments[9] = 1
- DEBUG mpjdaemon  - arguments[10] = HelloWorld
- DEBUG mpjdaemon  - starting the process 
- DEBUG mpjdaemon  - outputting ...
- DEBUG mpjdaemon  - started the process 
- DEBUG mpjdaemon  - outputting ...
- DEBUG mpjdaemon  - Stopping the output
- DEBUG mpjdaemon  - Job Finished
- DEBUG mpjdaemon  - 
-
- ** .. execution ends .. ** 
-
-
- DEBUG mpjdaemon  - Accepted connection
- DEBUG mpjdaemon  - Accepting connection ..
- DEBUG mpjdaemon  - Job Started
- DEBUG mpjdaemon  - Ticket length  884
- DEBUG mpjdaemon  - FK>> Where is this ticket being printed??
- DEBUG mpjdaemon  - <MPJProcessInfo>
-<TicketID>0c712319-304f-43e3-87fd-600b2c61f754</TicketID>
-<ClassPath>/export/home/hamza.zafar/mpjusr</ClassPath>
-<MasterNode>compute-0-1.local</MasterNode>
-<MasterPort>40003</MasterPort>
-<ProcessCount>2</ProcessCount>
-<StartingRank>0</StartingRank>
-<JvmArgs/>
-<WorkingDirectory>/export/home/hamza.zafar/mpjusr</WorkingDirectory>
-<ZippedSource>false</ZippedSource>
-<MainClass>HelloWorld</MainClass>
-<DeviceName>niodev</DeviceName>
-<ConfFileContents>#Number of Processes;2;#Protocol Switch Limit;131072;</ConfFileContents>
-<AppArgs/>
-<UserID>hamza.zafar</UserID>
-<NetworkProcessCount>-1</NetworkProcessCount>
-<TotalProcessCount>-1</TotalProcessCount>
-<NetworkDevice>niodev</NetworkDevice>
-<MPJ_HOME>/export/home/hamza.zafar/mpjexpress-code/mpj-yarn</MPJ_HOME>
-<Debug>false</Debug>
-<DebugPort>24500</DebugPort>
-<Profiler>false</Profiler>
-</MPJProcessInfo>
-
- DEBUG mpjdaemon  - FK: Am I printing this?
- DEBUG mpjdaemon  - configFilePath
- DEBUG mpjdaemon  - Config file created :
- DEBUG mpjdaemon  - modified: jArgs[0]=-cp
- DEBUG mpjdaemon  - modified: jArgs[1]=.:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - 
-******************ARGUMENTS PASSED TO PB********************
-
- DEBUG mpjdaemon  - arguments[0] = java
- DEBUG mpjdaemon  - arguments[1] = -cp
- DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
- DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
- DEBUG mpjdaemon  - arguments[5] = 2
- DEBUG mpjdaemon  - arguments[6] = niodev
- DEBUG mpjdaemon  - arguments[7] = compute-0-1.local
- DEBUG mpjdaemon  - arguments[8] = 40003
- DEBUG mpjdaemon  - arguments[9] = 0
- DEBUG mpjdaemon  - arguments[10] = HelloWorld
- DEBUG mpjdaemon  - starting the process 
- DEBUG mpjdaemon  - started the process 
- DEBUG mpjdaemon  - 
-******************ARGUMENTS PASSED TO PB********************
-
- DEBUG mpjdaemon  - arguments[0] = java
- DEBUG mpjdaemon  - arguments[1] = -cp
- DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/export/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
- DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
- DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
- DEBUG mpjdaemon  - arguments[5] = 2
- DEBUG mpjdaemon  - arguments[6] = niodev
- DEBUG mpjdaemon  - arguments[7] = compute-0-1.local
- DEBUG mpjdaemon  - arguments[8] = 40003
- DEBUG mpjdaemon  - arguments[9] = 1
- DEBUG mpjdaemon  - arguments[10] = HelloWorld
- DEBUG mpjdaemon  - starting the process 
- DEBUG mpjdaemon  - outputting ...
- DEBUG mpjdaemon  - started the process 
- DEBUG mpjdaemon  - outputting ...
- DEBUG mpjdaemon  - Stopping the output
- DEBUG mpjdaemon  - Job Finished
- DEBUG mpjdaemon  - 
-
- ** .. execution ends .. ** 
-
-
- DEBUG mpjdaemon  - Accepted connection
- DEBUG mpjdaemon  - Accepting connection ..
- DEBUG mpjdaemon  - Job Started
- DEBUG mpjdaemon  - Ticket length  894
- DEBUG mpjdaemon  - FK>> Where is this ticket being printed??
- DEBUG mpjdaemon  - <MPJProcessInfo>
-<TicketID>05a3ec40-7176-4c2b-90c8-4cd6b33af6b8</TicketID>
+<TicketID>481349a6-4c77-44d2-8fdb-a6fd3aee2878</TicketID>
 <ClassPath>/state/partition1/home/hamza.zafar/mpjusr</ClassPath>
 <MasterNode>barq.seecs.edu.pk</MasterNode>
 <MasterPort>40003</MasterPort>
@@ -702,7 +429,371 @@
 <Profiler>false</Profiler>
 </MPJProcessInfo>
 
- DEBUG mpjdaemon  - FK: Am I printing this?
+ DEBUG mpjdaemon  - configFilePath
+ DEBUG mpjdaemon  - Config file created :
+ DEBUG mpjdaemon  - modified: jArgs[0]=-cp
+ DEBUG mpjdaemon  - modified: jArgs[1]=.:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - 
+******************ARGUMENTS PASSED TO PB********************
+
+ DEBUG mpjdaemon  - arguments[0] = java
+ DEBUG mpjdaemon  - arguments[1] = -cp
+ DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
+ DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
+ DEBUG mpjdaemon  - arguments[5] = 2
+ DEBUG mpjdaemon  - arguments[6] = niodev
+ DEBUG mpjdaemon  - arguments[7] = barq.seecs.edu.pk
+ DEBUG mpjdaemon  - arguments[8] = 40003
+ DEBUG mpjdaemon  - arguments[9] = 0
+ DEBUG mpjdaemon  - arguments[10] = HelloWorld
+ DEBUG mpjdaemon  - starting the process 
+ DEBUG mpjdaemon  - started the process 
+ DEBUG mpjdaemon  - 
+******************ARGUMENTS PASSED TO PB********************
+
+ DEBUG mpjdaemon  - arguments[0] = java
+ DEBUG mpjdaemon  - arguments[1] = -cp
+ DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
+ DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
+ DEBUG mpjdaemon  - arguments[5] = 2
+ DEBUG mpjdaemon  - arguments[6] = niodev
+ DEBUG mpjdaemon  - arguments[7] = barq.seecs.edu.pk
+ DEBUG mpjdaemon  - arguments[8] = 40003
+ DEBUG mpjdaemon  - arguments[9] = 1
+ DEBUG mpjdaemon  - arguments[10] = HelloWorld
+ DEBUG mpjdaemon  - starting the process 
+ DEBUG mpjdaemon  - outputting ...
+ DEBUG mpjdaemon  - started the process 
+ DEBUG mpjdaemon  - outputting ...
+ DEBUG mpjdaemon  - Stopping the output
+ DEBUG mpjdaemon  - Job Finished
+ DEBUG mpjdaemon  - 
+
+ ** .. execution ends .. ** 
+
+
+ DEBUG mpjdaemon  - Accepted connection
+ DEBUG mpjdaemon  - Accepting connection ..
+ DEBUG mpjdaemon  - Job Started
+ DEBUG mpjdaemon  - Ticket length 894
+ DEBUG mpjdaemon  - <MPJProcessInfo>
+<TicketID>0f3d3dc4-2279-4ed5-bf6a-16923be1776e</TicketID>
+<ClassPath>/state/partition1/home/hamza.zafar/mpjusr</ClassPath>
+<MasterNode>barq.seecs.edu.pk</MasterNode>
+<MasterPort>40003</MasterPort>
+<ProcessCount>2</ProcessCount>
+<StartingRank>0</StartingRank>
+<JvmArgs/>
+<WorkingDirectory>/export/home/hamza.zafar/mpjusr</WorkingDirectory>
+<ZippedSource>false</ZippedSource>
+<MainClass>HelloWorld</MainClass>
+<DeviceName>niodev</DeviceName>
+<ConfFileContents>#Number of Processes;2;#Protocol Switch Limit;131072;</ConfFileContents>
+<AppArgs/>
+<UserID>hamza.zafar</UserID>
+<NetworkProcessCount>-1</NetworkProcessCount>
+<TotalProcessCount>-1</TotalProcessCount>
+<NetworkDevice>niodev</NetworkDevice>
+<MPJ_HOME>/export/home/hamza.zafar/mpjexpress-code/mpj-yarn</MPJ_HOME>
+<Debug>false</Debug>
+<DebugPort>24500</DebugPort>
+<Profiler>false</Profiler>
+</MPJProcessInfo>
+
+ DEBUG mpjdaemon  - configFilePath
+ DEBUG mpjdaemon  - Config file created :
+ DEBUG mpjdaemon  - modified: jArgs[0]=-cp
+ DEBUG mpjdaemon  - modified: jArgs[1]=.:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - 
+******************ARGUMENTS PASSED TO PB********************
+
+ DEBUG mpjdaemon  - arguments[0] = java
+ DEBUG mpjdaemon  - arguments[1] = -cp
+ DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
+ DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
+ DEBUG mpjdaemon  - arguments[5] = 2
+ DEBUG mpjdaemon  - arguments[6] = niodev
+ DEBUG mpjdaemon  - arguments[7] = barq.seecs.edu.pk
+ DEBUG mpjdaemon  - arguments[8] = 40003
+ DEBUG mpjdaemon  - arguments[9] = 0
+ DEBUG mpjdaemon  - arguments[10] = HelloWorld
+ DEBUG mpjdaemon  - starting the process 
+ DEBUG mpjdaemon  - started the process 
+ DEBUG mpjdaemon  - 
+******************ARGUMENTS PASSED TO PB********************
+
+ DEBUG mpjdaemon  - arguments[0] = java
+ DEBUG mpjdaemon  - arguments[1] = -cp
+ DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
+ DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
+ DEBUG mpjdaemon  - arguments[5] = 2
+ DEBUG mpjdaemon  - arguments[6] = niodev
+ DEBUG mpjdaemon  - arguments[7] = barq.seecs.edu.pk
+ DEBUG mpjdaemon  - arguments[8] = 40003
+ DEBUG mpjdaemon  - arguments[9] = 1
+ DEBUG mpjdaemon  - arguments[10] = HelloWorld
+ DEBUG mpjdaemon  - starting the process 
+ DEBUG mpjdaemon  - outputting ...
+ DEBUG mpjdaemon  - started the process 
+ DEBUG mpjdaemon  - outputting ...
+ DEBUG mpjdaemon  - Stopping the output
+ DEBUG mpjdaemon  - Job Finished
+ DEBUG mpjdaemon  - 
+
+ ** .. execution ends .. ** 
+
+
+ DEBUG mpjdaemon  - Accepted connection
+ DEBUG mpjdaemon  - Accepting connection ..
+ DEBUG mpjdaemon  - Job Started
+ DEBUG mpjdaemon  - Ticket length 894
+ DEBUG mpjdaemon  - <MPJProcessInfo>
+<TicketID>c778a1a8-e3a7-4336-894d-0b9fe2cf582a</TicketID>
+<ClassPath>/state/partition1/home/hamza.zafar/mpjusr</ClassPath>
+<MasterNode>barq.seecs.edu.pk</MasterNode>
+<MasterPort>40003</MasterPort>
+<ProcessCount>2</ProcessCount>
+<StartingRank>0</StartingRank>
+<JvmArgs/>
+<WorkingDirectory>/export/home/hamza.zafar/mpjusr</WorkingDirectory>
+<ZippedSource>false</ZippedSource>
+<MainClass>HelloWorld</MainClass>
+<DeviceName>niodev</DeviceName>
+<ConfFileContents>#Number of Processes;2;#Protocol Switch Limit;131072;</ConfFileContents>
+<AppArgs/>
+<UserID>hamza.zafar</UserID>
+<NetworkProcessCount>-1</NetworkProcessCount>
+<TotalProcessCount>-1</TotalProcessCount>
+<NetworkDevice>niodev</NetworkDevice>
+<MPJ_HOME>/export/home/hamza.zafar/mpjexpress-code/mpj-yarn</MPJ_HOME>
+<Debug>false</Debug>
+<DebugPort>24500</DebugPort>
+<Profiler>false</Profiler>
+</MPJProcessInfo>
+
+ DEBUG mpjdaemon  - configFilePath
+ DEBUG mpjdaemon  - Config file created :
+ DEBUG mpjdaemon  - modified: jArgs[0]=-cp
+ DEBUG mpjdaemon  - modified: jArgs[1]=.:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - 
+******************ARGUMENTS PASSED TO PB********************
+
+ DEBUG mpjdaemon  - arguments[0] = java
+ DEBUG mpjdaemon  - arguments[1] = -cp
+ DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
+ DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
+ DEBUG mpjdaemon  - arguments[5] = 2
+ DEBUG mpjdaemon  - arguments[6] = niodev
+ DEBUG mpjdaemon  - arguments[7] = barq.seecs.edu.pk
+ DEBUG mpjdaemon  - arguments[8] = 40003
+ DEBUG mpjdaemon  - arguments[9] = 0
+ DEBUG mpjdaemon  - arguments[10] = HelloWorld
+ DEBUG mpjdaemon  - starting the process 
+ DEBUG mpjdaemon  - started the process 
+ DEBUG mpjdaemon  - 
+******************ARGUMENTS PASSED TO PB********************
+
+ DEBUG mpjdaemon  - arguments[0] = java
+ DEBUG mpjdaemon  - arguments[1] = -cp
+ DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
+ DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
+ DEBUG mpjdaemon  - arguments[5] = 2
+ DEBUG mpjdaemon  - arguments[6] = niodev
+ DEBUG mpjdaemon  - arguments[7] = barq.seecs.edu.pk
+ DEBUG mpjdaemon  - arguments[8] = 40003
+ DEBUG mpjdaemon  - arguments[9] = 1
+ DEBUG mpjdaemon  - arguments[10] = HelloWorld
+ DEBUG mpjdaemon  - starting the process 
+ DEBUG mpjdaemon  - outputting ...
+ DEBUG mpjdaemon  - started the process 
+ DEBUG mpjdaemon  - outputting ...
+ DEBUG mpjdaemon  - Stopping the output
+ DEBUG mpjdaemon  - Job Finished
+ DEBUG mpjdaemon  - 
+
+ ** .. execution ends .. ** 
+
+
+ DEBUG mpjdaemon  - Accepted connection
+ DEBUG mpjdaemon  - Accepting connection ..
+ DEBUG mpjdaemon  - Job Started
+ DEBUG mpjdaemon  - Ticket length 894
+ DEBUG mpjdaemon  - <MPJProcessInfo>
+<TicketID>673c91ab-eaaf-4b87-af36-f0a86b8a011b</TicketID>
+<ClassPath>/state/partition1/home/hamza.zafar/mpjusr</ClassPath>
+<MasterNode>barq.seecs.edu.pk</MasterNode>
+<MasterPort>40003</MasterPort>
+<ProcessCount>2</ProcessCount>
+<StartingRank>0</StartingRank>
+<JvmArgs/>
+<WorkingDirectory>/export/home/hamza.zafar/mpjusr</WorkingDirectory>
+<ZippedSource>false</ZippedSource>
+<MainClass>HelloWorld</MainClass>
+<DeviceName>niodev</DeviceName>
+<ConfFileContents>#Number of Processes;2;#Protocol Switch Limit;131072;</ConfFileContents>
+<AppArgs/>
+<UserID>hamza.zafar</UserID>
+<NetworkProcessCount>-1</NetworkProcessCount>
+<TotalProcessCount>-1</TotalProcessCount>
+<NetworkDevice>niodev</NetworkDevice>
+<MPJ_HOME>/export/home/hamza.zafar/mpjexpress-code/mpj-yarn</MPJ_HOME>
+<Debug>false</Debug>
+<DebugPort>24500</DebugPort>
+<Profiler>false</Profiler>
+</MPJProcessInfo>
+
+ DEBUG mpjdaemon  - configFilePath
+ DEBUG mpjdaemon  - Config file created :
+ DEBUG mpjdaemon  - modified: jArgs[0]=-cp
+ DEBUG mpjdaemon  - modified: jArgs[1]=.:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - 
+******************ARGUMENTS PASSED TO PB********************
+
+ DEBUG mpjdaemon  - arguments[0] = java
+ DEBUG mpjdaemon  - arguments[1] = -cp
+ DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
+ DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
+ DEBUG mpjdaemon  - arguments[5] = 2
+ DEBUG mpjdaemon  - arguments[6] = niodev
+ DEBUG mpjdaemon  - arguments[7] = barq.seecs.edu.pk
+ DEBUG mpjdaemon  - arguments[8] = 40003
+ DEBUG mpjdaemon  - arguments[9] = 0
+ DEBUG mpjdaemon  - arguments[10] = HelloWorld
+ DEBUG mpjdaemon  - starting the process 
+ DEBUG mpjdaemon  - started the process 
+ DEBUG mpjdaemon  - 
+******************ARGUMENTS PASSED TO PB********************
+
+ DEBUG mpjdaemon  - arguments[0] = java
+ DEBUG mpjdaemon  - arguments[1] = -cp
+ DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
+ DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
+ DEBUG mpjdaemon  - arguments[5] = 2
+ DEBUG mpjdaemon  - arguments[6] = niodev
+ DEBUG mpjdaemon  - arguments[7] = barq.seecs.edu.pk
+ DEBUG mpjdaemon  - arguments[8] = 40003
+ DEBUG mpjdaemon  - arguments[9] = 1
+ DEBUG mpjdaemon  - arguments[10] = HelloWorld
+ DEBUG mpjdaemon  - starting the process 
+ DEBUG mpjdaemon  - outputting ...
+ DEBUG mpjdaemon  - started the process 
+ DEBUG mpjdaemon  - outputting ...
+ DEBUG mpjdaemon  - Stopping the output
+ DEBUG mpjdaemon  - Job Finished
+ DEBUG mpjdaemon  - 
+
+ ** .. execution ends .. ** 
+
+
+ DEBUG mpjdaemon  - Accepted connection
+ DEBUG mpjdaemon  - Accepting connection ..
+ DEBUG mpjdaemon  - Job Started
+ DEBUG mpjdaemon  - Ticket length 894
+ DEBUG mpjdaemon  - <MPJProcessInfo>
+<TicketID>638507c2-2c7e-4cd0-936f-5dd5d8e15459</TicketID>
+<ClassPath>/state/partition1/home/hamza.zafar/mpjusr</ClassPath>
+<MasterNode>barq.seecs.edu.pk</MasterNode>
+<MasterPort>40003</MasterPort>
+<ProcessCount>2</ProcessCount>
+<StartingRank>0</StartingRank>
+<JvmArgs/>
+<WorkingDirectory>/export/home/hamza.zafar/mpjusr</WorkingDirectory>
+<ZippedSource>false</ZippedSource>
+<MainClass>HelloWorld</MainClass>
+<DeviceName>niodev</DeviceName>
+<ConfFileContents>#Number of Processes;2;#Protocol Switch Limit;131072;</ConfFileContents>
+<AppArgs/>
+<UserID>hamza.zafar</UserID>
+<NetworkProcessCount>-1</NetworkProcessCount>
+<TotalProcessCount>-1</TotalProcessCount>
+<NetworkDevice>niodev</NetworkDevice>
+<MPJ_HOME>/export/home/hamza.zafar/mpjexpress-code/mpj-yarn</MPJ_HOME>
+<Debug>false</Debug>
+<DebugPort>24500</DebugPort>
+<Profiler>false</Profiler>
+</MPJProcessInfo>
+
+ DEBUG mpjdaemon  - configFilePath
+ DEBUG mpjdaemon  - Config file created :
+ DEBUG mpjdaemon  - modified: jArgs[0]=-cp
+ DEBUG mpjdaemon  - modified: jArgs[1]=.:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - 
+******************ARGUMENTS PASSED TO PB********************
+
+ DEBUG mpjdaemon  - arguments[0] = java
+ DEBUG mpjdaemon  - arguments[1] = -cp
+ DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
+ DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
+ DEBUG mpjdaemon  - arguments[5] = 2
+ DEBUG mpjdaemon  - arguments[6] = niodev
+ DEBUG mpjdaemon  - arguments[7] = barq.seecs.edu.pk
+ DEBUG mpjdaemon  - arguments[8] = 40003
+ DEBUG mpjdaemon  - arguments[9] = 0
+ DEBUG mpjdaemon  - arguments[10] = HelloWorld
+ DEBUG mpjdaemon  - starting the process 
+ DEBUG mpjdaemon  - started the process 
+ DEBUG mpjdaemon  - 
+******************ARGUMENTS PASSED TO PB********************
+
+ DEBUG mpjdaemon  - arguments[0] = java
+ DEBUG mpjdaemon  - arguments[1] = -cp
+ DEBUG mpjdaemon  - arguments[2] = .:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/loader1.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/mpj.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/log4j-1.2.11.jar:/export/home/hamza.zafar/mpjexpress-code/mpj-yarn/lib/wrapper.jar:/state/partition1/home/hamza.zafar/mpjusr:/export/home/hamza.zafar/mpjusr
+ DEBUG mpjdaemon  - arguments[3] = runtime.daemon.Wrapper
+ DEBUG mpjdaemon  - arguments[4] = #Number of Processes;2;#Protocol Switch Limit;131072;
+ DEBUG mpjdaemon  - arguments[5] = 2
+ DEBUG mpjdaemon  - arguments[6] = niodev
+ DEBUG mpjdaemon  - arguments[7] = barq.seecs.edu.pk
+ DEBUG mpjdaemon  - arguments[8] = 40003
+ DEBUG mpjdaemon  - arguments[9] = 1
+ DEBUG mpjdaemon  - arguments[10] = HelloWorld
+ DEBUG mpjdaemon  - starting the process 
+ DEBUG mpjdaemon  - outputting ...
+ DEBUG mpjdaemon  - started the process 
+ DEBUG mpjdaemon  - outputting ...
+ DEBUG mpjdaemon  - Stopping the output
+ DEBUG mpjdaemon  - Job Finished
+ DEBUG mpjdaemon  - 
+
+ ** .. execution ends .. ** 
+
+
+ DEBUG mpjdaemon  - Accepted connection
+ DEBUG mpjdaemon  - Accepting connection ..
+ DEBUG mpjdaemon  - Job Started
+ DEBUG mpjdaemon  - Ticket length 894
+ DEBUG mpjdaemon  - <MPJProcessInfo>
+<TicketID>10b1f000-e8ab-43c4-b4f8-c36bb758b29e</TicketID>
+<ClassPath>/state/partition1/home/hamza.zafar/mpjusr</ClassPath>
+<MasterNode>barq.seecs.edu.pk</MasterNode>
+<MasterPort>40003</MasterPort>
+<ProcessCount>2</ProcessCount>
+<StartingRank>0</StartingRank>
+<JvmArgs/>
+<WorkingDirectory>/export/home/hamza.zafar/mpjusr</WorkingDirectory>
+<ZippedSource>false</ZippedSource>
+<MainClass>HelloWorld</MainClass>
+<DeviceName>niodev</DeviceName>
+<ConfFileContents>#Number of Processes;2;#Protocol Switch Limit;131072;</ConfFileContents>
+<AppArgs/>
+<UserID>hamza.zafar</UserID>
+<NetworkProcessCount>-1</NetworkProcessCount>
+<TotalProcessCount>-1</TotalProcessCount>
+<NetworkDevice>niodev</NetworkDevice>
+<MPJ_HOME>/export/home/hamza.zafar/mpjexpress-code/mpj-yarn</MPJ_HOME>
+<Debug>false</Debug>
+<DebugPort>24500</DebugPort>
+<Profiler>false</Profiler>
+</MPJProcessInfo>
+
  DEBUG mpjdaemon  - configFilePath
  DEBUG mpjdaemon  - Config file created :
  DEBUG mpjdaemon  - modified: jArgs[0]=-cp

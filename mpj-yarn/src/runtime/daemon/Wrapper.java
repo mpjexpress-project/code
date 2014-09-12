@@ -168,7 +168,8 @@ public class Wrapper extends Thread {
         sock.setReuseAddress(true);
       }
       catch (IOException e) {
-        System.err.println("[Wrapper.java]:"+hostName+"-"+selectedPort+"]Port already in use. Checking for a new port..");
+        System.err.println("[Wrapper.java]:"+hostName+"-"+selectedPort+
+                       "]Port already in use. Checking for a new port..");
         continue;
       }
       
@@ -176,7 +177,8 @@ public class Wrapper extends Thread {
         sock.close();
       }
       catch (IOException e){
-        System.err.println("["+hostName+":Wrapper.java]: IOException encountered in closing sockets: "+e.getMessage());
+        System.err.println("["+hostName+":Wrapper.java]: IOException"+
+                       " encountered in closing sockets: "+e.getMessage());
         e.printStackTrace();
         }
       break;

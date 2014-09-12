@@ -184,9 +184,15 @@ public class MPJRun {
       commands.add(hadoopHomeDir+"/bin/hadoop");
       commands.add("jar");
       commands.add(mpjHomeDir+"/lib/mpjyarnclient.jar");
-      commands.add(Integer.toString(nprocs));
-      //commands.add("/simple-yarn-app-1.0-SNAPSHOT.jar");
-
+      commands.add(Integer.toString(nprocs));      // no. of containers
+      commands.add(localhostName);                 // server name
+      commands.add(Integer.toString(SERVER_PORT)); // server port
+      commands.add(deviceName);                    // device name
+      commands.add(className);                     // class name
+      commands.add(wdir);                          // working directory
+      commands.add(applicationClassPathEntry);     
+      commands.add(Integer.toString(DEBUG_PORT));  // debug port
+      commands.add(Integer.toString(psl));         // protocol switch limit      
       java.lang.ProcessBuilder processBuilder = 
 					new java.lang.ProcessBuilder(commands);
       java.lang.Process p = processBuilder.start();
@@ -201,7 +207,6 @@ public class MPJRun {
         logger.debug(" Output of running Command: "+
 				    commands.toString()+"\n\n");
       }
-
       while ((line = br.readLine()) != null) {
        System.out.println(line);
        if (DEBUG && logger.isDebugEnabled())
@@ -217,7 +222,8 @@ public class MPJRun {
       } catch (InterruptedException e) {
           e.printStackTrace();
       }
-			
+
+      return;
     }
 
     // Check for MPJE configuration
@@ -231,7 +237,8 @@ public class MPJRun {
 	logger.debug("className " + className);
       }
 
-      int jarOrClass = (applicationClassPathEntry.endsWith(".jar") ? RUNNING_JAR_FILE
+      int jarOrClass = (applicationClassPathEntry.endsWith(".jar") 
+                                  ? RUNNING_JAR_FILE
 	  : RUNNING_CLASS_FILE);
 
       MulticoreDaemon multicoreDaemon = new MulticoreDaemon(className,
@@ -329,7 +336,8 @@ public class MPJRun {
     collectPortInfo();
   }
 
-  /**
+  /*
+
    * Parses the input ...
    */
   private void processInput(String args[]) {
@@ -1089,7 +1097,6 @@ public class MPJRun {
       WRAPPER_INFO += peers[i];
     }
 
-    System.out.println("I am going to distribute:"+ WRAPPER_INFO);
     try {
       dataFrame = new byte[WRAPPER_INFO.getBytes("UTF-8").length];
       dataFrame = WRAPPER_INFO.getBytes("UTF-8");
