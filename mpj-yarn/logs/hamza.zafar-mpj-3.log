@@ -1,782 +1,22 @@
  INFO  mpj  - --init method of niodev is called--
- INFO  mpj  - Address: compute-0-1.local/10.2.255.253
- INFO  mpj  - Name :compute-0-1.local
+ INFO  mpj  - Address: compute-0-2.local/10.2.255.252
+ INFO  mpj  - Name :compute-0-2.local
  INFO  mpj  - rank :3
- INFO  mpj  - Original string: #Number of Processes;4;#Protocol Switch Limit;131072;#Peer Information;10.2.255.253@39681@26043@0@0;10.2.255.253@38717@26930@1@0;10.2.255.253@34811@25114@2@0;10.2.255.253@39106@33934@3@0
+ INFO  mpj  - Original string: #Number of Processes;4;#Protocol Switch Limit;131072;#Peer Information;10.2.255.253@37189@37873@0@0;10.2.255.253@37360@31278@1@0;10.2.255.252@26938@33527@2@0;10.2.255.252@31214@33353@3@0
  INFO  mpj  - Parsing string arguments..
  INFO  mpj  - #Number of Processes
  INFO  mpj  - Number of processes:4
  INFO  mpj  - #Protocol Switch Limit
  INFO  mpj  - Protocol Switch Limit:131072
  INFO  mpj  - #Peer Information
- DEBUG mpj  - created writableServerChannel on port 39106
- DEBUG mpj  - created readableServerChannel on port 33934
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - connecting error ->Connection refused
- DEBUG mpj  - Connecting to 10.2.255.253@39681
- DEBUG mpj  - Connecting to 10.2.255.253@38717
- DEBUG mpj  - Connecting to 10.2.255.253@34811
- DEBUG mpj  - Connecting to 10.2.255.253@26043
- DEBUG mpj  - Connecting to 10.2.255.253@26930
- DEBUG mpj  - Connecting to 10.2.255.253@25114
+ DEBUG mpj  - created writableServerChannel on port 31214
+ DEBUG mpj  - created readableServerChannel on port 33353
+ DEBUG mpj  - Connecting to 10.2.255.253@37189
+ DEBUG mpj  - Connecting to 10.2.255.253@37360
+ DEBUG mpj  - Connecting to 10.2.255.252@26938
+ DEBUG mpj  - Connecting to 10.2.255.253@37873
+ DEBUG mpj  - Connecting to 10.2.255.253@31278
+ DEBUG mpj  - Connecting to 10.2.255.252@33527
  DEBUG mpj  - Starting the selector thread 
  DEBUG mpj  - testing if all peers are connected?
  INFO  mpj  -  Yes all nodes are connected to each other 
@@ -787,27 +27,27 @@
  DEBUG mpj  - ---READ_EVENT----21
  DEBUG mpj  - ---barrierRead---
  DEBUG mpj  - (after ck) trying to add rank 2into table {}
- DEBUG mpj  - Adding rank 2into table {9aa55e89-9269-41db-94fb-be0fa1f0452f=java.nio.channels.SocketChannel[connected local=/10.2.255.253:34865 remote=/10.2.255.253:34811]}
+ DEBUG mpj  - Adding rank 2into table {7ab6cad5-b53b-4ab3-867e-656ff491681f=java.nio.channels.SocketChannel[connected local=/10.2.255.252:59451 remote=/10.2.255.252:26938]}
  DEBUG mpj  - ---selector EVENT---
  DEBUG mpj  - ---READ_EVENT----21
  DEBUG mpj  - ---barrierRead---
- DEBUG mpj  - (after ck) trying to add rank 1into table {9aa55e89-9269-41db-94fb-be0fa1f0452f=java.nio.channels.SocketChannel[connected local=/10.2.255.253:34865 remote=/10.2.255.253:34811]}
- DEBUG mpj  - Adding rank 1into table {b06c8f22-4439-497a-a3c0-5818ee3d8578=java.nio.channels.SocketChannel[connected local=/10.2.255.253:60569 remote=/10.2.255.253:38717], 9aa55e89-9269-41db-94fb-be0fa1f0452f=java.nio.channels.SocketChannel[connected local=/10.2.255.253:34865 remote=/10.2.255.253:34811]}
+ DEBUG mpj  - (after ck) trying to add rank 0into table {7ab6cad5-b53b-4ab3-867e-656ff491681f=java.nio.channels.SocketChannel[connected local=/10.2.255.252:59451 remote=/10.2.255.252:26938]}
+ DEBUG mpj  - Adding rank 0into table {7ab6cad5-b53b-4ab3-867e-656ff491681f=java.nio.channels.SocketChannel[connected local=/10.2.255.252:59451 remote=/10.2.255.252:26938], 23be55ac-711d-44c7-90a2-15f15944281d=java.nio.channels.SocketChannel[connected local=/10.2.255.252:56948 remote=/10.2.255.253:37189]}
  DEBUG mpj  - ---selector EVENT---
  DEBUG mpj  - ---READ_EVENT----21
  DEBUG mpj  - ---barrierRead---
- DEBUG mpj  - (after ck) trying to add rank 0into table {b06c8f22-4439-497a-a3c0-5818ee3d8578=java.nio.channels.SocketChannel[connected local=/10.2.255.253:60569 remote=/10.2.255.253:38717], 9aa55e89-9269-41db-94fb-be0fa1f0452f=java.nio.channels.SocketChannel[connected local=/10.2.255.253:34865 remote=/10.2.255.253:34811]}
- DEBUG mpj  - Adding rank 0into table {ae2c718c-837a-450b-9893-be34f11c3e45=java.nio.channels.SocketChannel[connected local=/10.2.255.253:43014 remote=/10.2.255.253:39681], b06c8f22-4439-497a-a3c0-5818ee3d8578=java.nio.channels.SocketChannel[connected local=/10.2.255.253:60569 remote=/10.2.255.253:38717], 9aa55e89-9269-41db-94fb-be0fa1f0452f=java.nio.channels.SocketChannel[connected local=/10.2.255.253:34865 remote=/10.2.255.253:34811]}
+ DEBUG mpj  - (after ck) trying to add rank 1into table {7ab6cad5-b53b-4ab3-867e-656ff491681f=java.nio.channels.SocketChannel[connected local=/10.2.255.252:59451 remote=/10.2.255.252:26938], 23be55ac-711d-44c7-90a2-15f15944281d=java.nio.channels.SocketChannel[connected local=/10.2.255.252:56948 remote=/10.2.255.253:37189]}
+ DEBUG mpj  - Adding rank 1into table {7ab6cad5-b53b-4ab3-867e-656ff491681f=java.nio.channels.SocketChannel[connected local=/10.2.255.252:59451 remote=/10.2.255.252:26938], 7a7b45a6-b7c2-4d3c-820a-90bf44a89ac8=java.nio.channels.SocketChannel[connected local=/10.2.255.252:56209 remote=/10.2.255.253:37360], 23be55ac-711d-44c7-90a2-15f15944281d=java.nio.channels.SocketChannel[connected local=/10.2.255.252:56948 remote=/10.2.255.253:37189]}
  DEBUG mpj  - worldReadableTable is filled 
  DEBUG mpj  - ---barrierRead---
  DEBUG mpj  - (after ck) trying to add rank 0into table {}
- DEBUG mpj  - Adding rank 0into table {ae2c718c-837a-450b-9893-be34f11c3e45=java.nio.channels.SocketChannel[connected local=/10.2.255.253:39784 remote=/10.2.255.253:26043]}
+ DEBUG mpj  - Adding rank 0into table {23be55ac-711d-44c7-90a2-15f15944281d=java.nio.channels.SocketChannel[connected local=/10.2.255.252:48632 remote=/10.2.255.253:37873]}
  DEBUG mpj  - ---barrierRead---
- DEBUG mpj  - (after ck) trying to add rank 1into table {ae2c718c-837a-450b-9893-be34f11c3e45=java.nio.channels.SocketChannel[connected local=/10.2.255.253:39784 remote=/10.2.255.253:26043]}
- DEBUG mpj  - Adding rank 1into table {ae2c718c-837a-450b-9893-be34f11c3e45=java.nio.channels.SocketChannel[connected local=/10.2.255.253:39784 remote=/10.2.255.253:26043], b06c8f22-4439-497a-a3c0-5818ee3d8578=java.nio.channels.SocketChannel[connected local=/10.2.255.253:58208 remote=/10.2.255.253:26930]}
+ DEBUG mpj  - (after ck) trying to add rank 1into table {23be55ac-711d-44c7-90a2-15f15944281d=java.nio.channels.SocketChannel[connected local=/10.2.255.252:48632 remote=/10.2.255.253:37873]}
+ DEBUG mpj  - Adding rank 1into table {7a7b45a6-b7c2-4d3c-820a-90bf44a89ac8=java.nio.channels.SocketChannel[connected local=/10.2.255.252:43517 remote=/10.2.255.253:31278], 23be55ac-711d-44c7-90a2-15f15944281d=java.nio.channels.SocketChannel[connected local=/10.2.255.252:48632 remote=/10.2.255.253:37873]}
  DEBUG mpj  - ---barrierRead---
- DEBUG mpj  - (after ck) trying to add rank 2into table {ae2c718c-837a-450b-9893-be34f11c3e45=java.nio.channels.SocketChannel[connected local=/10.2.255.253:39784 remote=/10.2.255.253:26043], b06c8f22-4439-497a-a3c0-5818ee3d8578=java.nio.channels.SocketChannel[connected local=/10.2.255.253:58208 remote=/10.2.255.253:26930]}
- DEBUG mpj  - Adding rank 2into table {ae2c718c-837a-450b-9893-be34f11c3e45=java.nio.channels.SocketChannel[connected local=/10.2.255.253:39784 remote=/10.2.255.253:26043], b06c8f22-4439-497a-a3c0-5818ee3d8578=java.nio.channels.SocketChannel[connected local=/10.2.255.253:58208 remote=/10.2.255.253:26930], 9aa55e89-9269-41db-94fb-be0fa1f0452f=java.nio.channels.SocketChannel[connected local=/10.2.255.253:52607 remote=/10.2.255.253:25114]}
+ DEBUG mpj  - (after ck) trying to add rank 2into table {7a7b45a6-b7c2-4d3c-820a-90bf44a89ac8=java.nio.channels.SocketChannel[connected local=/10.2.255.252:43517 remote=/10.2.255.253:31278], 23be55ac-711d-44c7-90a2-15f15944281d=java.nio.channels.SocketChannel[connected local=/10.2.255.252:48632 remote=/10.2.255.253:37873]}
+ DEBUG mpj  - Adding rank 2into table {7ab6cad5-b53b-4ab3-867e-656ff491681f=java.nio.channels.SocketChannel[connected local=/10.2.255.252:59319 remote=/10.2.255.252:33527], 7a7b45a6-b7c2-4d3c-820a-90bf44a89ac8=java.nio.channels.SocketChannel[connected local=/10.2.255.252:43517 remote=/10.2.255.253:31278], 23be55ac-711d-44c7-90a2-15f15944281d=java.nio.channels.SocketChannel[connected local=/10.2.255.252:48632 remote=/10.2.255.253:37873]}
  DEBUG mpj  - worldWritable is filled 
  DEBUG mpj  - 
 
@@ -821,7 +61,7 @@
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@1f58ff73
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@52fad2a1
  DEBUG mpj  - position 0
  DEBUG mpj  - list.blockSize 4194304
  DEBUG mpj  - Adding buddy @ 4194304
@@ -868,21 +108,60 @@
  DEBUG mpj  - list.blockSize 256
  DEBUG mpj  - Adding buddy @ 256
  DEBUG mpj  - position 0
+ DEBUG mpj  - ---selector EVENT---
  DEBUG mpj  - list.blockSize 128
+ DEBUG mpj  - ---READ_EVENT----24
  DEBUG mpj  - Adding buddy @ 128
  DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
  DEBUG mpj  -  cap 128
  DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@beae719
+ DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
  DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=1 lim=128 cap=8388608]
  DEBUG mpj  - position 0
+ DEBUG mpj  - -- recvCtrlMsgFromSender ---
+ DEBUG mpj  - Receiver getting the control message
+ DEBUG mpj  - Could be rend, eager, posted b4 or not
+ DEBUG mpj  - msb :8842477937605954227
+ DEBUG mpj  - lsb :-8755449094042720225
+ DEBUG mpj  - sendCounter :3
+ DEBUG mpj  - tag :34023
+ DEBUG mpj  - staBufferSize :12
+ DEBUG mpj  - dynaBufferSize :0
+ DEBUG mpj  - context :10
+ DEBUG mpj  - commMode :3
+ DEBUG mpj  - type :mpjbuf.Type@2e6ef76f
+ DEBUG mpj  - sendCounter :3
+ DEBUG mpj  - numEls :1
+ DEBUG mpj  - setting the request.code to RECV_IN_DEV_MEMORY
+ DEBUG mpj  - Calling eagerRecv2mpjMem
+ DEBUG mpj  - ---eagerRecv2mpjMem_34023
+ DEBUG mpj  - static section ...
+ DEBUG mpj  -  creating eager buffer 
  INFO  mpj  - ---isend---<34020>
- DEBUG mpj  - sender :f8fbc332-7f86-4705-8f7f-2cc4bc1f60c6
- DEBUG mpj  - receiver :ae2c718c-837a-450b-9893-be34f11c3e45
+ DEBUG mpj  - 
+
+ createBuffer 12
+ DEBUG mpj  - sender :d26470ba-454f-47d0-bfff-d4fd31c82ee9
+ DEBUG mpj  - required level 0
+ DEBUG mpj  - receiver :23be55ac-711d-44c7-90a2-15f15944281d
+ DEBUG mpj  - finding the right level 
  DEBUG mpj  - tag :34020
+ DEBUG mpj  - freeList.size() 17
  DEBUG mpj  - isend with remote process connections
- DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.253:39784 remote=/10.2.255.253:26043]
+ DEBUG mpj  - list @level <0>=mpjbuf.Buddy1RegionFreeList@beae719
+ DEBUG mpj  - calling allocate ...
+ DEBUG mpj  - --allocate--
+ DEBUG mpj  -  level :0
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@beae719
+ DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
+ DEBUG mpj  -  cap 128
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@beae719
+ DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.252:48632 remote=/10.2.255.253:37873]
+ DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=129 lim=256 cap=8388608]
  DEBUG mpj  - get writeLock for this channel
+ DEBUG mpj  - position 128
  DEBUG mpj  - ---eagerSend---
+ DEBUG mpj  -  creating eager bufferjava.nio.DirectByteBuffer[pos=0 lim=12 cap=127]
  DEBUG mpj  -  request.bufoffset 81
  DEBUG mpj  - sendBuffer java.nio.DirectByteBuffer[pos=0 lim=81 cap=127]
  DEBUG mpj  - request.staticBuffer (1)<java.nio.DirectByteBuffer[pos=0 lim=93 cap=127]> w=0
@@ -896,69 +175,62 @@
  DEBUG mpj  - required level 0
  DEBUG mpj  - finding the right level 
  DEBUG mpj  - freeList.size() 17
- DEBUG mpj  - list @level <0>=mpjbuf.Buddy1RegionFreeList@beae719
- DEBUG mpj  - calling allocate ...
- DEBUG mpj  - --allocate--
- DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@beae719
- DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
- DEBUG mpj  -  cap 128
- DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@beae719
- DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=129 lim=256 cap=8388608]
- DEBUG mpj  - position 128
- INFO  mpj  - ---isend---<34021>
- DEBUG mpj  - sender :f8fbc332-7f86-4705-8f7f-2cc4bc1f60c6
- DEBUG mpj  - receiver :b06c8f22-4439-497a-a3c0-5818ee3d8578
- DEBUG mpj  - tag :34021
- DEBUG mpj  - isend with remote process connections
- DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.253:58208 remote=/10.2.255.253:26930]
- DEBUG mpj  - get writeLock for this channel
- DEBUG mpj  - ---eagerSend---
- DEBUG mpj  -  request.bufoffset 81
- DEBUG mpj  - sendBuffer java.nio.DirectByteBuffer[pos=0 lim=81 cap=127]
- DEBUG mpj  - request.staticBuffer (1)<java.nio.DirectByteBuffer[pos=0 lim=93 cap=127]> w=0
- DEBUG mpj  - request.staticBuffer (2)<java.nio.DirectByteBuffer[pos=93 lim=93 cap=127]> w=93
- DEBUG mpj  - request.dBufSize <0>
- DEBUG mpj  - --eagerSend finishes--
- INFO  mpj  - ---isend ends---<34021>
- DEBUG mpj  - 
-
- createBuffer 104
- DEBUG mpj  - required level 0
- DEBUG mpj  - finding the right level 
- DEBUG mpj  - freeList.size() 17
  DEBUG mpj  - list @level <0>=null
- DEBUG mpj  - list @level <1>=mpjbuf.Buddy1RegionFreeList@31fdc6f6
+ DEBUG mpj  - list @level <1>=mpjbuf.Buddy1RegionFreeList@53d11f70
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@31fdc6f6
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@53d11f70
  DEBUG mpj  - position 256
  DEBUG mpj  - list.blockSize 128
  DEBUG mpj  - Adding buddy @ 384
  DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
+ DEBUG mpj  - Adding the request
  DEBUG mpj  -  cap 128
  DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@beae719
+ DEBUG mpj  - time_ready_sendrecv=0.006608
  DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=257 lim=384 cap=8388608]
+ DEBUG mpj  - ---selector EVENT---
  DEBUG mpj  - position 256
- INFO  mpj  - ---isend---<34022>
- DEBUG mpj  - sender :f8fbc332-7f86-4705-8f7f-2cc4bc1f60c6
- DEBUG mpj  - receiver :9aa55e89-9269-41db-94fb-be0fa1f0452f
- DEBUG mpj  - tag :34022
+ DEBUG mpj  - ---READ_EVENT----24
+ INFO  mpj  - ---isend---<34021>
+ DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
+ DEBUG mpj  - sender :d26470ba-454f-47d0-bfff-d4fd31c82ee9
+ DEBUG mpj  - -- recvCtrlMsgFromSender ---
+ DEBUG mpj  - receiver :7a7b45a6-b7c2-4d3c-820a-90bf44a89ac8
+ DEBUG mpj  - Receiver getting the control message
+ DEBUG mpj  - Could be rend, eager, posted b4 or not
+ DEBUG mpj  - tag :34021
+ DEBUG mpj  - msb :8825724477112470844
  DEBUG mpj  - isend with remote process connections
- DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.253:52607 remote=/10.2.255.253:25114]
+ DEBUG mpj  - lsb :-9076282947846759736
+ DEBUG mpj  - sendCounter :3
+ DEBUG mpj  - tag :34023
+ DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.252:43517 remote=/10.2.255.253:31278]
+ DEBUG mpj  - staBufferSize :12
  DEBUG mpj  - get writeLock for this channel
+ DEBUG mpj  - dynaBufferSize :0
  DEBUG mpj  - ---eagerSend---
+ DEBUG mpj  - context :10
  DEBUG mpj  -  request.bufoffset 81
+ DEBUG mpj  - commMode :3
  DEBUG mpj  - sendBuffer java.nio.DirectByteBuffer[pos=0 lim=81 cap=127]
+ DEBUG mpj  - type :mpjbuf.Type@2e6ef76f
  DEBUG mpj  - request.staticBuffer (1)<java.nio.DirectByteBuffer[pos=0 lim=93 cap=127]> w=0
+ DEBUG mpj  - sendCounter :3
+ DEBUG mpj  - numEls :1
  DEBUG mpj  - request.staticBuffer (2)<java.nio.DirectByteBuffer[pos=93 lim=93 cap=127]> w=93
+ DEBUG mpj  - setting the request.code to RECV_IN_DEV_MEMORY
  DEBUG mpj  - request.dBufSize <0>
+ DEBUG mpj  - Calling eagerRecv2mpjMem
  DEBUG mpj  - --eagerSend finishes--
- INFO  mpj  - ---isend ends---<34022>
+ DEBUG mpj  - ---eagerRecv2mpjMem_34023
+ INFO  mpj  - ---isend ends---<34021>
+ DEBUG mpj  - static section ...
+ DEBUG mpj  -  creating eager buffer 
  DEBUG mpj  - 
 
- createBuffer 16
+ createBuffer 104
  DEBUG mpj  - required level 0
  DEBUG mpj  - finding the right level 
  DEBUG mpj  - freeList.size() 17
@@ -972,75 +244,84 @@
  DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@beae719
  DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=385 lim=512 cap=8388608]
  DEBUG mpj  - position 384
- INFO  mpj  - ---irecv---<34023>
- DEBUG mpj  - Looking whether this req has been posted or not
- DEBUG mpj  - No Matching req, so posting ourselves
- DEBUG mpj  - request.staticBuffer (in recv) java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
- DEBUG mpj  - Added request in irecv 
- DEBUG mpj  - ---selector EVENT---
- DEBUG mpj  - ---READ_EVENT----24
- DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
- DEBUG mpj  - -- recvCtrlMsgFromSender ---
- DEBUG mpj  - Receiver getting the control message
- DEBUG mpj  - Could be rend, eager, posted b4 or not
- DEBUG mpj  - msb :-5734050848213218950
- DEBUG mpj  - lsb :-6647216185899383432
- DEBUG mpj  - sendCounter :3
- DEBUG mpj  - tag :34023
- DEBUG mpj  - staBufferSize :12
- DEBUG mpj  - dynaBufferSize :0
- DEBUG mpj  - context :10
- DEBUG mpj  - commMode :3
- DEBUG mpj  - type :mpjbuf.Type@46671d0d
- DEBUG mpj  - sendCounter :3
- DEBUG mpj  - numEls :1
- DEBUG mpj  - setting the request.code to RECV_IN_DEV_MEMORY
- DEBUG mpj  - Calling eagerRecv2mpjMem
- DEBUG mpj  - ---eagerRecv2mpjMem_34023
- DEBUG mpj  - static section ...
- DEBUG mpj  -  creating eager buffer 
  DEBUG mpj  - 
 
  createBuffer 12
+ INFO  mpj  - ---isend---<34022>
  DEBUG mpj  - required level 0
+ DEBUG mpj  - sender :d26470ba-454f-47d0-bfff-d4fd31c82ee9
  DEBUG mpj  - finding the right level 
+ DEBUG mpj  - receiver :7ab6cad5-b53b-4ab3-867e-656ff491681f
  DEBUG mpj  - freeList.size() 17
+ DEBUG mpj  - tag :34022
  DEBUG mpj  - list @level <0>=null
+ DEBUG mpj  - isend with remote process connections
  DEBUG mpj  - list @level <1>=null
- DEBUG mpj  - list @level <2>=mpjbuf.Buddy1RegionFreeList@1ba46497
+ DEBUG mpj  - list @level <2>=mpjbuf.Buddy1RegionFreeList@46671d0d
  DEBUG mpj  - calling allocate ...
+ DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.252:59319 remote=/10.2.255.252:33527]
  DEBUG mpj  - --allocate--
+ DEBUG mpj  - get writeLock for this channel
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@1ba46497
+ DEBUG mpj  - ---eagerSend---
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@46671d0d
+ DEBUG mpj  -  request.bufoffset 81
  DEBUG mpj  - position 512
+ DEBUG mpj  - sendBuffer java.nio.DirectByteBuffer[pos=0 lim=81 cap=127]
  DEBUG mpj  - list.blockSize 256
+ DEBUG mpj  - request.staticBuffer (1)<java.nio.DirectByteBuffer[pos=0 lim=93 cap=127]> w=0
  DEBUG mpj  - Adding buddy @ 768
  DEBUG mpj  - position 512
+ DEBUG mpj  - request.staticBuffer (2)<java.nio.DirectByteBuffer[pos=93 lim=93 cap=127]> w=93
  DEBUG mpj  - list.blockSize 128
+ DEBUG mpj  - request.dBufSize <0>
  DEBUG mpj  - Adding buddy @ 640
+ DEBUG mpj  - --eagerSend finishes--
  DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
+ INFO  mpj  - ---isend ends---<34022>
  DEBUG mpj  -  cap 128
  DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@beae719
  DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=513 lim=640 cap=8388608]
  DEBUG mpj  - position 512
+ DEBUG mpj  - 
+
+ createBuffer 16
  DEBUG mpj  -  creating eager bufferjava.nio.DirectByteBuffer[pos=0 lim=12 cap=127]
+ DEBUG mpj  - required level 0
  DEBUG mpj  - Adding the request
- DEBUG mpj  - time_ready_sendrecv=0.001539
+ DEBUG mpj  - finding the right level 
+ DEBUG mpj  - time_ready_sendrecv=0.004825
+ DEBUG mpj  - freeList.size() 17
  DEBUG mpj  - ---selector EVENT---
+ DEBUG mpj  - list @level <0>=mpjbuf.Buddy1RegionFreeList@beae719
  DEBUG mpj  - ---READ_EVENT----24
+ DEBUG mpj  - calling allocate ...
  DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
+ DEBUG mpj  - --allocate--
  DEBUG mpj  - -- recvCtrlMsgFromSender ---
+ DEBUG mpj  -  level :0
  DEBUG mpj  - Receiver getting the control message
  DEBUG mpj  - Could be rend, eager, posted b4 or not
- DEBUG mpj  - msb :-5896212963819633397
- DEBUG mpj  - lsb :-7452403823775302075
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@beae719
+ DEBUG mpj  - msb :2575590236022981831
+ DEBUG mpj  - slicedBuffer java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
+ DEBUG mpj  - lsb :-8024827459691861987
+ DEBUG mpj  -  cap 128
  DEBUG mpj  - sendCounter :3
+ DEBUG mpj  - list mpjbuf.Buddy1RegionFreeList@beae719
+ DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=641 lim=768 cap=8388608]
+ DEBUG mpj  - position 640
+ INFO  mpj  - ---irecv---<34023>
+ DEBUG mpj  - Looking whether this req has been posted or not
+ DEBUG mpj  - No Matching req, so posting ourselves
  DEBUG mpj  - tag :34023
+ DEBUG mpj  - request.staticBuffer (in recv) java.nio.DirectByteBuffer[pos=0 lim=127 cap=127]
  DEBUG mpj  - staBufferSize :12
  DEBUG mpj  - dynaBufferSize :0
+ DEBUG mpj  - Added request in irecv 
  DEBUG mpj  - context :10
  DEBUG mpj  - commMode :3
- DEBUG mpj  - type :mpjbuf.Type@46671d0d
+ DEBUG mpj  - type :mpjbuf.Type@2e6ef76f
  DEBUG mpj  - sendCounter :3
  DEBUG mpj  - numEls :1
  DEBUG mpj  - ---eagerRecv2UserMem---
@@ -1049,76 +330,45 @@
  DEBUG mpj  - b(2) java.nio.DirectByteBuffer[pos=12 lim=12 cap=127]
  DEBUG mpj  - request.dBufSize 0
  DEBUG mpj  - --eagerRecv2UserMem ends--
- DEBUG mpj  - time_ready_sendrecv=6.7E-4
+ DEBUG mpj  - time_ready_sendrecv=0.002069
  INFO  mpj  - ---irecv---<34023>
  DEBUG mpj  - Looking whether this req has been posted or not
  DEBUG mpj  - 
 --free--
- DEBUG mpj  - buffer.list.front 640
+ DEBUG mpj  - buffer.list.front -1
  DEBUG mpj  -  list.level 0
  DEBUG mpj  -  position 512
  DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
  DEBUG mpj  -  buddy 640
  DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=640 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 768
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=768 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is free ...removing it ..
- DEBUG mpj  -  buddy 0
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
  DEBUG mpj  -  buddy is not FREE 
  DEBUG mpj  -  adding the buffer at pos <512
- DEBUG mpj  - size of htis buffer is 512
+ DEBUG mpj  - size of htis buffer is 128
  DEBUG mpj  - setting the buf size 12
  DEBUG mpj  - removed 
  INFO  mpj  - ---irecv---<34023>
  DEBUG mpj  - Looking whether this req has been posted or not
- DEBUG mpj  - No Matching req, so posting ourselves
- DEBUG mpj  - request.staticBuffer (in recv) java.nio.DirectByteBuffer[pos=8 lim=127 cap=127]
- DEBUG mpj  - Added request in irecv 
- DEBUG mpj  - ---selector EVENT---
- DEBUG mpj  - ---READ_EVENT----24
- DEBUG mpj  -  received READY_TO_SEND or  READY_TO_RECV
- DEBUG mpj  - -- recvCtrlMsgFromSender ---
- DEBUG mpj  - Receiver getting the control message
- DEBUG mpj  - Could be rend, eager, posted b4 or not
- DEBUG mpj  - msb :-7303327275751489061
- DEBUG mpj  - lsb :-7711360962591177425
- DEBUG mpj  - sendCounter :3
- DEBUG mpj  - tag :34023
- DEBUG mpj  - staBufferSize :12
- DEBUG mpj  - dynaBufferSize :0
- DEBUG mpj  - context :10
- DEBUG mpj  - commMode :3
- DEBUG mpj  - type :mpjbuf.Type@46671d0d
- DEBUG mpj  - sendCounter :3
- DEBUG mpj  - numEls :1
- DEBUG mpj  - ---eagerRecv2UserMem---
- DEBUG mpj  - request.sBufSize (is it zero?) 12
- DEBUG mpj  - b(1) java.nio.DirectByteBuffer[pos=0 lim=12 cap=127]
- DEBUG mpj  - b(2) java.nio.DirectByteBuffer[pos=12 lim=12 cap=127]
- DEBUG mpj  - request.dBufSize 0
- DEBUG mpj  - --eagerRecv2UserMem ends--
- DEBUG mpj  - time_ready_sendrecv=5.72E-4
  DEBUG mpj  - 
 --free--
- DEBUG mpj  - buffer.list.front -1
- DEBUG mpj  -  list.level 0
- DEBUG mpj  -  position 0
- DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy 128
- DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=128 lim=8388608 cap=8388608]
- DEBUG mpj  -  buddy is not FREE 
- DEBUG mpj  -  adding the buffer at pos <0
- DEBUG mpj  - size of htis buffer is 128
- DEBUG mpj  - 
---free--
- DEBUG mpj  - buffer.list.front 0
+ DEBUG mpj  - buffer.list.front 512
  DEBUG mpj  -  list.level 0
  DEBUG mpj  -  position 128
  DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
  DEBUG mpj  -  buddy 0
  DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is not FREE 
+ DEBUG mpj  -  adding the buffer at pos <128
+ DEBUG mpj  - size of htis buffer is 128
+ DEBUG mpj  - setting the buf size 12
+ DEBUG mpj  - removed 
+ DEBUG mpj  - 
+--free--
+ DEBUG mpj  - buffer.list.front 128
+ DEBUG mpj  -  list.level 0
+ DEBUG mpj  -  position 0
+ DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy 128
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=128 lim=8388608 cap=8388608]
  DEBUG mpj  -  buddy is free ...removing it ..
  DEBUG mpj  -  buddy 256
  DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=256 lim=8388608 cap=8388608]
@@ -1127,7 +377,7 @@
  DEBUG mpj  - size of htis buffer is 256
  DEBUG mpj  - 
 --free--
- DEBUG mpj  - buffer.list.front -1
+ DEBUG mpj  - buffer.list.front 512
  DEBUG mpj  -  list.level 0
  DEBUG mpj  -  position 256
  DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
@@ -1150,6 +400,23 @@
  DEBUG mpj  -  buddy is free ...removing it ..
  DEBUG mpj  -  buddy 512
  DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=512 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is not FREE 
+ DEBUG mpj  -  adding the buffer at pos <0
+ DEBUG mpj  - size of htis buffer is 512
+ DEBUG mpj  - 
+--free--
+ DEBUG mpj  - buffer.list.front 512
+ DEBUG mpj  -  list.level 0
+ DEBUG mpj  -  position 640
+ DEBUG mpj  -  memory (for region) java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy 512
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=512 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 768
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=768 lim=8388608 cap=8388608]
+ DEBUG mpj  -  buddy is free ...removing it ..
+ DEBUG mpj  -  buddy 0
+ DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=0 lim=8388608 cap=8388608]
  DEBUG mpj  -  buddy is free ...removing it ..
  DEBUG mpj  -  buddy 1024
  DEBUG mpj  -  memory java.nio.DirectByteBuffer[pos=1024 lim=8388608 cap=8388608]
@@ -1214,11 +481,11 @@
  DEBUG mpj  - list @level <13>=null
  DEBUG mpj  - list @level <14>=null
  DEBUG mpj  - list @level <15>=null
- DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@1f58ff73
+ DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@52fad2a1
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@1f58ff73
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@52fad2a1
  DEBUG mpj  - position 0
  DEBUG mpj  - list.blockSize 4194304
  DEBUG mpj  - Adding buddy @ 4194304
@@ -1362,11 +629,11 @@
  DEBUG mpj  - list @level <13>=null
  DEBUG mpj  - list @level <14>=null
  DEBUG mpj  - list @level <15>=null
- DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@1f58ff73
+ DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@52fad2a1
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@1f58ff73
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@52fad2a1
  DEBUG mpj  - position 0
  DEBUG mpj  - list.blockSize 4194304
  DEBUG mpj  - Adding buddy @ 4194304
@@ -1424,11 +691,11 @@
  DEBUG mpj  - offset0
  DEBUG mpj  - bufjava.nio.DirectByteBuffer[pos=82 lim=127 cap=127]
  INFO  mpj  - ---isend---<33998>
- DEBUG mpj  - sender :f8fbc332-7f86-4705-8f7f-2cc4bc1f60c6
- DEBUG mpj  - receiver :ae2c718c-837a-450b-9893-be34f11c3e45
+ DEBUG mpj  - sender :d26470ba-454f-47d0-bfff-d4fd31c82ee9
+ DEBUG mpj  - receiver :23be55ac-711d-44c7-90a2-15f15944281d
  DEBUG mpj  - tag :33998
  DEBUG mpj  - isend with remote process connections
- DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.253:39784 remote=/10.2.255.253:26043]
+ DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.252:48632 remote=/10.2.255.253:37873]
  DEBUG mpj  - get writeLock for this channel
  DEBUG mpj  - ---eagerSend---
  DEBUG mpj  -  request.bufoffset 81
@@ -1520,11 +787,11 @@
  DEBUG mpj  - list @level <13>=null
  DEBUG mpj  - list @level <14>=null
  DEBUG mpj  - list @level <15>=null
- DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@1f58ff73
+ DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@52fad2a1
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@1f58ff73
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@52fad2a1
  DEBUG mpj  - position 0
  DEBUG mpj  - list.blockSize 4194304
  DEBUG mpj  - Adding buddy @ 4194304
@@ -1589,15 +856,15 @@
  DEBUG mpj  - -- recvCtrlMsgFromSender ---
  DEBUG mpj  - Receiver getting the control message
  DEBUG mpj  - Could be rend, eager, posted b4 or not
- DEBUG mpj  - msb :-5896212963819633397
- DEBUG mpj  - lsb :-7452403823775302075
+ DEBUG mpj  - msb :2575590236022981831
+ DEBUG mpj  - lsb :-8024827459691861987
  DEBUG mpj  - sendCounter :6
  DEBUG mpj  - tag :33998
  DEBUG mpj  - staBufferSize :12
  DEBUG mpj  - dynaBufferSize :0
  DEBUG mpj  - context :9
  DEBUG mpj  - commMode :3
- DEBUG mpj  - type :mpjbuf.Type@46671d0d
+ DEBUG mpj  - type :mpjbuf.Type@2e6ef76f
  DEBUG mpj  - sendCounter :6
  DEBUG mpj  - numEls :1
  DEBUG mpj  - ---eagerRecv2UserMem---
@@ -1606,7 +873,7 @@
  DEBUG mpj  - b(2) java.nio.DirectByteBuffer[pos=12 lim=12 cap=127]
  DEBUG mpj  - request.dBufSize 0
  DEBUG mpj  - --eagerRecv2UserMem ends--
- DEBUG mpj  - time_ready_sendrecv=5.57E-4
+ DEBUG mpj  - time_ready_sendrecv=8.79E-4
  DEBUG mpj  - count_received 1
  DEBUG mpj  - count 1
  DEBUG mpj  - 
@@ -1690,11 +957,11 @@
  DEBUG mpj  - list @level <13>=null
  DEBUG mpj  - list @level <14>=null
  DEBUG mpj  - list @level <15>=null
- DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@1f58ff73
+ DEBUG mpj  - list @level <16>=mpjbuf.Buddy1RegionFreeList@52fad2a1
  DEBUG mpj  - calling allocate ...
  DEBUG mpj  - --allocate--
  DEBUG mpj  -  level :0
- DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@1f58ff73
+ DEBUG mpj  -  list :mpjbuf.Buddy1RegionFreeList@52fad2a1
  DEBUG mpj  - position 0
  DEBUG mpj  - list.blockSize 4194304
  DEBUG mpj  - Adding buddy @ 4194304
@@ -1765,11 +1032,11 @@
  DEBUG mpj  - list.memory java.nio.DirectByteBuffer[pos=129 lim=256 cap=8388608]
  DEBUG mpj  - position 128
  INFO  mpj  - ---isend---<-994576>
- DEBUG mpj  - sender :f8fbc332-7f86-4705-8f7f-2cc4bc1f60c6
- DEBUG mpj  - receiver :ae2c718c-837a-450b-9893-be34f11c3e45
+ DEBUG mpj  - sender :d26470ba-454f-47d0-bfff-d4fd31c82ee9
+ DEBUG mpj  - receiver :23be55ac-711d-44c7-90a2-15f15944281d
  DEBUG mpj  - tag :-994576
  DEBUG mpj  - isend with remote process connections
- DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.253:39784 remote=/10.2.255.253:26043]
+ DEBUG mpj  - channel :java.nio.channels.SocketChannel[connected local=/10.2.255.252:48632 remote=/10.2.255.253:37873]
  DEBUG mpj  - get writeLock for this channel
  DEBUG mpj  - ---eagerSend---
  DEBUG mpj  -  request.bufoffset 81
@@ -1791,17 +1058,17 @@
  DEBUG mpj  - Closed the two selectors
  DEBUG mpj  - peerChannelSize 3
  DEBUG mpj  - peerCtrlChannelSize 3
- DEBUG mpj  - closing data-channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:39784 remote=/10.2.255.253:26043]
+ DEBUG mpj  - closing data-channel java.nio.channels.SocketChannel[connected local=/10.2.255.252:48632 remote=/10.2.255.253:37873]
  DEBUG mpj  - the channel was open, so closing it
- DEBUG mpj  - closing control-channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:43014 remote=/10.2.255.253:39681]
+ DEBUG mpj  - closing control-channel java.nio.channels.SocketChannel[connected local=/10.2.255.252:56948 remote=/10.2.255.253:37189]
  DEBUG mpj  - the channel was open, so closing it
- DEBUG mpj  - closing data-channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:58208 remote=/10.2.255.253:26930]
+ DEBUG mpj  - closing data-channel java.nio.channels.SocketChannel[connected local=/10.2.255.252:43517 remote=/10.2.255.253:31278]
  DEBUG mpj  - the channel was open, so closing it
- DEBUG mpj  - closing control-channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:60569 remote=/10.2.255.253:38717]
+ DEBUG mpj  - closing control-channel java.nio.channels.SocketChannel[connected local=/10.2.255.252:56209 remote=/10.2.255.253:37360]
  DEBUG mpj  - the channel was open, so closing it
- DEBUG mpj  - closing data-channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:52607 remote=/10.2.255.253:25114]
+ DEBUG mpj  - closing data-channel java.nio.channels.SocketChannel[connected local=/10.2.255.252:59319 remote=/10.2.255.252:33527]
  DEBUG mpj  - the channel was open, so closing it
- DEBUG mpj  - closing control-channel java.nio.channels.SocketChannel[connected local=/10.2.255.253:34865 remote=/10.2.255.253:34811]
+ DEBUG mpj  - closing control-channel java.nio.channels.SocketChannel[connected local=/10.2.255.252:59451 remote=/10.2.255.252:26938]
  DEBUG mpj  - the channel was open, so closing it
  DEBUG mpj  - closed all the channels
  DEBUG mpj  - selector thread notifying the user thread

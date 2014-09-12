@@ -1,10 +1,23 @@
 package runtime.starter;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.UUID;
+import java.util.Vector;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.*;
+
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
+
 
 import org.apache.hadoop.conf.Configuration; //apache configuration
 
@@ -44,15 +57,21 @@ public class MPJYarnClient {
 
   //Number of conatiners
   final int n;
+  private int SERVER_PORT = 0;
+  private int DEBUG_PORT = 0;
+  private String WRAPPER_INFO = "#Peer Information";
+
+
   
   public MPJYarnClient(String[] args){
   
     //Set Number of containers..
     n = Integer.parseInt(args[0]);
-
+    DEBUG_PORT = Integer.parseInt(args[7]);
+    SERVER_PORT = Integer.parseInt(args[2]);
   }
  
-  public void run() throws Exception {  
+  public void run(String[] args) throws Exception {  
     
       Map<String, String> map = System.getenv(); 
    	
@@ -60,7 +79,7 @@ public class MPJYarnClient {
            mpjHomeDir = map.get("MPJ_HOME");
            
            if (mpjHomeDir == null) {
-               throw new Exception("[MPJRun.java]:MPJ_HOME environment found..");
+              throw new Exception("[MPJRun.java]:MPJ_HOME environment found..");
            }
       }
       catch (Exception exc) {
@@ -90,16 +109,24 @@ public class MPJYarnClient {
       // Set up the container launch context for the application master
       ContainerLaunchContext amContainer = 
               Records.newRecord(ContainerLaunchContext.class);
-    
+
+
       amContainer.setCommands(
           Collections.singletonList(
               "$JAVA_HOME/bin/java" +
               " -Xmx256M" +
               " runtime.starter.ApplicationMaster " +
-              " " + String.valueOf(n) +
+              " " + String.valueOf(n) + 
+              " " + args[1] + //server name
+              " " + args[2] + //server port
+              " " + args[3] + //device name
+              " " + args[4] + //class name
+              " " + args[5] + //wdir
+              " " + args[6] + //class path
+              " " + args[8] + //protocol switch limit
               " 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/stdout" +
               " 2>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/stderr"
-          )
+	)
       );
 
     // Setup local Resource for ApplicationMaster
@@ -126,7 +153,8 @@ public class MPJYarnClient {
     capability.setVirtualCores(1);
 
     // Finally, set-up ApplicationSubmissionContext for the application
-    ApplicationSubmissionContext appContext = app.getApplicationSubmissionContext();
+    ApplicationSubmissionContext appContext = 
+                                  app.getApplicationSubmissionContext();
     
     appContext.setApplicationName("MPJ-YARN"); 
     appContext.setAMContainerSpec(amContainer);
@@ -137,6 +165,97 @@ public class MPJYarnClient {
     ApplicationId appId = appContext.getApplicationId();
     System.out.println("\nSubmitting application " + appId+"\n");
     yarnClient.submitApplication(appContext);
+    
+    int rank = 0;
+    int wport = 0;
+    int rport = 0;
+    ServerSocket servSock = null;
+    Socket sock = null;
+    Vector<Socket> socketList;
+    socketList = new Vector<Socket>();
+    byte[] dataFrame = null;
+    String[] peers = new String[n];
+
+    System.out.println("Creating server socket at HOST "+
+                        args[1]+" PORT "+
+                        args[2]+" \n Waiting for "+
+                        n +" processes to connect");
+    
+
+    // Creating a server socket for incoming connections
+    try {
+      servSock = new ServerSocket(SERVER_PORT);
+    }
+    catch (Exception e) {
+      System.err.println(" Error opening server port..");
+      e.printStackTrace();
+    }
+
+    // Loop to read port numbers from Wrapper.java processes
+    // and to create WRAPPER_INFO (containing all IPs and ports)
+    for(int i = n; i > 0; i--){
+      try{
+        sock = servSock.accept();
+        DataOutputStream out = new DataOutputStream(sock.getOutputStream());
+        DataInputStream in = new DataInputStream(sock.getInputStream());
+
+        wport = in.readInt();
+        rport = in.readInt();
+        rank = in.readInt();
+        System.out.println("\n Container "+
+                           sock.getInetAddress().getHostAddress()+
+			   "\n Read Port "+rport+
+                           "\n Write Port "+wport+
+                           "\n Rank "+rank);
+
+        peers[rank] = ";" + sock.getInetAddress().getHostAddress() + 
+				"@" + rport + "@" + wport + "@" + rank;
+
+
+        socketList.add(sock);
+
+        peers[rank] += "@" + (DEBUG_PORT);
+      }
+      catch (Exception e){
+        System.err.println("Error accepting connection from peer socket..");
+        e.printStackTrace();
+      }
+    }
+
+    // Loop to sort contents of mpjdev.conf according to rank
+    for(int i=0; i < n; i++) {
+      WRAPPER_INFO += peers[i];
+    }
+
+    try {
+      dataFrame = new byte[WRAPPER_INFO.getBytes("UTF-8").length];
+      dataFrame = WRAPPER_INFO.getBytes("UTF-8");
+    }
+    catch (UnsupportedEncodingException e){
+    }
+    int length = dataFrame.length;
+
+    // Loop to broadcast WRAPPER_INFO to all Wrappers
+    for(int i = n; i > 0; i--){
+      try{
+        sock = socketList.get(n- i);
+        DataOutputStream out = new DataOutputStream(sock.getOutputStream());
+
+        out.writeInt(length);
+        out.flush();
+        out.write(dataFrame, 0, length);
+        out.flush();
+
+        sock.close();
+      }
+      catch (Exception e){
+        System.err.println(" Error closing connection from peer socket..");
+        e.printStackTrace();
+      }
+    }
+
+    
+
 
     ApplicationReport appReport = yarnClient.getApplicationReport(appId);
     YarnApplicationState appState = appReport.getYarnApplicationState();
@@ -172,7 +291,7 @@ public class MPJYarnClient {
 
   public static void main(String[] args) throws Exception {
       MPJYarnClient client = new MPJYarnClient(args);
-      client.run();  
+      client.run(args);  
   }
 
 }
