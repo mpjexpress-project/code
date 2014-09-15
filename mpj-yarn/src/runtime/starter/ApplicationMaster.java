@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.yarn.api.ApplicationConstants;
@@ -47,6 +49,7 @@ public class ApplicationMaster {
   int rank = 0;
   public static void main(String[] args) throws Exception {
     ApplicationMaster am =new ApplicationMaster();
+    System.out.println("am");
     am.run(args);
         
   }
@@ -134,29 +137,40 @@ public class ApplicationMaster {
 
        	ContainerLaunchContext ctx = 
 			      Records.newRecord(ContainerLaunchContext.class);
-                   
-       		 
-	ctx.setCommands(Collections.singletonList(
-           " $JAVA_HOME/bin/java" + 
-           " -Xmx128M" +
-           " -cp " +"." 
+        
+        List <String> commands = new ArrayList<String>();
+       
+        commands.add(" $JAVA_HOME/bin/java");
+        commands.add(" -Xmx128M");
+        commands.add(" -cp " +"."
             + File.pathSeparator + "" + mpjHomeDir + "/lib/loader1.jar"
             + File.pathSeparator + "" + mpjHomeDir + "/lib/mpj.jar"
             + File.pathSeparator + "" + mpjHomeDir + "/lib/log4j-1.2.11.jar"
             + File.pathSeparator + "" + mpjHomeDir + "/lib/YarnWrapper.jar"
             + File.pathSeparator + args[6] + File.pathSeparator
-            + args[5] + File.pathSeparator 
-	    + " runtime.starter.YarnWrapper" 
-            + " " + args[1]  // server name
-            + " " + args[2]  // server port
-            + " " + args[3]  // device name
-            + " " + args[4]  // class name
-            + " " + args[7]  // protocol switch limit
-            + " " + args[0]  // no. of containers 
-            + " " + Integer.toString(rank++) // rank
-            + " 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/stdout"                + " 2>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/stderr"));
-           
-       		
+            + args[5] + File.pathSeparator);
+        commands.add(" runtime.starter.YarnWrapper");
+        commands.add(" " + args[1]);  // server name
+        commands.add(" " + args[2]);  // server port
+        commands.add(" " + args[3]);  // device name
+        commands.add(" " + args[4]);  // class name
+        commands.add(" " + args[7]);  // protocol switch limit
+        commands.add(" " + args[0]);  // no. of containers 
+        commands.add(" " + Integer.toString(rank++)); // rank
+        commands.add(" " + args[8]); //num of Args
+        
+        int numArgs = Integer.parseInt(args[8]);
+        if( numArgs > 0){
+          for(int i = 0; i < numArgs; i++){
+            commands.add(" "+ args[9+i]);
+          }
+        }
+        commands.add(" 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + 
+                                                                  "/stdout");
+        commands.add(" 2>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + 
+                                                                  "/stderr");
+       	
+        ctx.setCommands(commands);	
 	System.out.println("Launching container " + allocatedContainers);
 
 	// Set local resource for containers

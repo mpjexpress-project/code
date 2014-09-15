@@ -110,24 +110,33 @@ public class MPJYarnClient {
       ContainerLaunchContext amContainer = 
               Records.newRecord(ContainerLaunchContext.class);
 
+      List <String> commands= new ArrayList<String>();
+      commands.add("$JAVA_HOME/bin/java");
+      commands.add(" -Xmx256M");
+      commands.add(" runtime.starter.ApplicationMaster"); 
+      commands.add(" "+String.valueOf(n));
+      commands.add(" "+args[1]); //server name
+      commands.add(" "+args[2]); //server port
+      commands.add(" "+args[3]); //device name
+      commands.add(" "+args[4]); //class name
+      commands.add(" "+args[5]); //wdir
+      commands.add(" "+args[6]); //class path
+      commands.add(" "+args[8]); //protocol switch limit
+      commands.add(" "+args[9]); //num of Args
+      
+      int numArgs = Integer.parseInt(args[9]);
+      if(numArgs > 0){      
+        for(int i=0; i < numArgs; i++){
+          commands.add(" "+args[10+i]); 
+        }
+      }
+     
+      commands.add(" 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + 
+								"/stdout");
+      commands.add(" 2>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + 
+								"/stderr"); 
 
-      amContainer.setCommands(
-          Collections.singletonList(
-              "$JAVA_HOME/bin/java" +
-              " -Xmx256M" +
-              " runtime.starter.ApplicationMaster " +
-              " " + String.valueOf(n) + 
-              " " + args[1] + //server name
-              " " + args[2] + //server port
-              " " + args[3] + //device name
-              " " + args[4] + //class name
-              " " + args[5] + //wdir
-              " " + args[6] + //class path
-              " " + args[8] + //protocol switch limit
-              " 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/stdout" +
-              " 2>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/stderr"
-	)
-      );
+      amContainer.setCommands(commands); //set commands
 
     // Setup local Resource for ApplicationMaster
     LocalResource appMasterJar = Records.newRecord(LocalResource.class);
