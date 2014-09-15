@@ -179,6 +179,7 @@ public class MPJRun {
         logger.debug(mpjHomeDir+"/lib/mpjyarnclient.jar");
       }
 
+
       List<String> commands = new ArrayList<String>();
 
       commands.add(hadoopHomeDir+"/bin/hadoop");
@@ -192,7 +193,13 @@ public class MPJRun {
       commands.add(wdir);                          // working directory
       commands.add(applicationClassPathEntry);     
       commands.add(Integer.toString(DEBUG_PORT));  // debug port
-      commands.add(Integer.toString(psl));         // protocol switch limit      
+      commands.add(Integer.toString(psl));         // protocol switch limit
+      commands.add(Integer.toString(appArgs.size()));  //number of args
+      
+      for(int i=0 ;i<appArgs.size(); i++){
+        commands.add(appArgs.get(i));               // application arguments
+      }
+            
       java.lang.ProcessBuilder processBuilder = 
 					new java.lang.ProcessBuilder(commands);
       java.lang.Process p = processBuilder.start();
@@ -482,7 +489,6 @@ public class MPJRun {
 	// these have to be app arguments ...
 	else {
 	  appArgs.add(args[i]);
-          System.out.println("The value is at:" + i );
 	}
 
       }

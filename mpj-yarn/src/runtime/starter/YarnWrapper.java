@@ -53,11 +53,30 @@ import java.net.*;
       try {
         System.out.println("["+hostName+"]: Starting process <"+rank+">");
 
-        String arvs[] = new String[3];
+        String [] arvs;
+        int numArgs=Integer.parseInt(args[7]);
+        if(numArgs>0){
 
-        arvs[0] = rank;
-        arvs[1] = portInfo.concat(WRAPPER_INFO);
-        arvs[2] = deviceName;
+          arvs = new String[3+numArgs];
+
+          arvs[0] = rank;
+          arvs[1] = portInfo.concat(WRAPPER_INFO);
+          arvs[2] = deviceName;
+	  
+          for(int i=0; i < numArgs; i++){
+            arvs[3+i]=args[8+i];
+          }
+        }
+        else{
+
+          arvs = new String[3];
+
+          arvs[0] = rank;
+          arvs[1] = portInfo.concat(WRAPPER_INFO);
+          arvs[2] = deviceName;
+        }
+ 
+
 
         Method m = c.getMethod("main", new Class[] { arvs.getClass() });
         m.setAccessible(true);
