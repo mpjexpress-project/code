@@ -42,42 +42,32 @@ import java.net.*;
 
       rank = args[6];
 
+      // connect YarnWrapper to YarnClient
+      yarnClientConnect(findPort(), findPort());
 
-      int tmp = mpjrunConnect(findPort(), findPort());
       try{
         c = Class.forName(className);
       }
       catch(ClassNotFoundException exp){
         exp.printStackTrace();
       }
+      
       try {
         System.out.println("["+hostName+"]: Starting process <"+rank+">");
 
         String [] arvs;
         int numArgs=Integer.parseInt(args[7]);
-        if(numArgs>0){
 
-          arvs = new String[3+numArgs];
+        arvs = new String[3+numArgs];
 
-          arvs[0] = rank;
-          arvs[1] = portInfo.concat(WRAPPER_INFO);
-          arvs[2] = deviceName;
+        arvs[0] = rank;
+        arvs[1] = portInfo.concat(WRAPPER_INFO);
+        arvs[2] = deviceName;
 	  
-          for(int i=0; i < numArgs; i++){
-            arvs[3+i]=args[8+i];
-          }
-        }
-        else{
-
-          arvs = new String[3];
-
-          arvs[0] = rank;
-          arvs[1] = portInfo.concat(WRAPPER_INFO);
-          arvs[2] = deviceName;
+        for(int i=0; i < numArgs; i++){
+          arvs[3+i]=args[8+i];
         }
  
-
-
         Method m = c.getMethod("main", new Class[] { arvs.getClass() });
         m.setAccessible(true);
         int mods = m.getModifiers();
@@ -138,7 +128,7 @@ import java.net.*;
     return selectedPort;
   }
 
- private int mpjrunConnect(int wport, int rport){
+ private void yarnClientConnect(int wport, int rport){
     Socket clientSock = null;
 
     try {
@@ -163,7 +153,6 @@ import java.net.*;
    catch (IOException e){
      e.printStackTrace();
    }
-    return 1;
   }
 
 
