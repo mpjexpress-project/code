@@ -199,7 +199,7 @@ public class ApplicationMaster {
     while (completedContainers < n) {
       AllocateResponse response = rmClient.allocate(completedContainers/n);
 
-      for (ContainerStatus status : response.getCompletedContainersStatuses()) {
+      for (ContainerStatus status : response.getCompletedContainersStatuses()){
         ++completedContainers;
         System.out.println("Completed container " + completedContainers);
       }
@@ -219,7 +219,7 @@ public class ApplicationMaster {
       YarnConfiguration.DEFAULT_YARN_APPLICATION_CLASSPATH)) {
                     
       Apps.addToEnvironment(containerEnv, 
-					Environment.CLASSPATH.name(), c.trim());
+				Environment.CLASSPATH.name(), c.trim());
                     
     }
 
