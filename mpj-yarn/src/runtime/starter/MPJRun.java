@@ -176,22 +176,21 @@ public class MPJRun {
 
       if (DEBUG && logger.isDebugEnabled()) {
         logger.debug("HADOOP HOME is set to: " + hadoopHomeDir);
-        logger.debug(mpjHomeDir+"/lib/mpjyarnclient.jar");
+        logger.debug(mpjHomeDir+"/lib/mpjYarnClient.jar");
       }
-
+                                                                               
 
       List<String> commands = new ArrayList<String>();
 
       commands.add(hadoopHomeDir+"/bin/hadoop");
       commands.add("jar");
-      commands.add(mpjHomeDir+"/lib/mpjyarnclient.jar");
+      commands.add(mpjHomeDir+"/lib/mpjYarnClient.jar");
       commands.add(Integer.toString(nprocs));      // no. of containers
       commands.add(localhostName);                 // server name
       commands.add(Integer.toString(SERVER_PORT)); // server port
       commands.add(deviceName);                    // device name
       commands.add(className);                     // class name
       commands.add(wdir);                          // working directory
-      commands.add(applicationClassPathEntry);     
       commands.add(Integer.toString(DEBUG_PORT));  // debug port
       commands.add(Integer.toString(psl));         // protocol switch limit
       commands.add(Integer.toString(appArgs.size()));  //number of args
@@ -302,7 +301,7 @@ public class MPJRun {
       }
 
       /*
-       * FIXME: should we not be checking all IP addresses of remote machine?
+       * FIXME:should we not be checking all IP addresses of remote machine?
        * Does it make sense?
        */
       // FK>> KEEP this in mind while fetching ports from each Wrapper
