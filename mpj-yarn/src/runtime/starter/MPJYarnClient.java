@@ -67,7 +67,7 @@ public class MPJYarnClient {
   
     //Set Number of containers..
     n = Integer.parseInt(args[0]);
-    DEBUG_PORT = Integer.parseInt(args[7]);
+    DEBUG_PORT = Integer.parseInt(args[6]);
     SERVER_PORT = Integer.parseInt(args[2]);
   }
  
@@ -91,9 +91,9 @@ public class MPJYarnClient {
       // Copy the application master jar to HDFS
       // Create a local resource to point to the destination jar path
       FileSystem fs = FileSystem.get(conf);
-      Path source = new Path(mpjHomeDir+"/lib/AM.jar");
+      Path source = new Path(mpjHomeDir+"/lib/mpjAppMaster.jar");
 	
-      String pathSuffix = "/AM.jar";
+      String pathSuffix = "/mpjAppMaster.jar";
       Path dest = new Path(fs.getHomeDirectory(), pathSuffix);
       fs.copyFromLocalFile(false, true, source, dest);
       FileStatus destStatus = fs.getFileStatus(dest);
@@ -113,21 +113,20 @@ public class MPJYarnClient {
       List <String> commands= new ArrayList<String>();
       commands.add("$JAVA_HOME/bin/java");
       commands.add(" -Xmx256M");
-      commands.add(" runtime.starter.ApplicationMaster"); 
+      commands.add(" runtime.starter.MPJAppMaster"); 
       commands.add(" "+String.valueOf(n));
       commands.add(" "+args[1]); //server name
       commands.add(" "+args[2]); //server port
       commands.add(" "+args[3]); //device name
       commands.add(" "+args[4]); //class name
       commands.add(" "+args[5]); //wdir
-      commands.add(" "+args[6]); //class path
-      commands.add(" "+args[8]); //protocol switch limit
-      commands.add(" "+args[9]); //num of Args
+      commands.add(" "+args[7]); //protocol switch limit
+      commands.add(" "+args[8]); //num of Args
       
-      int numArgs = Integer.parseInt(args[9]);
+      int numArgs = Integer.parseInt(args[8]);
       if(numArgs > 0){      
         for(int i=0; i < numArgs; i++){
-          commands.add(" "+args[10+i]); 
+          commands.add(" "+args[9+i]); 
         }
       }
      
@@ -148,7 +147,7 @@ public class MPJYarnClient {
     appMasterJar.setVisibility(LocalResourceVisibility.APPLICATION); 
     
     amContainer.setLocalResources(
-          Collections.singletonMap("AM.jar", appMasterJar));
+          Collections.singletonMap("MPJAppMaster.jar", appMasterJar));
     
     // Setup CLASSPATH for ApplicationMaster
     // Setting up the environment
@@ -262,8 +261,6 @@ public class MPJYarnClient {
         e.printStackTrace();
       }
     }
-
-    
 
 
     ApplicationReport appReport = yarnClient.getApplicationReport(appId);
