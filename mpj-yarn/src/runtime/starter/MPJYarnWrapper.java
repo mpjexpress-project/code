@@ -9,9 +9,9 @@ import java.util.*;
 import java.net.*;
 
 
-  public class YarnWrapper {
+  public class MPJYarnWrapper {
 
-    String portInfo = null;
+    public Socket clientSock = null;
     int processes = 0;
     String className = null;
     Class c = null;
@@ -22,17 +22,9 @@ import java.net.*;
     String serverName = null;
     int serverPort = 0;
     private String WRAPPER_INFO = null;
+    String portInfo;
 
     public void run(String[] args){
-      try{
-        InetAddress localaddr = InetAddress.getLocalHost();
-        hostName = localaddr.getHostName();
-      }
-      catch(UnknownHostException exp){
-        System.out.println("Unknown Host Exception, Host not found");
-        exp.printStackTrace();
-      }
-     
       serverName = args[0];
       serverPort = Integer.parseInt(args[1]);
       deviceName = args[2];
@@ -40,11 +32,29 @@ import java.net.*;
       portInfo ="#Number of Processes;"+args[5]+
                                   ";#Protocol Switch Limit;"+args[4]+";";
 
-      rank = args[6];
-
-      // connect YarnWrapper to YarnClient
-      yarnClientConnect(findPort(), findPort());
-
+      rank =args[6];
+      try{
+        InetAddress localaddr = InetAddress.getLocalHost();
+        hostName = localaddr.getHostName();
+        clientSock = new Socket(serverName, serverPort);
+      }
+      catch(UnknownHostException exp){
+        System.out.println("Unknown Host Exception, Host not found");
+        exp.printStackTrace();
+      }catch(IOException exp){
+        exp.printStackTrace(); 
+      }
+     
+      // connect MPJYarnWrapper to MPJYarnClient
+      yarnClientConnect(findPort(), findPort(),clientSock);
+      
+      // Redirecting Output Stream 
+      try{
+        System.setOut(new PrintStream(clientSock.getOutputStream())); 
+      }
+      catch(IOException e){
+       e.printStackTrace();
+      }
       try{
         c = Class.forName(className);
       }
@@ -82,7 +92,7 @@ import java.net.*;
         System.out.println("["+hostName+"]: Process <"+rank+"> completed");
       }
       catch (Exception ioe) {
-        System.err.println("["+hostName+"-Wrapper.java]: Multi-threaded"+
+        System.err.println("["+hostName+"-MPJYarnWrapper.java]:Multi-threaded"+
                                   " starter: exception" + ioe.getMessage());
         ioe.printStackTrace();
       }
@@ -109,7 +119,7 @@ import java.net.*;
         sock.setReuseAddress(true);
       }
       catch (IOException e) {
-        System.err.println("[Wrapper.java]:"+hostName+"-"+
+        System.err.println("[MPJYarnWrapper.java]:"+hostName+"-"+
                selectedPort+"]Port already in use. Checking for a new port..");
         continue;
       }
@@ -118,7 +128,7 @@ import java.net.*;
         sock.close();
       }
       catch (IOException e){
-        System.err.println("["+hostName+":Wrapper.java]: IOException"+
+        System.err.println("["+hostName+":MPJYarnWrapper.java]: IOException"+
                         " encountered in closing sockets: "+e.getMessage());
         e.printStackTrace();
         }
@@ -128,11 +138,9 @@ import java.net.*;
     return selectedPort;
   }
 
- private void yarnClientConnect(int wport, int rport){
-    Socket clientSock = null;
+ private void yarnClientConnect(int wport, int rport, Socket clientSock){
 
     try {
-      clientSock = new Socket(serverName, serverPort);
       DataOutputStream out = new DataOutputStream(clientSock.getOutputStream());
       DataInputStream in = new DataInputStream(clientSock.getInputStream());
 
@@ -148,7 +156,7 @@ import java.net.*;
       in.readFully(dataFrame);
       WRAPPER_INFO = new String(dataFrame, "UTF-8");
       
-      clientSock.close();
+     // clientSock.close();
    }
    catch (IOException e){
      e.printStackTrace();
@@ -158,7 +166,7 @@ import java.net.*;
 
 
     public static void main(String args[]) throws Exception {
-      YarnWrapper wrapper = new YarnWrapper();
+      MPJYarnWrapper wrapper = new MPJYarnWrapper();
       wrapper.run(args); 
     }
   }

@@ -165,7 +165,7 @@ public class MPJDaemon {
     }
 
   }
-
+  //WHY servSockets HashMap?
   private void serverSocketInit() {
     if (DEBUG && logger.isDebugEnabled()) {
       logger.debug("serverSocketInit called .. ");

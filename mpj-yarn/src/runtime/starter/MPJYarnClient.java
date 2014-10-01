@@ -173,7 +173,8 @@ public class MPJYarnClient {
     ApplicationId appId = appContext.getApplicationId();
     System.out.println("\nSubmitting application " + appId+"\n");
     yarnClient.submitApplication(appContext);
-    
+  
+    IOMessagesThread [] ioThreads = new IOMessagesThread[n];
     int rank = 0;
     int wport = 0;
     int rport = 0;
@@ -186,8 +187,8 @@ public class MPJYarnClient {
 
     System.out.println("Creating server socket at HOST "+
                         args[1]+" PORT "+
-                        args[2]+" \n Waiting for "+
-                        n +" processes to connect");
+                        args[2]+" \n\nWaiting for "+
+                        n +" processes to connect...\n");
     
 
     // Creating a server socket for incoming connections
@@ -198,30 +199,31 @@ public class MPJYarnClient {
       System.err.println(" Error opening server port..");
       e.printStackTrace();
     }
-
     // Loop to read port numbers from Wrapper.java processes
     // and to create WRAPPER_INFO (containing all IPs and ports)
-    for(int i = n; i > 0; i--){
+    for(int i = 0; i < n; i++){
       try{
         sock = servSock.accept();
+        
         DataOutputStream out = new DataOutputStream(sock.getOutputStream());
         DataInputStream in = new DataInputStream(sock.getInputStream());
 
         wport = in.readInt();
         rport = in.readInt();
         rank = in.readInt();
-        System.out.println("\n Container "+
+   
+        System.out.println("Container "+
                            sock.getInetAddress().getHostAddress()+
-			   "\n Read Port "+rport+
-                           "\n Write Port "+wport+
-                           "\n Rank "+rank);
+			   "\nRead Port "+rport+
+                           "\nWrite Port "+wport+
+                           "\nRank "+rank+"\n");
+       
 
         peers[rank] = ";" + sock.getInetAddress().getHostAddress() + 
 				"@" + rport + "@" + wport + "@" + rank;
 
 
         socketList.add(sock);
-
         peers[rank] += "@" + (DEBUG_PORT);
       }
       catch (Exception e){
@@ -244,24 +246,40 @@ public class MPJYarnClient {
     int length = dataFrame.length;
 
     // Loop to broadcast WRAPPER_INFO to all Wrappers
-    for(int i = n; i > 0; i--){
+    for(int i = 0; i < n; i++){
       try{
-        sock = socketList.get(n- i);
+        sock = socketList.get(i);
+        IOMessagesThread io = new IOMessagesThread(sock);
+        ioThreads[i] = io;
         DataOutputStream out = new DataOutputStream(sock.getOutputStream());
+        DataInputStream in = new DataInputStream(sock.getInputStream());
 
         out.writeInt(length);
         out.flush();
         out.write(dataFrame, 0, length);
         out.flush();
-
-        sock.close();
+        
+        ioThreads[i].start();
       }
       catch (Exception e){
-        System.err.println(" Error closing connection from peer socket..");
+        e.printStackTrace();
+      }
+    }  
+    
+    // wait for all IO Threads to complete 
+    for(int i=0;i<n;i++){
+      ioThreads[i].join();
+    }
+    
+    // close all the socket connections
+    for(int i=0;i<n;i++){
+      try{
+        socketList.get(i).close();
+      }
+      catch(Exception e){
         e.printStackTrace();
       }
     }
-
 
     ApplicationReport appReport = yarnClient.getApplicationReport(appId);
     YarnApplicationState appState = appReport.getYarnApplicationState();

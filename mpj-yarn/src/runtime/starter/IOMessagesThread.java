@@ -50,6 +50,9 @@ public class IOMessagesThread extends Thread {
   public IOMessagesThread(Socket clientSock) {
     this.clientSock = clientSock;
   }
+  public void setSock(Socket clientSock){
+    this.clientSock = clientSock;
+  }
 
   @Override
   public void run() {
@@ -57,7 +60,6 @@ public class IOMessagesThread extends Thread {
   }
 
   private void serverSocketInit() {
-
     Scanner input = null;
     PrintWriter output = null;
     try {
@@ -65,8 +67,7 @@ public class IOMessagesThread extends Thread {
       output = new PrintWriter(clientSock.getOutputStream(), true);
       String message = input.nextLine();
       while (!(message.endsWith("EXIT"))) {
-	if (!message.startsWith("@Ping#"))
-	  System.out.println(message);
+	System.out.println(message);
 	message = input.nextLine();
       }
 
