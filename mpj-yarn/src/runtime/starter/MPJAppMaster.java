@@ -42,18 +42,12 @@ import org.apache.hadoop.fs.Path;
 
 
 
-public class ApplicationMaster {
+public class MPJAppMaster {
 
   Configuration conf = new YarnConfiguration();
   String mpjHomeDir;
   int rank = 0;
-  public static void main(String[] args) throws Exception {
-    ApplicationMaster am =new ApplicationMaster();
-    System.out.println("am");
-    am.run(args);
-        
-  }
-
+ 
   public void run(String[] args) throws Exception {
   
     Map<String, String> map = System.getenv();
@@ -73,12 +67,17 @@ public class ApplicationMaster {
     // FIXME: I will workout some way to upload jars in local Filesystem
     
     FileSystem fs = FileSystem.get(conf);
-    Path source = new Path(mpjHomeDir+"/lib/YarnWrapper.jar");
-    String pathSuffix = "/YarnWrapper.jar";
+    Path source = new Path(mpjHomeDir+"/lib/mpjYarnWrapper.jar");
+    String pathSuffix = "/mpjYarnWrapper.jar";
     Path dest = new Path(fs.getHomeDirectory(), pathSuffix);
     fs.copyFromLocalFile(false, true, source, dest);
     FileStatus destStatus = fs.getFileStatus(dest);
    
+    Path sourceUserClass = new Path(args[5]+"/"+args[4]+".class");
+    String suffixUserClass = "/"+args[4]+".class";
+    Path destUserClass = new Path(fs.getHomeDirectory(),suffixUserClass);
+    fs.copyFromLocalFile(false,true,sourceUserClass,destUserClass);
+    FileStatus destStatusClass = fs.getFileStatus(destUserClass); 
 
     // Initialize AM <--> RM communication protocol
     AMRMClient<ContainerRequest> rmClient = AMRMClient.createAMRMClient();
@@ -112,6 +111,8 @@ public class ApplicationMaster {
       rmClient.addContainerRequest(containerAsk);
     }	
   
+    Map<String,LocalResource> localResources = 
+			 	new HashMap <String,LocalResource> ();
     // Creating Local Resource for Wrapper   
     LocalResource wrapperJar = Records.newRecord(LocalResource.class);
 
@@ -120,6 +121,19 @@ public class ApplicationMaster {
     wrapperJar.setTimestamp(destStatus.getModificationTime());
     wrapperJar.setType(LocalResourceType.ARCHIVE);
     wrapperJar.setVisibility(LocalResourceVisibility.APPLICATION);
+ 
+    // Creating Local Resource for UserClass
+    LocalResource userClass = Records.newRecord(LocalResource.class);
+  
+    userClass.setResource(ConverterUtils.getYarnUrlFromPath(destUserClass));
+    userClass.setSize(destStatusClass.getLen());
+    userClass.setTimestamp(destStatusClass.getModificationTime());
+    userClass.setType(LocalResourceType.FILE);
+    userClass.setVisibility(LocalResourceVisibility.APPLICATION);
+
+    localResources.put("mpjYarnWrapper.jar", wrapperJar);
+    localResources.put(args[4]+".class", userClass);
+
 
     // Obtain allocated containers and launch 
     int allocatedContainers = 0;
@@ -141,28 +155,27 @@ public class ApplicationMaster {
         List <String> commands = new ArrayList<String>();
        
         commands.add(" $JAVA_HOME/bin/java");
-        commands.add(" -Xmx128M");
+        commands.add(" -Xmx256M");
         commands.add(" -cp " +"."
             + File.pathSeparator + "" + mpjHomeDir + "/lib/loader1.jar"
             + File.pathSeparator + "" + mpjHomeDir + "/lib/mpj.jar"
             + File.pathSeparator + "" + mpjHomeDir + "/lib/log4j-1.2.11.jar"
-            + File.pathSeparator + "" + mpjHomeDir + "/lib/YarnWrapper.jar"
-            + File.pathSeparator + args[6] + File.pathSeparator
-            + args[5] + File.pathSeparator);
-        commands.add(" runtime.starter.YarnWrapper");
+            + File.pathSeparator + "" + mpjHomeDir + "/lib/mpjYarnWrapper.jar"
+            );
+        commands.add(" runtime.starter.MPJYarnWrapper");
         commands.add(" " + args[1]);  // server name
         commands.add(" " + args[2]);  // server port
         commands.add(" " + args[3]);  // device name
         commands.add(" " + args[4]);  // class name
-        commands.add(" " + args[7]);  // protocol switch limit
+        commands.add(" " + args[6]);  // protocol switch limit
         commands.add(" " + args[0]);  // no. of containers 
         commands.add(" " + Integer.toString(rank++)); // rank
-        commands.add(" " + args[8]); //num of Args
+        commands.add(" " + args[7]); //num of Args
         
-        int numArgs = Integer.parseInt(args[8]);
+        int numArgs = Integer.parseInt(args[7]);
         if( numArgs > 0){
           for(int i = 0; i < numArgs; i++){
-            commands.add(" "+ args[9+i]);
+            commands.add(" "+ args[8+i]);
           }
         }
         commands.add(" 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + 
@@ -175,7 +188,8 @@ public class ApplicationMaster {
 
 	// Set local resource for containers
 	ctx.setLocalResources(
-	         Collections.singletonMap("YarnWrapper.jar", wrapperJar));
+	        // Collections.singletonMap("mpjYarnWrapper.jar", wrapperJar)
+		localResources);
       
        	// Set environment for container
        	Map<String, String> containerEnv = new HashMap<String, String>();
@@ -227,5 +241,12 @@ public class ApplicationMaster {
                           Environment.CLASSPATH.name(),
                           Environment.PWD.$() + File.separator + "*");
   } //end setupEnv()
+
+  
+
+  public static void main(String[] args) throws Exception {
+    MPJAppMaster am =new MPJAppMaster();
+    am.run(args);
+  }
 
 }//end class
