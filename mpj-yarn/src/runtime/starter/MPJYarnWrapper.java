@@ -45,16 +45,18 @@ import java.net.*;
         exp.printStackTrace(); 
       }
      
-      // connect MPJYarnWrapper to MPJYarnClient
-      yarnClientConnect(findPort(), findPort(),clientSock);
-      
       // Redirecting Output Stream 
       try{
-        System.setOut(new PrintStream(clientSock.getOutputStream())); 
+        System.setOut(new PrintStream(clientSock.getOutputStream(),true)); 
+        System.setErr(new PrintStream(clientSock.getOutputStream()));
       }
       catch(IOException e){
        e.printStackTrace();
       }
+     
+      // connect MPJYarnWrapper to MPJYarnClient
+      yarnClientConnect(findPort(), findPort(),clientSock);
+
       try{
         c = Class.forName(className);
       }
@@ -90,6 +92,13 @@ import java.net.*;
         m.invoke(null, new Object[] { arvs });
 
         System.out.println("["+hostName+"]: Process <"+rank+"> completed");
+        
+        try{
+          clientSock.close();
+        }
+	catch(IOException e){
+          e.printStackTrace();
+        }
       }
       catch (Exception ioe) {
         System.err.println("["+hostName+"-MPJYarnWrapper.java]:Multi-threaded"+
@@ -141,26 +150,30 @@ import java.net.*;
  private void yarnClientConnect(int wport, int rport, Socket clientSock){
 
     try {
-      DataOutputStream out = new DataOutputStream(clientSock.getOutputStream());
-      DataInputStream in = new DataInputStream(clientSock.getInputStream());
+ 
+      BufferedReader in = new BufferedReader(
+                        new InputStreamReader(clientSock.getInputStream()));
 
-      out.writeInt(wport);
-      out.flush();
-      out.writeInt(rport);
-      out.flush();
-      out.writeInt(Integer.parseInt(rank));
-      out.flush();
+      System.out.println(String.valueOf(wport));
+      System.out.println(String.valueOf(rport));
+      System.out.println(rank);
 
+
+      WRAPPER_INFO = in.readLine();
+
+      //System.out.println("Client "+WRAPPER_INFO);
+
+      /*
       int len = in.readInt();
       byte[] dataFrame = new byte[len];
       in.readFully(dataFrame);
       WRAPPER_INFO = new String(dataFrame, "UTF-8");
-      
+      */
      // clientSock.close();
-   }
-   catch (IOException e){
-     e.printStackTrace();
-   }
+     }
+     catch (IOException e){
+       e.printStackTrace();
+     }
   }
 
 

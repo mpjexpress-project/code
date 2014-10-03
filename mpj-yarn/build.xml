@@ -43,8 +43,7 @@
     <!--
     <property name="perl.executable" value="/cygwin/bin/perl.exe"/>
     -->
-    
-    
+
     <target name="havePerl">
         <available property="perl.present" file="${perl.executable}"/>
     </target>
@@ -219,7 +218,7 @@
     <!-- Yarn Client Jar -->         
     <jar destfile="${lib.dir}/mpjYarnClient.jar" basedir="src"
          includes="runtime/starter/MPJYarnClient.class 
-                   runtime/starter/IOMessagesThread.class">
+                   runtime/starter/IOYarnThread.class">
          <manifest>
            <attribute name="Main-class" value="runtime.starter.MPJYarnClient" />
          </manifest>
@@ -309,7 +308,6 @@
 	 <fileset dir="src/runtime" includes="*.class"/>
 	</delete>
     </target>
-
     <target name="veryclean" depends="clean"/> <!-- ,cleanJava"/> -->
 
     <!-- Processing SVG images to PNG (for documentation) -->
