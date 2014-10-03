@@ -174,7 +174,7 @@ public class MPJYarnClient {
     System.out.println("\nSubmitting application " + appId+"\n");
     yarnClient.submitApplication(appContext);
   
-    IOMessagesThread [] ioThreads = new IOMessagesThread[n];
+    IOYarnThread [] ioThreads = new IOYarnThread[n];
     int rank = 0;
     int wport = 0;
     int rport = 0;
@@ -204,14 +204,19 @@ public class MPJYarnClient {
     for(int i = 0; i < n; i++){
       try{
         sock = servSock.accept();
+	
+        PrintWriter out = new PrintWriter(sock.getOutputStream(),true);
+        BufferedReader in = new BufferedReader(
+            		new InputStreamReader(sock.getInputStream()));
         
-        DataOutputStream out = new DataOutputStream(sock.getOutputStream());
-        DataInputStream in = new DataInputStream(sock.getInputStream());
-
-        wport = in.readInt();
-        rport = in.readInt();
-        rank = in.readInt();
+        //get write port
+        wport = Integer.parseInt(in.readLine());
+        //get read port
+        rport = Integer.parseInt(in.readLine());
+        //get rank
+        rank  = Integer.parseInt(in.readLine());
    
+        //print connected container information
         System.out.println("Container "+
                            sock.getInetAddress().getHostAddress()+
 			   "\nRead Port "+rport+
@@ -221,7 +226,6 @@ public class MPJYarnClient {
 
         peers[rank] = ";" + sock.getInetAddress().getHostAddress() + 
 				"@" + rport + "@" + wport + "@" + rank;
-
 
         socketList.add(sock);
         peers[rank] += "@" + (DEBUG_PORT);
@@ -237,35 +241,24 @@ public class MPJYarnClient {
       WRAPPER_INFO += peers[i];
     }
 
-    try {
-      dataFrame = new byte[WRAPPER_INFO.getBytes("UTF-8").length];
-      dataFrame = WRAPPER_INFO.getBytes("UTF-8");
-    }
-    catch (UnsupportedEncodingException e){
-    }
-    int length = dataFrame.length;
-
     // Loop to broadcast WRAPPER_INFO to all Wrappers
     for(int i = 0; i < n; i++){
       try{
         sock = socketList.get(i);
-        IOMessagesThread io = new IOMessagesThread(sock);
-        ioThreads[i] = io;
-        DataOutputStream out = new DataOutputStream(sock.getOutputStream());
-        DataInputStream in = new DataInputStream(sock.getInputStream());
-
-        out.writeInt(length);
-        out.flush();
-        out.write(dataFrame, 0, length);
-        out.flush();
         
+        //start IO thread to read STDOUT and STDERR from wrappers
+        IOYarnThread io = new IOYarnThread(sock);
+        ioThreads[i] = io;
         ioThreads[i].start();
+ 
+        PrintWriter out = new PrintWriter(sock.getOutputStream(),true);
+        //send wrapper information  
+        out.println(WRAPPER_INFO);
       }
       catch (Exception e){
         e.printStackTrace();
       }
     }  
-    
     // wait for all IO Threads to complete 
     for(int i=0;i<n;i++){
       ioThreads[i].join();
@@ -276,7 +269,7 @@ public class MPJYarnClient {
       try{
         socketList.get(i).close();
       }
-      catch(Exception e){
+      catch(IOException e){
         e.printStackTrace();
       }
     }
@@ -292,11 +285,10 @@ public class MPJYarnClient {
                 appState = appReport.getYarnApplicationState();
     }
 
-    System.out.println(
-     " Application :" + appId + "\n" +
-     " State :" + appState + "\n" +
-     " Finish Time: " + appReport.getFinishTime());
-
+    System.out.println( "\n"+
+     		        " Application :" + appId + "\n" +
+     			" State :" + appState + "\n" +
+                        " Finish Time: " + appReport.getFinishTime());
   }
 
   private void setupAppMasterEnv(Map<String, String> appMasterEnv) {

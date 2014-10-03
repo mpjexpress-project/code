@@ -155,7 +155,7 @@ public class MPJAppMaster {
         List <String> commands = new ArrayList<String>();
        
         commands.add(" $JAVA_HOME/bin/java");
-        commands.add(" -Xmx256M");
+        commands.add(" -Xmx128M");
         commands.add(" -cp " +"."
             + File.pathSeparator + "" + mpjHomeDir + "/lib/loader1.jar"
             + File.pathSeparator + "" + mpjHomeDir + "/lib/mpj.jar"
