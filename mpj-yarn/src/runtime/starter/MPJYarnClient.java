@@ -173,8 +173,7 @@ public class MPJYarnClient {
     ApplicationId appId = appContext.getApplicationId();
     System.out.println("\nSubmitting application " + appId+"\n");
     yarnClient.submitApplication(appContext);
-  
-    IOYarnThread [] ioThreads = new IOYarnThread[n];
+    IOMessagesThread [] ioThreads = new IOMessagesThread[n];
     int rank = 0;
     int wport = 0;
     int rport = 0;
@@ -247,7 +246,7 @@ public class MPJYarnClient {
         sock = socketList.get(i);
         
         //start IO thread to read STDOUT and STDERR from wrappers
-        IOYarnThread io = new IOYarnThread(sock);
+        IOMessagesThread io = new IOMessagesThread(sock);
         ioThreads[i] = io;
         ioThreads[i].start();
  
@@ -262,16 +261,6 @@ public class MPJYarnClient {
     // wait for all IO Threads to complete 
     for(int i=0;i<n;i++){
       ioThreads[i].join();
-    }
-    
-    // close all the socket connections
-    for(int i=0;i<n;i++){
-      try{
-        socketList.get(i).close();
-      }
-      catch(IOException e){
-        e.printStackTrace();
-      }
     }
 
     ApplicationReport appReport = yarnClient.getApplicationReport(appId);

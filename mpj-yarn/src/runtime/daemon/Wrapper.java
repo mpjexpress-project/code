@@ -37,6 +37,8 @@
 
 package runtime.daemon;
 
+import mpjdev.*;
+
 import java.util.*;
 import java.net.*;
 import java.io.*;
@@ -79,6 +81,7 @@ public class Wrapper extends Thread {
   public void execute(String args[]) throws Exception {
 
     InetAddress localaddr = InetAddress.getLocalHost();
+    
     hostName = localaddr.getHostName();
 
     portInfo = args[0];
