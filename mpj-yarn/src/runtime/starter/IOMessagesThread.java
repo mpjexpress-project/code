@@ -74,17 +74,20 @@ public class IOMessagesThread extends Thread {
 
     }
     catch (Exception cce) {
-
-      System.exit(0);
+      cce.printStackTrace();
+      //System.exit(0);
     }
     finally {
       try {
+        //System.out.println("Closing Socket "+clientSock.getInetAddress().
+	//						getHostAddress());
 	clientSock.close();
 	input.close();
 	output.close();
       }
       catch (IOException ioEx) {
-	System.exit(1);
+        ioEx.printStackTrace();
+        //System.exit(1);
       }
     }
   }
