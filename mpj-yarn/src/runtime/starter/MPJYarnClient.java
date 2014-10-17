@@ -5,19 +5,7 @@ import java.net.ServerSocket;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.UUID;
-import java.util.Vector;
-import java.util.jar.Attributes;
-import java.util.jar.JarFile;
 import java.util.*;
-
-import java.util.Collections;
-import java.util.HashMap;
-
 
 import org.apache.hadoop.conf.Configuration; //apache configuration
 
@@ -56,13 +44,37 @@ public class MPJYarnClient {
   String mpjHomeDir;
 
   //Number of conatiners
-  final int n;
+  static int n;
   private int SERVER_PORT = 0;
   private int DEBUG_PORT = 0;
-  private String WRAPPER_INFO = "#Peer Information";
+  static ArrayList<String> peers;
+  static Vector<Socket> socketList;
+  ServerSocket servSock = null;
+  Socket sock = null;
 
-
-  
+  public synchronized static void broadCast(int rank,String info){
+ 
+   peers.add(info);
+   if(peers.size() == n){
+     //merge process info into a string
+     String WRAPPER_INFO = "#Peer Information";
+     for(int i=0;i<n;i++){
+       WRAPPER_INFO += peers.get(i);
+     } 
+     for(int i=0;i<n;i++){
+       
+       try{
+         Socket mySock = socketList.get(i);
+         PrintWriter out = new PrintWriter(mySock.getOutputStream(),true);
+         out.println(WRAPPER_INFO);
+         
+       }
+       catch(Exception exp){
+         exp.printStackTrace();
+       }
+     }
+   }
+  }
   public MPJYarnClient(String[] args){
   
     //Set Number of containers..
@@ -174,16 +186,7 @@ public class MPJYarnClient {
     System.out.println("\nSubmitting application " + appId+"\n");
     yarnClient.submitApplication(appContext);
     IOMessagesThread [] ioThreads = new IOMessagesThread[n];
-    int rank = 0;
-    int wport = 0;
-    int rport = 0;
-    ServerSocket servSock = null;
-    Socket sock = null;
-    Vector<Socket> socketList;
-    socketList = new Vector<Socket>();
-    byte[] dataFrame = null;
-    String[] peers = new String[n];
-
+    
     System.out.println("Creating server socket at HOST "+
                         args[1]+" PORT "+
                         args[2]+" \n\nWaiting for "+
@@ -198,66 +201,26 @@ public class MPJYarnClient {
       System.err.println(" Error opening server port..");
       e.printStackTrace();
     }
-    // Loop to read port numbers from Wrapper.java processes
-    // and to create WRAPPER_INFO (containing all IPs and ports)
+    
+    peers = new ArrayList<String>();
+    socketList = new Vector<Socket>();
+
     for(int i = 0; i < n; i++){
       try{
         sock = servSock.accept();
-	
-        PrintWriter out = new PrintWriter(sock.getOutputStream(),true);
-        BufferedReader in = new BufferedReader(
-            		new InputStreamReader(sock.getInputStream()));
-        
-        //get write port
-        wport = Integer.parseInt(in.readLine());
-        //get read port
-        rport = Integer.parseInt(in.readLine());
-        //get rank
-        rank  = Integer.parseInt(in.readLine());
-   
-        //print connected container information
-        System.out.println("Container "+
-                           sock.getInetAddress().getHostAddress()+
-			   "\nRead Port "+rport+
-                           "\nWrite Port "+wport+
-                           "\nRank "+rank+"\n");
+       	socketList.add(sock);
        
-
-        peers[rank] = ";" + sock.getInetAddress().getHostAddress() + 
-				"@" + rport + "@" + wport + "@" + rank;
-
-        socketList.add(sock);
-        peers[rank] += "@" + (DEBUG_PORT);
+        //start IO thread to read STDOUT and STDERR from wrappers
+        IOMessagesThread io = new IOMessagesThread(sock,DEBUG_PORT,"YARN");
+        ioThreads[i] = io;
+        ioThreads[i].start();
       }
       catch (Exception e){
         System.err.println("Error accepting connection from peer socket..");
         e.printStackTrace();
       }
     }
-
-    // Loop to sort contents of mpjdev.conf according to rank
-    for(int i=0; i < n; i++) {
-      WRAPPER_INFO += peers[i];
-    }
-
-    // Loop to broadcast WRAPPER_INFO to all Wrappers
-    for(int i = 0; i < n; i++){
-      try{
-        sock = socketList.get(i);
-        
-        //start IO thread to read STDOUT and STDERR from wrappers
-        IOMessagesThread io = new IOMessagesThread(sock);
-        ioThreads[i] = io;
-        ioThreads[i].start();
  
-        PrintWriter out = new PrintWriter(sock.getOutputStream(),true);
-        //send wrapper information  
-        out.println(WRAPPER_INFO);
-      }
-      catch (Exception e){
-        e.printStackTrace();
-      }
-    }  
     // wait for all IO Threads to complete 
     for(int i=0;i<n;i++){
       ioThreads[i].join();

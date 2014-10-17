@@ -72,7 +72,6 @@ public class MPJRun {
   final String DEFAULT_MACHINES_FILE_NAME = "machines";
   final int DEFAULT_PROTOCOL_SWITCH_LIMIT = 128 * 1024; // 128K
   private String CONF_FILE_CONTENTS;
-  private String WRAPPER_INFO = "#Peer Information";
   private int mxBoardNum = 0;
   private int D_SER_PORT = 0;
   private int DEBUG_PORT = 0;
@@ -97,9 +96,12 @@ public class MPJRun {
   String[] aArgs = null;
   static Logger logger = null;
   private Vector<Socket> peerSockets;
+  static Vector<Socket> socketList;
+  IOMessagesThread [] ioThreads;
+  static ArrayList<String> peers;
 
   private ArrayList<String> machineList = new ArrayList<String>();
-  int nprocs = Runtime.getRuntime().availableProcessors();
+  static int nprocs = Runtime.getRuntime().availableProcessors();
   String deviceName = "multicore";
   private String networkDevice = "niodev";
 
@@ -124,6 +126,7 @@ public class MPJRun {
 
   static final boolean DEBUG = true;
   private String logLevel = "OFF";
+  ServerSocket servSock = null;
 
   /**
    * Every thing is being inside this constructor :-)
@@ -340,6 +343,12 @@ public class MPJRun {
       logger.debug("procsPerMachineTable " + procsPerMachineTable);
     }
     collectPortInfo();
+    
+    // wait for all IO Threads to complete 
+    for(int i=0;i<nprocs;i++){
+      ioThreads[i].join();
+    }
+
   }
 
   /*
@@ -551,7 +560,7 @@ public class MPJRun {
    * machine running the MPJRun.java class. 14. MasterPort - port number at which
    * MPJRun.java is awaiting connections from the wrapper class.
    */
-  private void pack(int nProcesses, int start_rank, Socket sockClient) {
+  private void pack(int nProcesses, int start_rank, Socket mySock) {
 
     if (wdir == null) {
       wdir = System.getProperty("user.dir");
@@ -583,8 +592,6 @@ public class MPJRun {
     ticket.setMainClass(className);
     ticket.setConfFileContents(CONF_FILE_CONTENTS);
     ticket.setDeviceName(deviceName);
-    IOMessagesThread ioMessages = new IOMessagesThread(sockClient);
-    ioMessages.start();
     ArrayList<String> jvmArgs = new ArrayList<String>();
     for (int j = 0; j < jArgs.length; j++) {
       jvmArgs.add(jArgs[j]);
@@ -615,7 +622,7 @@ public class MPJRun {
     String ticketString = ticket.ToXML().toXmlString();
     OutputStream outToServer = null;
     try {
-      outToServer = sockClient.getOutputStream();
+      outToServer = mySock.getOutputStream();
     }
     catch (IOException e) {
       logger.info(" Unable to get deamon stream-");
@@ -628,16 +635,15 @@ public class MPJRun {
       out.writeInt(length);
       if (DEBUG && logger.isDebugEnabled()) {
 	logger.info("Machine Name: "
-	    + sockClient.getInetAddress().getHostName() + " Starting Rank: "
+	    + mySock.getInetAddress().getHostName() + " Starting Rank: "
 	    + ticket.getStartingRank() + " Process Count: "
 	    + ticket.getProcessCount());
       }
       out.write(ticketString.getBytes(), 0, length);
       out.flush();
+      mySock.close();
     }
     catch (IOException e) {
-
-      logger.info(" Unable to write on deamon stream-");
       e.printStackTrace();
     }
   }
@@ -1034,25 +1040,38 @@ public class MPJRun {
 
   }
 
-  /**
-  * #FK
-  * input: void 
-  * output: void
-  * description: collect ip, port information from all wrappers
-  **/
+  public synchronized static void broadCast(int rank,String info){
+
+   peers.add(info);
+   if(peers.size() == nprocs){
+     //merge process info into a string
+     String WRAPPER_INFO = "#Peer Information";
+     for(int i=0;i<nprocs;i++){
+       WRAPPER_INFO += peers.get(i);
+     }
+     for(int i=0;i<nprocs;i++){
+
+       try{
+         Socket mySock = socketList.get(i);
+         PrintWriter out = new PrintWriter(mySock.getOutputStream(),true);
+         out.println(WRAPPER_INFO);
+
+       }
+       catch(Exception exp){
+         exp.printStackTrace();
+       }
+     }
+   }
+  }
+
   private void collectPortInfo(){
     int rank = 0;
     int wport = 0;
     int rport = 0;
-    ServerSocket servSock = null;
-    Socket sock = null;
-    Vector<Socket> socketList;
-    socketList = new Vector<Socket>();  
-    byte[] dataFrame = null;  
-    String[] peers = new String[nprocs];    
-
+   
     if (DEBUG && logger.isDebugEnabled()) {
-    logger.debug("[MPJRun.java]:Creating server.. Waiting for <"+nprocs+"> processes to connect");
+    logger.debug("[MPJRun.java]:Creating server.. Waiting for <"+nprocs+
+						"> processes to connect");
     }
 
     // Creating a server socket for incoming connections
@@ -1063,71 +1082,27 @@ public class MPJRun {
       System.err.println("[MPJRun.java]: Error opening server port..");
       e.printStackTrace();
     }
-
-    // Loop to read port numbers from Wrapper.java processes
-    // and to create WRAPPER_INFO (containing all IPs and ports)
-    for(int i = nprocs; i > 0; i--){
+    peers = new ArrayList<String>();
+    ioThreads = new IOMessagesThread[nprocs]; 
+    socketList = new Vector<Socket>();  
+    for(int i = 0; i < nprocs; i++){
       try{
-        sock = servSock.accept();
-        DataOutputStream out = new DataOutputStream(sock.getOutputStream());
-        DataInputStream in = new DataInputStream(sock.getInputStream());
-    
-        wport = in.readInt();
-        rport = in.readInt();
-        //System.out.println("MPJRun.java got:"+wport+","+rport);
-	rank = in.readInt();
-
-	//out.writeInt(rank);
-        //out.flush();
-
-        peers[rank] = ";" + sock.getInetAddress().getHostAddress() + "@" + rport + "@" + wport + "@" + rank;
-
-        //WRAPPER_INFO += ";" + sock.getInetAddress().getHostAddress() + "@" + rport + "@" + wport + "@" + rank;
-      
-        //System.out.println("Entry: " + WRAPPER_INFO);
+        Socket sock = servSock.accept();
         socketList.add(sock);
-  
-	peers[rank] += "@" + (DEBUG_PORT);
-        //System.out.println("My entry:"+peers[rank]);
 
+        //start IO thread to read STDOUT and STDERR from wrappers
+        IOMessagesThread io = new IOMessagesThread(sock,DEBUG_PORT,"EXISTING");
+        ioThreads[i] = io;
+        ioThreads[i].start();
       }
       catch (Exception e){
-        System.err.println("[MPJRun.java]: Error accepting connection from peer socket..");
+        
         e.printStackTrace();
       }
     }
 
-    // Loop to sort contents of mpjdev.conf according to rank
-    for(int i=0; i < nprocs; i++) {
-      WRAPPER_INFO += peers[i];
-    }
 
-    try {
-      dataFrame = new byte[WRAPPER_INFO.getBytes("UTF-8").length];
-      dataFrame = WRAPPER_INFO.getBytes("UTF-8");
-    }
-    catch (UnsupportedEncodingException e){
-    }
-    int length = dataFrame.length;
 
-    // Loop to broadcast WRAPPER_INFO to all Wrappers
-    for(int i = nprocs; i > 0; i--){
-      try{
-        sock = socketList.get(nprocs - i);    
-        DataOutputStream out = new DataOutputStream(sock.getOutputStream());
-
-        out.writeInt(length);
-        out.flush();
-        out.write(dataFrame, 0, length);
-        out.flush();
-
-        sock.close();
-      }
-      catch (Exception e){
-        System.err.println("[MPJRun.java]: Error closing connection from peer socket..");
-        e.printStackTrace();
-      } 
-    } 
   }
 
   public static void main(String args[]) throws Exception {

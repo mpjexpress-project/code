@@ -41,14 +41,23 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Scanner;
+import java.util.*;
 
 public class IOMessagesThread extends Thread {
 
   Socket clientSock;
+  int wport;
+  int rport;
+  int rank;
+  String runtimeType;
+  int DEBUG_PORT;
+ 
 
-  public IOMessagesThread(Socket clientSock) {
+  public IOMessagesThread(Socket clientSock, int DEBUG_PORT,
+					     String runtimeType) {
     this.clientSock = clientSock;
+    this.DEBUG_PORT= DEBUG_PORT;
+    this.runtimeType = runtimeType;
   }
   public void setSock(Socket clientSock){
     this.clientSock = clientSock;
@@ -67,7 +76,35 @@ public class IOMessagesThread extends Thread {
       output = new PrintWriter(clientSock.getOutputStream(), true);
       String message = input.nextLine();
       while (!(message.endsWith("EXIT"))) {
-	if(!message.startsWith("@Ping#"))
+        if (message.equals("Sending Rank and Ports")){
+          //get write port
+          wport = Integer.parseInt(input.nextLine());
+          //get read port
+          rport = Integer.parseInt(input.nextLine());
+          //get rank
+          rank  = Integer.parseInt(input.nextLine());
+
+          //Implement logger and print container information
+
+          String info= ";" + clientSock.getInetAddress().getHostAddress() +
+                        "@" + rport + "@" + wport + "@" + rank +
+                        "@" + DEBUG_PORT;
+          
+          if(runtimeType.equals("YARN")){
+            System.out.println("Connection Established: "+
+                              clientSock.getInetAddress().getHostAddress()+
+                             "\nRead Port "+rport+
+                             "\nWrite Port "+wport+
+                             "\nRank "+rank+"\n");
+
+
+            MPJYarnClient.broadCast(rank,info);
+          }
+          else{
+            MPJRun.broadCast(rank,info);
+          }        
+        }
+	else if(!message.startsWith("@Ping#"))
           System.out.println(message);
 	message = input.nextLine();
       }
