@@ -47,8 +47,9 @@ import java.lang.reflect.*;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 
-public class Wrapper extends Thread {
-
+public class Wrapper  {
+  
+  public static Socket clientSock = null;
   String portInfo = null;
   int processes = 0;
   String className = null;
@@ -57,15 +58,10 @@ public class Wrapper extends Thread {
   String rank = null;
   String[] nargs = null;
   String hostName = null;
-  String args[] = null;
   
   String serverName = null;
   int serverPort = 0;
   private String WRAPPER_INFO = null;
-
-  public Wrapper(ThreadGroup group, String name) {
-    super(group, name);
-  }
 
   /**
    * Executes MPJ program in a new JVM. This method is invoked in main
@@ -78,7 +74,7 @@ public class Wrapper extends Thread {
    *          hostname of MPJRun.java server, args[4] is the port number of
    *          MPJRun.java server, args[5] is rank, args[6] is className
    */
-  public void execute(String args[]) throws Exception {
+  public void run(String args[]) throws Exception {
 
     InetAddress localaddr = InetAddress.getLocalHost();
     
@@ -92,8 +88,25 @@ public class Wrapper extends Thread {
     rank = args[5];
     className = args[6];
 
-    int tmp = mpjrunConnect(findPort(), findPort());
+    try{
+        clientSock = new Socket(serverName, serverPort);
+      }
+      catch(UnknownHostException exp){
+        //System.out.println("Unknown Host Exception, Host not found");
+        exp.printStackTrace();
+      }
+          
+     // Redirecting Output Stream 
+     try{
+       System.setOut(new PrintStream(clientSock.getOutputStream(),true));
+       System.setErr(new PrintStream(clientSock.getOutputStream()));
+     }
+     catch(IOException e){
+       e.printStackTrace();
+     }
 
+    mpjrunConnect(findPort(), findPort());
+    
     nargs = new String[(args.length - 7)];
     System.arraycopy(args, 7, nargs, 0, nargs.length);
 
@@ -123,21 +136,13 @@ public class Wrapper extends Thread {
       m.invoke(null, new Object[] { arvs });
       
       System.out.println("["+hostName+"]: Process <"+rank+"> completed");
+      System.out.println("EXIT");
     }
     catch (Exception ioe) {
-      System.err.println("["+hostName+"-Wrapper.java]: Multi-threaded starter: exception" + ioe.getMessage());
       ioe.printStackTrace();
     }
   }
 
-  public void run() {
-    try {
-      execute(args);
-    }
-    catch (Exception ex) {
-      ex.printStackTrace();
-    }
-  }
 
   /**
    * <p>
@@ -206,38 +211,29 @@ public class Wrapper extends Thread {
   *        rport Read port for the wrapper process
   *
   **/
-  private int mpjrunConnect(int wport, int rport){
-    Socket clientSock = null;
+  private void mpjrunConnect(int wport, int rport){
+   try {
 
-    try {
-      clientSock = new Socket(serverName, serverPort);
-      DataOutputStream out = new DataOutputStream(clientSock.getOutputStream());
-      DataInputStream in = new DataInputStream(clientSock.getInputStream());
+      BufferedReader in = new BufferedReader(
+                        new InputStreamReader(clientSock.getInputStream()));
 
-      out.writeInt(wport);
-      out.flush();
-      out.writeInt(rport);
-      out.flush();
-      out.writeInt(Integer.parseInt(rank));
-      out.flush();
+      //signal before sending ports and rank
+      System.out.println("Sending Rank and Ports");
 
-      int len = in.readInt();
-      byte[] dataFrame = new byte[len];
-      in.readFully(dataFrame);
-      WRAPPER_INFO = new String(dataFrame, "UTF-8");
-      
-      clientSock.close();
-   }
-   catch (IOException e){
-   }
-    return 1;
+      System.out.println(String.valueOf(wport));
+      System.out.println(String.valueOf(rport));
+      System.out.println(rank);
+
+      WRAPPER_INFO = in.readLine();
+
+     }
+     catch (IOException e){
+       e.printStackTrace();
+     }
   }
 
   public static void main(String args[]) throws Exception {
-    ThreadGroup group = new ThreadGroup("MPI" + args[3]);
-    Wrapper wrap = new Wrapper(group, args[3]);
-    wrap.args = args;
-    wrap.start();
-    wrap.join();
+    Wrapper wrap = new Wrapper();
+    wrap.run(args);
   }
 }

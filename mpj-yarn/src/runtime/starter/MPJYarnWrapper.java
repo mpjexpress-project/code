@@ -21,7 +21,7 @@ import java.net.*;
     String hostName = null;
     String serverName = null;
     int serverPort = 0;
-    private String WRAPPER_INFO = null;
+    private String WRAPPER_INFO;
     String portInfo;
 
     public void run(String[] args){
@@ -92,7 +92,7 @@ import java.net.*;
         m.invoke(null, new Object[] { arvs });
 
         System.out.println("["+hostName+"]: Process <"+rank+"> completed");
-        
+        System.out.println("EXIT");
         try{
           clientSock.close();
         }
@@ -101,8 +101,6 @@ import java.net.*;
         }
       }
       catch (Exception ioe) {
-        System.err.println("["+hostName+"-MPJYarnWrapper.java]:Multi-threaded"+
-                                  " starter: exception" + ioe.getMessage());
         ioe.printStackTrace();
       }
 
@@ -148,28 +146,20 @@ import java.net.*;
   }
 
  private void yarnClientConnect(int wport, int rport, Socket clientSock){
-
     try {
- 
+
       BufferedReader in = new BufferedReader(
                         new InputStreamReader(clientSock.getInputStream()));
 
+      //signal before sending ports and rank
+      System.out.println("Sending Rank and Ports");
+      
       System.out.println(String.valueOf(wport));
       System.out.println(String.valueOf(rport));
       System.out.println(rank);
 
-
       WRAPPER_INFO = in.readLine();
-
-      //System.out.println("Client "+WRAPPER_INFO);
-
-      /*
-      int len = in.readInt();
-      byte[] dataFrame = new byte[len];
-      in.readFully(dataFrame);
-      WRAPPER_INFO = new String(dataFrame, "UTF-8");
-      */
-     // clientSock.close();
+     
      }
      catch (IOException e){
        e.printStackTrace();

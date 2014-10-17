@@ -38,6 +38,8 @@
 
 package xdev.niodev;
 
+import runtime.daemon.Wrapper;
+
 import java.nio.channels.*;
 import java.nio.*;
 import java.net.*;
@@ -672,7 +674,8 @@ public class NIODevice implements Device {
      * SocketChannels whereas, the ones (SocketChannels) in worldWritableTable
      * have nothing to do with selector thread as they are in blocking mode.
      */
-
+    Socket cl = runtime.daemon.Wrapper.clientSock;
+    //System.out.println("NIODEV SOCK:"+cl.getInetAddress());
     if (args.length < 3) {
 
       throw new XDevException("Usage: "
@@ -4146,5 +4149,4 @@ public class NIODevice implements Device {
       notify();
     }
   }
-
 }
