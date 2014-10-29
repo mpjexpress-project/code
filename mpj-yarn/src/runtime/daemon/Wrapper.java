@@ -37,8 +37,6 @@
 
 package runtime.daemon;
 
-import mpjdev.*;
-
 import java.util.*;
 import java.net.*;
 import java.io.*;
@@ -47,9 +45,8 @@ import java.lang.reflect.*;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 
-public class Wrapper  {
-  
-  public static Socket clientSock = null;
+public class Wrapper extends Thread {
+
   String portInfo = null;
   int processes = 0;
   String className = null;
@@ -58,10 +55,15 @@ public class Wrapper  {
   String rank = null;
   String[] nargs = null;
   String hostName = null;
+  String args[] = null;
   
   String serverName = null;
   int serverPort = 0;
   private String WRAPPER_INFO = null;
+
+  public Wrapper(ThreadGroup group, String name) {
+    super(group, name);
+  }
 
   /**
    * Executes MPJ program in a new JVM. This method is invoked in main
@@ -74,10 +76,9 @@ public class Wrapper  {
    *          hostname of MPJRun.java server, args[4] is the port number of
    *          MPJRun.java server, args[5] is rank, args[6] is className
    */
-  public void run(String args[]) throws Exception {
+  public void execute(String args[]) throws Exception {
 
     InetAddress localaddr = InetAddress.getLocalHost();
-    
     hostName = localaddr.getHostName();
 
     portInfo = args[0];
@@ -88,25 +89,7 @@ public class Wrapper  {
     rank = args[5];
     className = args[6];
 
-    try{
-        clientSock = new Socket(serverName, serverPort);
-      }
-      catch(UnknownHostException exp){
-        //System.out.println("Unknown Host Exception, Host not found");
-        exp.printStackTrace();
-      }
-          
-     // Redirecting Output Stream 
-     try{
-       System.setOut(new PrintStream(clientSock.getOutputStream(),true));
-       System.setErr(new PrintStream(clientSock.getOutputStream()));
-     }
-     catch(IOException e){
-       e.printStackTrace();
-     }
-
-    mpjrunConnect(findPort(), findPort());
-    
+   
     nargs = new String[(args.length - 7)];
     System.arraycopy(args, 7, nargs, 0, nargs.length);
 
@@ -118,7 +101,9 @@ public class Wrapper  {
       String arvs[] = new String[nargs.length + 3];
 
       arvs[0] = rank;
-      arvs[1] = portInfo.concat(WRAPPER_INFO);
+      arvs[1] = portInfo.concat("#Server Name;"+serverName+";#Server Port;"+
+                                                             serverPort);
+
       arvs[2] = deviceName;
 
       for (int i = 0; i < nargs.length; i++) {
@@ -136,104 +121,28 @@ public class Wrapper  {
       m.invoke(null, new Object[] { arvs });
       
       System.out.println("["+hostName+"]: Process <"+rank+"> completed");
-      System.out.println("EXIT");
     }
     catch (Exception ioe) {
+      System.err.println("["+hostName+"-Wrapper.java]: Multi-threaded starter: exception" + ioe.getMessage());
       ioe.printStackTrace();
     }
   }
 
-
-  /**
-   * <p>
-   * Returns an avaiable port on the system.
-   * </p>
-   * This method searches for a random port between 25,000 and 40,000.
-   * It opens up a server socket on this port to confirm availability
-   * and then passes it back. If the port is not available, another 
-   * random port is generated.
-   *
-   * @param selectedPort Returns Integer value of the available port
-   */
-
-  private int findPort(){
-    int minPort = 25000;
-    int maxPort = 40000;
-    int selectedPort;
-    ServerSocket sock = null;
-    DatagramSocket dataSock = null;
-
-    /* The loop generates a random port number, opens a socket on 
-     * the generated port
-     */
-
-    while(true){
-      Random rand = new Random();
-      selectedPort = (rand.nextInt((maxPort - minPort) + 1) + minPort);
- 
-      try {
-        sock = new ServerSocket(selectedPort);
-        sock.setReuseAddress(true);
-      }
-      catch (IOException e) {
-        System.err.println("[Wrapper.java]:"+hostName+"-"+selectedPort+
-                       "]Port already in use. Checking for a new port..");
-        continue;
-      }
-      
-      try {
-        sock.close();
-      }
-      catch (IOException e){
-        System.err.println("["+hostName+":Wrapper.java]: IOException"+
-                       " encountered in closing sockets: "+e.getMessage());
-        e.printStackTrace();
-        }
-      break;
+  public void run() {
+    try {
+      execute(args);
     }
-
-    return selectedPort;
+    catch (Exception ex) {
+      ex.printStackTrace();
+    }
   }
-
-  /**
-  * <p>
-  * This function connects with MPJRun.java server and sends the port
-  * information to the server.
-  * </p>
-  *
-  * This function takes the write and read port as inputs which
-  * Wrapper.java needs to communicate with MPJRun.java server.
-  * After sending the individual port numbers, the function waits
-  * for the broadcast message from the MPJRun.java server containing
-  * port information for all users.
-  *
-  * @param wport Write port for the wrapper process
-  *        rport Read port for the wrapper process
-  *
-  **/
-  private void mpjrunConnect(int wport, int rport){
-   try {
-
-      BufferedReader in = new BufferedReader(
-                        new InputStreamReader(clientSock.getInputStream()));
-
-      //signal before sending ports and rank
-      System.out.println("Sending Rank and Ports");
-
-      System.out.println(String.valueOf(wport));
-      System.out.println(String.valueOf(rport));
-      System.out.println(rank);
-
-      WRAPPER_INFO = in.readLine();
-
-     }
-     catch (IOException e){
-       e.printStackTrace();
-     }
-  }
+  
 
   public static void main(String args[]) throws Exception {
-    Wrapper wrap = new Wrapper();
-    wrap.run(args);
+    ThreadGroup group = new ThreadGroup("MPI" + args[3]);
+    Wrapper wrap = new Wrapper(group, args[3]);
+    wrap.args = args;
+    wrap.start();
+    wrap.join();
   }
 }

@@ -155,7 +155,7 @@ public class MPJAppMaster {
         List <String> commands = new ArrayList<String>();
        
         commands.add(" $JAVA_HOME/bin/java");
-        commands.add(" -Xmx128M");
+        commands.add(" -Xmx256M");
         commands.add(" -cp " +"."
             + File.pathSeparator + "" + mpjHomeDir + "/lib/loader1.jar"
             + File.pathSeparator + "" + mpjHomeDir + "/lib/mpj.jar"
@@ -170,12 +170,13 @@ public class MPJAppMaster {
         commands.add(" " + args[6]);  // protocol switch limit
         commands.add(" " + args[0]);  // no. of containers 
         commands.add(" " + Integer.toString(rank++)); // rank
-        commands.add(" " + args[7]); //num of Args
-        
-        int numArgs = Integer.parseInt(args[7]);
+        commands.add(" " + args[7]); //temp sock port to share rank and ports
+        commands.add(" " + args[8]); //number of args 
+
+        int numArgs = Integer.parseInt(args[8]);
         if( numArgs > 0){
           for(int i = 0; i < numArgs; i++){
-            commands.add(" "+ args[8+i]);
+            commands.add(" "+ args[9+i]);
           }
         }
         commands.add(" 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + 
