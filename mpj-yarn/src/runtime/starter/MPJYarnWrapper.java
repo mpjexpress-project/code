@@ -21,7 +21,6 @@ import java.net.*;
     String hostName = null;
     String serverName = null;
     int serverPort = 0;
-    private String WRAPPER_INFO;
     String portInfo;
 
     public void run(String[] args){
@@ -30,7 +29,8 @@ import java.net.*;
       deviceName = args[2];
       className = args[3];
       portInfo ="#Number of Processes;"+args[5]+
-                                  ";#Protocol Switch Limit;"+args[4]+";";
+                ";#Protocol Switch Limit;"+args[4]+
+                ";#Server Name;"+serverName+";#Server Port;"+args[7];
 
       rank =args[6];
       try{
@@ -53,9 +53,6 @@ import java.net.*;
       catch(IOException e){
        e.printStackTrace();
       }
-     
-      // connect MPJYarnWrapper to MPJYarnClient
-      yarnClientConnect(findPort(), findPort(),clientSock);
 
       try{
         c = Class.forName(className);
@@ -68,16 +65,16 @@ import java.net.*;
         System.out.println("["+hostName+"]: Starting process <"+rank+">");
 
         String [] arvs;
-        int numArgs=Integer.parseInt(args[7]);
+        int numArgs=Integer.parseInt(args[8]);
 
         arvs = new String[3+numArgs];
 
         arvs[0] = rank;
-        arvs[1] = portInfo.concat(WRAPPER_INFO);
+        arvs[1] = portInfo;
         arvs[2] = deviceName;
 	  
         for(int i=0; i < numArgs; i++){
-          arvs[3+i]=args[8+i];
+          arvs[3+i]=args[9+i];
         }
  
         Method m = c.getMethod("main", new Class[] { arvs.getClass() });
@@ -105,67 +102,6 @@ import java.net.*;
       }
 
     }
-
- private int findPort(){
-    int minPort = 25000;
-    int maxPort = 40000;
-    int selectedPort;
-    ServerSocket sock = null;
-    DatagramSocket dataSock = null;
-
-    /* The loop generates a random port number, opens a socket on 
-     * the generated port
-     */
-
-    while(true){
-      Random rand = new Random();
-      selectedPort = (rand.nextInt((maxPort - minPort) + 1) + minPort);
-
-      try {
-        sock = new ServerSocket(selectedPort);
-        sock.setReuseAddress(true);
-      }
-      catch (IOException e) {
-        System.err.println("[MPJYarnWrapper.java]:"+hostName+"-"+
-               selectedPort+"]Port already in use. Checking for a new port..");
-        continue;
-      }
-
-      try {
-        sock.close();
-      }
-      catch (IOException e){
-        System.err.println("["+hostName+":MPJYarnWrapper.java]: IOException"+
-                        " encountered in closing sockets: "+e.getMessage());
-        e.printStackTrace();
-        }
-      break;
-    }
-
-    return selectedPort;
-  }
-
- private void yarnClientConnect(int wport, int rport, Socket clientSock){
-    try {
-
-      BufferedReader in = new BufferedReader(
-                        new InputStreamReader(clientSock.getInputStream()));
-
-      //signal before sending ports and rank
-      System.out.println("Sending Rank and Ports");
-      
-      System.out.println(String.valueOf(wport));
-      System.out.println(String.valueOf(rport));
-      System.out.println(rank);
-
-      WRAPPER_INFO = in.readLine();
-     
-     }
-     catch (IOException e){
-       e.printStackTrace();
-     }
-  }
-
 
 
     public static void main(String args[]) throws Exception {

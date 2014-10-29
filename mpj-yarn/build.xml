@@ -43,7 +43,8 @@
     <!--
     <property name="perl.executable" value="/cygwin/bin/perl.exe"/>
     -->
-
+    
+    
     <target name="havePerl">
         <available property="perl.present" file="${perl.executable}"/>
     </target>
@@ -308,6 +309,7 @@
 	 <fileset dir="src/runtime" includes="*.class"/>
 	</delete>
     </target>
+
     <target name="veryclean" depends="clean"/> <!-- ,cleanJava"/> -->
 
     <!-- Processing SVG images to PNG (for documentation) -->

@@ -1,5 +1,5 @@
 /*
- The MIT License
+The MIT License
 
  Copyright (c) 2013 - 2014
    1. High Performance Computing Group, 
@@ -107,11 +107,11 @@ public class ProcessLauncher extends Thread {
       JvmProcessCount = 1;
     }
     
-    // #2 Initiate output handler thread to handle stdout
-    // OutputHandler[] outputThreads = new OutputHandler[JvmProcessCount];
-      p = new Process[JvmProcessCount];
+    // #2 Initiate output handler thread to handle stdout (Farrukh)
+    OutputHandler[] outputThreads = new OutputHandler[JvmProcessCount];
+    p = new Process[JvmProcessCount];
 
-    // #3 Passing the ticket to arguments manager for parsing
+    // #3 Passing the ticket to arguments manager for parsing (Farrukh)
     argManager = new ProcessArgumentsManager(pTicket);
     String[] arguments = argManager.GetArguments(pTicket);
 
@@ -140,6 +140,7 @@ public class ProcessLauncher extends Thread {
 	  logger.debug("arguments[" + i + "] = " + arguments[i]);
 	}
       }
+
       // Process builder is used to launch the wrapper process
       ProcessBuilder pb = new ProcessBuilder(arguments);
       pb.directory(new File(pTicket.getWorkingDirectory()));
@@ -148,13 +149,12 @@ public class ProcessLauncher extends Thread {
       if (DEBUG && logger.isDebugEnabled()) {
 	logger.debug("starting the process ");
       }
-      try{
-        p[j]=pb.start();
+      try {
+	p[j] = pb.start();
       }
-      catch(Exception exp){
-        exp.printStackTrace();
+      catch (IOException e) {
+	e.printStackTrace();
       }
-     
 
       /*
        * Start a new thread to handle output from this particular JVM.
@@ -162,8 +162,8 @@ public class ProcessLauncher extends Thread {
        * JVMs on a quad-core CPU, we also start 4 additional threads to handle
        * I/O. Is it possible to get rid of this overhead?
        */
-     // outputThreads[j] = new OutputHandler(p[j], sockserver);
-     // outputThreads[j].start();
+      outputThreads[j] = new OutputHandler(p[j], sockserver);
+      outputThreads[j].start();
 
       if (DEBUG && logger.isDebugEnabled()) {
 	logger.debug("started the process ");
@@ -174,7 +174,7 @@ public class ProcessLauncher extends Thread {
     // their corresponding JVMs finish.
     for (int j = 0; j < JvmProcessCount; j++) {
       try {
-	p[j].waitFor();
+	outputThreads[j].join();
       }
       catch (InterruptedException e) {
 	e.printStackTrace();
@@ -184,39 +184,39 @@ public class ProcessLauncher extends Thread {
     if (DEBUG && logger.isDebugEnabled()) {
       logger.debug("Stopping the output");
     }
-/*
+
     if (sockserver != null && !sockserver.isClosed()
 	&& !sockserver.isOutputShutdown()) {
       OutputStream outToServer = null;
       try {
-       outToServer = sockserver.getOutputStream();
+	outToServer = sockserver.getOutputStream();
 
 	DataOutputStream out = new DataOutputStream(outToServer);
 	out.write("EXIT".getBytes(), 0, "EXIT".getBytes().length);
-        */
+
         if (DEBUG && logger.isDebugEnabled())
           logger.debug("Job Finished");
-        /*
+
 	if (!DEBUG || !logger.isDebugEnabled()) {
 	  FileUtils.deleteDirectory(new File(argManager.getUsersDir()));
 	}
       }
       catch (IOException e1) {
 	e1.printStackTrace();
-      }*/
-      //finally {
+      }
+      finally {
 	if (!sockserver.isClosed())
 	  try {
-//	    outToServer.close();
+	    outToServer.close();
 	    sockserver.close();
 	  }
 	  catch (IOException e) {
 	    e.printStackTrace();
 	  }
-    //  }
-   // }
+      }
+    }
     try {
-   //   killProcesses();
+      killProcesses();
     }
     catch (Exception e) {
       e.printStackTrace();
