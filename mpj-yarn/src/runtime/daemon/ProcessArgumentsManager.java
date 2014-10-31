@@ -416,7 +416,8 @@ public class ProcessArgumentsManager {
     arguments[indx + 0] = Integer.toString(pTicket.getTotalProcessCount());
     arguments[indx + 1] = Integer.toString(pTicket.getNetworkProcessCount());
     arguments[indx + 2] = Integer.toString(pTicket.getStartingRank());
-    arguments[indx + 3] = configFilePath;
+   // arguments[indx + 3] = configFilePath;
+    arguments[indx + 3] = pTicket.getConfFileContents();
     arguments[indx + 4] = "niodev";
 
     for (int i = 0; i < aArgs.length; i++) {
