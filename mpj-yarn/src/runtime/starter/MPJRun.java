@@ -71,7 +71,7 @@ public class MPJRun {
 
   final String DEFAULT_MACHINES_FILE_NAME = "machines";
   final int DEFAULT_PROTOCOL_SWITCH_LIMIT = 128 * 1024; // 128K
-  private String CONF_FILE_CONTENTS;
+  private String CONF_FILE_CONTENTS="";
   private String WRAPPER_INFO = "#Peer Information";
   private int mxBoardNum = 0;
   private int D_SER_PORT = 0;
@@ -855,25 +855,28 @@ public class MPJRun {
       networkProcesscount = noOfMachines;
     }
     int netID = 0;
-    CONF_FILE_CONTENTS += ";" + "# Number of NIO Processes";
+    CONF_FILE_CONTENTS += ";" + "#Number of Processes";
     CONF_FILE_CONTENTS += ";" + networkProcesscount;
-    CONF_FILE_CONTENTS += ";" + "# Protocol Switch Limit";
+    CONF_FILE_CONTENTS += ";" + "#Protocol Switch Limit";
     CONF_FILE_CONTENTS += ";" + psl;
-    CONF_FILE_CONTENTS += ";"
-        + "# Entry, HOST_NAME/IP@READPORT@WRITEPORT@NETID@DEBUGPORT";
+    CONF_FILE_CONTENTS += ";" + "#Server Name";
+    CONF_FILE_CONTENTS += ";" + localhostName;
+    CONF_FILE_CONTENTS += ";" + "#Server Port";
+    CONF_FILE_CONTENTS += ";" + Integer.toString(SERVER_PORT);
+    //    + "# Entry, HOST_NAME/IP@READPORT@WRITEPORT@NETID@DEBUGPORT";
     // One NIO Process per machine is being implemented, SMP Threads per
     // node will be decided in SMPDev
     for (int i = 0; i < networkProcesscount; i++) {
       procsPerMachineTable.put(
           InetAddress.getByName((String) machineList.get(i)).getHostAddress(),
           new Integer(1));
-      Integer[] ports = getNextAvialablePorts((String) machineList.get(i));
+     /* Integer[] ports = getNextAvialablePorts((String) machineList.get(i));
       int readPort = ports[0];
       int writePort = ports[1];
       CONF_FILE_CONTENTS += ";"
           + InetAddress.getByName((String) machineList.get(i)).getHostAddress()
           + "@" + readPort + "@" + writePort + "@" + (netID++);
-      CONF_FILE_CONTENTS += "@" + (DEBUG_PORT);
+      CONF_FILE_CONTENTS += "@" + (DEBUG_PORT);*/
     }
 
     if (DEBUG && logger.isDebugEnabled()) {
@@ -1046,7 +1049,7 @@ public class MPJRun {
     String[] peers = new String[nprocs];
 
     if (DEBUG && logger.isDebugEnabled()) {
-    logger.debug("[MPJRun.java]:Creating server.. Waiting for <"+nprocs+"> processes to connect");
+      logger.debug("[MPJRun.java]:Creating server..");
     }
 
     // Creating a server socket for incoming connections
@@ -1057,12 +1060,23 @@ public class MPJRun {
       System.err.println("[MPJRun.java]: Error opening server port..");
       e.printStackTrace();
     }
+    
+    if (deviceName.equals("hybdev")) {
+      nprocs = networkProcesscount;
+    }
 
+    if (DEBUG && logger.isDebugEnabled()) {
+      logger.debug("[MPJRun.java]:Waiting for <"+nprocs+"> to connect");
+    }
     // Loop to read port numbers from Wrapper.java processes
     // and to create WRAPPER_INFO (containing all IPs and ports)
     for(int i = nprocs; i > 0; i--){
       try{
         sock = servSock.accept();
+        if(DEBUG && logger.isDebugEnabled()){
+          logger.debug("Socket "+sock.getInetAddress().getHostName()+
+                       " connected to share Rank and Ports");
+        }        
         DataOutputStream out = new DataOutputStream(sock.getOutputStream());
         DataInputStream in = new DataInputStream(sock.getInputStream());
 
@@ -1095,9 +1109,13 @@ public class MPJRun {
       try{
         sock = socketList.get(nprocs - i);
         DataOutputStream out = new DataOutputStream(sock.getOutputStream());
-
         out.writeUTF(WRAPPER_INFO);
         out.flush();
+
+        if(DEBUG && logger.isDebugEnabled()){
+          logger.debug("Sending info to Socket "+sock.getInetAddress()
+			.getHostName()+"\nInfo: "+WRAPPER_INFO);
+        }
         sock.close();
       }
       catch (Exception e){
