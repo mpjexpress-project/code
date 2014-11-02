@@ -219,7 +219,8 @@
     <!-- Yarn Client Jar -->         
     <jar destfile="${lib.dir}/mpjYarnClient.jar" basedir="src"
          includes="runtime/starter/MPJYarnClient.class 
-                   runtime/starter/IOMessagesThread.class">
+                   runtime/starter/IOMessagesThread.class
+                   runtime/starter/KillYarnApp.class">
          <manifest>
            <attribute name="Main-class" value="runtime.starter.MPJYarnClient" />
          </manifest>
