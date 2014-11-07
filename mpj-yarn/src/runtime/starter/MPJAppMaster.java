@@ -63,21 +63,13 @@ public class MPJAppMaster {
     final int n = Integer.valueOf(args[0]);
     System.out.println("Number of containers to Launch : "+n);
 
-    // Uploading YarnWrapper.jar to HDFS
-    // FIXME: I will workout some way to upload jars in local Filesystem
     
     FileSystem fs = FileSystem.get(conf);
-    Path source = new Path(mpjHomeDir+"/lib/mpjYarnWrapper.jar");
-    String pathSuffix = "/mpjYarnWrapper.jar";
-    Path dest = new Path(fs.getHomeDirectory(), pathSuffix);
-    fs.copyFromLocalFile(false, true, source, dest);
-    FileStatus destStatus = fs.getFileStatus(dest);
-   
-    Path sourceUserClass = new Path(args[5]+"/"+args[4]+".class");
-    String suffixUserClass = "/"+args[4]+".class";
-    Path destUserClass = new Path(fs.getHomeDirectory(),suffixUserClass);
-    fs.copyFromLocalFile(false,true,sourceUserClass,destUserClass);
-    FileStatus destStatusClass = fs.getFileStatus(destUserClass); 
+    Path wrapperDest = new Path(args[8]);
+    FileStatus destStatus = fs.getFileStatus(wrapperDest);
+    
+    Path userFileDest = new Path(args[9]);
+    FileStatus destStatusClass = fs.getFileStatus(userFileDest); 
 
     // Initialize AM <--> RM communication protocol
     AMRMClient<ContainerRequest> rmClient = AMRMClient.createAMRMClient();
@@ -116,7 +108,7 @@ public class MPJAppMaster {
     // Creating Local Resource for Wrapper   
     LocalResource wrapperJar = Records.newRecord(LocalResource.class);
 
-    wrapperJar.setResource(ConverterUtils.getYarnUrlFromPath(dest));
+    wrapperJar.setResource(ConverterUtils.getYarnUrlFromPath(wrapperDest));
     wrapperJar.setSize(destStatus.getLen());
     wrapperJar.setTimestamp(destStatus.getModificationTime());
     wrapperJar.setType(LocalResourceType.ARCHIVE);
@@ -125,15 +117,14 @@ public class MPJAppMaster {
     // Creating Local Resource for UserClass
     LocalResource userClass = Records.newRecord(LocalResource.class);
   
-    userClass.setResource(ConverterUtils.getYarnUrlFromPath(destUserClass));
+    userClass.setResource(ConverterUtils.getYarnUrlFromPath(userFileDest));
     userClass.setSize(destStatusClass.getLen());
     userClass.setTimestamp(destStatusClass.getModificationTime());
-    userClass.setType(LocalResourceType.FILE);
+    userClass.setType(LocalResourceType.ARCHIVE);
     userClass.setVisibility(LocalResourceVisibility.APPLICATION);
 
-    localResources.put("mpjYarnWrapper.jar", wrapperJar);
-    localResources.put(args[4]+".class", userClass);
-
+    localResources.put("MPJYarnWrapper.jar", wrapperJar);
+    localResources.put("HelloWorld.jar",userClass);
 
     // Obtain allocated containers and launch 
     int allocatedContainers = 0;
@@ -156,12 +147,13 @@ public class MPJAppMaster {
        
         commands.add(" $JAVA_HOME/bin/java");
         commands.add(" -Xmx256M");
-        commands.add(" -cp " +"."
-            + File.pathSeparator + "" + mpjHomeDir + "/lib/loader1.jar"
-            + File.pathSeparator + "" + mpjHomeDir + "/lib/mpj.jar"
-            + File.pathSeparator + "" + mpjHomeDir + "/lib/log4j-1.2.11.jar"
-            + File.pathSeparator + "" + mpjHomeDir + "/lib/mpjYarnWrapper.jar"
-            );
+       // commands.add(" -cp " 
+            //+ File.pathSeparator + "" + mpjHomeDir + "/lib/loader1.jar"
+           // + File.pathSeparator + "" + mpjHomeDir + "/lib/mpj.jar"
+            //+ File.pathSeparator + "" + mpjHomeDir + "/lib/log4j-1.2.11.jar"
+         //   + File.pathSeparator + "" + mpjHomeDir + "/lib/mpjYarnWrapper.jar"
+        //    + File.pathSeparator + "" + mpjHomeDir + "/lib/HelloWorld.jar"
+          //  );
         commands.add(" runtime.starter.MPJYarnWrapper");
         commands.add(" " + args[1]);  // server name
         commands.add(" " + args[2]);  // server port
@@ -171,12 +163,12 @@ public class MPJAppMaster {
         commands.add(" " + args[0]);  // no. of containers 
         commands.add(" " + Integer.toString(rank++)); // rank
         commands.add(" " + args[7]); //temp sock port to share rank and ports
-        commands.add(" " + args[8]); //number of args 
+        commands.add(" " + args[10]); //number of args 
 
-        int numArgs = Integer.parseInt(args[8]);
+        int numArgs = Integer.parseInt(args[10]);
         if( numArgs > 0){
           for(int i = 0; i < numArgs; i++){
-            commands.add(" "+ args[9+i]);
+            commands.add(" "+ args[11+i]);
           }
         }
         commands.add(" 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + 
@@ -189,7 +181,7 @@ public class MPJAppMaster {
 
 	// Set local resource for containers
 	ctx.setLocalResources(
-	        // Collections.singletonMap("mpjYarnWrapper.jar", wrapperJar)
+	        // Collections.singletonMap("mpjYarnWrapper.jar", wrapperJar));
 		localResources);
       
        	// Set environment for container
@@ -199,6 +191,7 @@ public class MPJAppMaster {
 
         // Time to start the container
 	nmClient.startContainer(container, ctx);
+
       }	
       
       for (ContainerStatus status : response.getCompletedContainersStatuses()) {

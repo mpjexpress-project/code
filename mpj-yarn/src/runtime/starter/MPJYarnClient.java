@@ -93,6 +93,17 @@ public class MPJYarnClient {
       fs.copyFromLocalFile(false, true, source, dest);
       FileStatus destStatus = fs.getFileStatus(dest);
 
+      Path wrapperSource = new Path(mpjHomeDir+"/lib/mpjYarnWrapper.jar");
+      String wrapperSuffix = "/mpjYarnWrapper.jar";
+      Path wrapperDest = new Path(fs.getHomeDirectory(), wrapperSuffix);
+      fs.copyFromLocalFile(false, true, wrapperSource, wrapperDest);
+      
+      //args[8] is User Jar Location
+      Path userJar = new Path(args[8]);
+      String userJarSuffix = "/HelloWorld.jar";
+      Path userJarDest = new Path(fs.getHomeDirectory(),userJarSuffix);
+      fs.copyFromLocalFile(false,true,userJar,userJarDest);
+
       YarnConfiguration conf = new YarnConfiguration();
       YarnClient yarnClient = YarnClient.createYarnClient();
       yarnClient.init(conf);
@@ -123,7 +134,7 @@ public class MPJYarnClient {
 
       List <String> commands= new ArrayList<String>();
       commands.add("$JAVA_HOME/bin/java");
-      commands.add(" -Xmx256M");
+      commands.add(" -Xmx128M");
       commands.add(" runtime.starter.MPJAppMaster");
       commands.add(" "+String.valueOf(n));
       commands.add(" "+args[1]); //server name
@@ -133,12 +144,13 @@ public class MPJYarnClient {
       commands.add(" "+args[5]); //wdir
       commands.add(" "+args[7]); //protocol switch limit
       commands.add(" "+String.valueOf(TEMP_PORT)); //for sharing ports & rank
-      commands.add(" "+args[8]); //num of Args
-
-      int numArgs = Integer.parseInt(args[8]);
+      commands.add(" "+wrapperDest.toString());//MPJYarnWrapper.jar HDFS path
+      commands.add(" "+userJarDest.toString());//User Jar File HDFS path
+      commands.add(" "+args[9]); //num of Args
+      int numArgs = Integer.parseInt(args[9]);
       if(numArgs > 0){
         for(int i=0; i < numArgs; i++){
-          commands.add(" "+args[9+i]);
+          commands.add(" "+args[10+i]);
         }
       }
 
@@ -168,7 +180,7 @@ public class MPJYarnClient {
     amContainer.setEnvironment(appMasterEnv);
                                                  // Set up resource type requirements for ApplicationMaster
     Resource capability = Records.newRecord(Resource.class);
-    capability.setMemory(256);
+    capability.setMemory(128);
     capability.setVirtualCores(1);
 
     // Finally, set-up ApplicationSubmissionContext for the application

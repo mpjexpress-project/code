@@ -189,13 +189,14 @@ public class MPJRun {
       commands.add(localhostName);                 // server name
       commands.add(Integer.toString(SERVER_PORT)); // server port
       commands.add(deviceName);                    // device name
-      commands.add(className);                     // class name
+      commands.add(appArgs.get(0));                     // class name
       commands.add(wdir);                          // working directory
       commands.add(Integer.toString(DEBUG_PORT));  // debug port
       commands.add(Integer.toString(psl));         // protocol switch limit
-      commands.add(Integer.toString(appArgs.size()));  //number of args
+      commands.add(applicationClassPathEntry);
+      commands.add(Integer.toString(appArgs.size()-1));  //number of args
 
-      for(int i=0 ;i<appArgs.size(); i++){
+      for(int i=1 ;i<appArgs.size(); i++){
         commands.add(appArgs.get(i));               // application arguments
       }
 
@@ -441,7 +442,6 @@ public class MPJRun {
 
         if (tFile.exists()) {
           applicationClassPathEntry = new String(absJarPath);
-
           try {
             JarFile jarFile = new JarFile(absJarPath);
             Attributes attr = jarFile.getManifest().getMainAttributes();

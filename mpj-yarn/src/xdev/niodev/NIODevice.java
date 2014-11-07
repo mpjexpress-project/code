@@ -753,31 +753,28 @@ public class NIODevice implements Device {
      */
     
     StringTokenizer arguments = new StringTokenizer(args[1],";");
-    logger.info("Original string: " + args[1]);
 
-    logger.info("Parsing string arguments..");
+    if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
+      logger.info("Orignal string: "+ args[1]);
+    }
+    
     while(arguments.hasMoreTokens()) {
       String token = arguments.nextToken();
-      logger.info(token);
-      
       if(token.equals("#Number of Processes")) {
         nprocs = new Integer(arguments.nextToken()).intValue();
-        logger.info("Number of processes:" + nprocs);
       }
       else if(token.equals("#Protocol Switch Limit")) {
         psl = new Integer(arguments.nextToken()).intValue();
-        logger.info("Protocol Switch Limit:" + psl);
       }
       else if(token.equals("#Server Name")) {
         serverName = arguments.nextToken();
-        logger.info("serverName:" + serverName);
       }
       else if(token.equals("#Server Port")) {
         serverPort = new Integer(arguments.nextToken()).intValue();
-        logger.info("serverPort" + serverPort);
       }
     } 
-        
+    
+    
     /* Old code for reading information from mpjdev.conf commented out.
     ConfigReader reader = null;
 
