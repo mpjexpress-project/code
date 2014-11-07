@@ -215,6 +215,13 @@
 	                           value="org.mortbay.jetty.jar log4j-1.2.11.jar runtimecommon.jar"/> 
 	  </manifest>  
     </jar>
+    
+    <jar destfile="${lib.dir}/Testing.jar" basedir="/export/home/hamza.zafar/mpjusr"
+         includes="Testing.class">
+         <manifest>
+         	<attribute name="Main-class" value="Testing"/>
+         </manifest>
+    </jar>
 
     <!-- Yarn Client Jar -->         
     <jar destfile="${lib.dir}/mpjYarnClient.jar" basedir="src"
@@ -237,7 +244,18 @@
     
     <!-- Yarn Wrapper Jar -->
     <jar destfile="${lib.dir}/mpjYarnWrapper.jar" basedir="src"
-         includes="runtime/starter/MPJYarnWrapper.class">
+         includes="runtime/starter/MPJYarnWrapper.class
+		   mpi/*.class 
+                   mpjbuf/*.class 
+                   mpjdev/*.class 
+                   mpjdev/javampjdev/*.class 
+                   xdev/*.class mpjdev/natmpjdev/*.class
+                   xdev/niodev/*.class
+                   xdev/mxdev/*.class 
+                   xdev/hybdev/*.class
+                   xdev/smpdev/*.class
+                   runtime/daemon/*.class 
+                   runtime/*.class">
                  <manifest>
                     <attribute name="Main-class" 
                                value="runtime.starter.MPJYarnWrapper" />
