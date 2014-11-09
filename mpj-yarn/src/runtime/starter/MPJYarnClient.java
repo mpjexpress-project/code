@@ -134,7 +134,7 @@ public class MPJYarnClient {
 
       List <String> commands= new ArrayList<String>();
       commands.add("$JAVA_HOME/bin/java");
-      commands.add(" -Xmx128M");
+      commands.add(" -Xmx256M");
       commands.add(" runtime.starter.MPJAppMaster");
       commands.add(" "+String.valueOf(n));
       commands.add(" "+args[1]); //server name
@@ -180,7 +180,7 @@ public class MPJYarnClient {
     amContainer.setEnvironment(appMasterEnv);
                                                  // Set up resource type requirements for ApplicationMaster
     Resource capability = Records.newRecord(Resource.class);
-    capability.setMemory(128);
+    capability.setMemory(256);
     capability.setVirtualCores(1);
 
     // Finally, set-up ApplicationSubmissionContext for the application
@@ -192,14 +192,19 @@ public class MPJYarnClient {
     appContext.setResource(capability);
     appContext.setQueue("default"); // queue
 
-    // Submit application
     ApplicationId appId = appContext.getApplicationId();
+
+    //Adding ShutDown Hook
+    Runtime.getRuntime().addShutdownHook(
+             new KillYarnApp(appId,yarnClient));
+
+    // Submit application
     System.out.println("Submitting Application: " +
                          appContext.getApplicationName()+"\n");
     
     try{
-      yarnClient.submitApplication(appContext);
       isRunning = true;
+      yarnClient.submitApplication(appContext);
     }
     catch(Exception exp){
       System.err.println("Error Submitting Application");
@@ -284,10 +289,6 @@ public class MPJYarnClient {
     for(int i=0;i<n;i++){
       ioThreads[i].join();
     }
-
-    //Adding ShutDown Hook
-    Runtime.getRuntime().addShutdownHook(
-             new KillYarnApp(appId,yarnClient));
     
     System.out.println("\nApplication Statistics!");
     while (true) {
