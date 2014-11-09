@@ -91,7 +91,7 @@ public class MPJAppMaster {
 
     // Resource requirements for containers
     Resource capability = Records.newRecord(Resource.class);
-    capability.setMemory(128);
+    capability.setMemory(64);
     capability.setVirtualCores(1);
 
     // Make container requests to ResourceManager
@@ -146,14 +146,7 @@ public class MPJAppMaster {
         List <String> commands = new ArrayList<String>();
        
         commands.add(" $JAVA_HOME/bin/java");
-        commands.add(" -Xmx256M");
-       // commands.add(" -cp " 
-            //+ File.pathSeparator + "" + mpjHomeDir + "/lib/loader1.jar"
-           // + File.pathSeparator + "" + mpjHomeDir + "/lib/mpj.jar"
-            //+ File.pathSeparator + "" + mpjHomeDir + "/lib/log4j-1.2.11.jar"
-         //   + File.pathSeparator + "" + mpjHomeDir + "/lib/mpjYarnWrapper.jar"
-        //    + File.pathSeparator + "" + mpjHomeDir + "/lib/HelloWorld.jar"
-          //  );
+        commands.add(" -Xmx64M");
         commands.add(" runtime.starter.MPJYarnWrapper");
         commands.add(" " + args[1]);  // server name
         commands.add(" " + args[2]);  // server port

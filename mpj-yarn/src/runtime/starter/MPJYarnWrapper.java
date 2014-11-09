@@ -62,8 +62,6 @@ import java.net.*;
       }
       
       try {
-        System.out.println("["+hostName+"]: Starting process <"+rank+">");
-
         String [] arvs;
         int numArgs=Integer.parseInt(args[8]);
 
@@ -76,7 +74,9 @@ import java.net.*;
         for(int i=0; i < numArgs; i++){
           arvs[3+i]=args[9+i];
         }
- 
+
+        System.out.println("["+hostName+"]: Starting process <"+rank+">");
+
         Method m = c.getMethod("main", new Class[] { arvs.getClass() });
         m.setAccessible(true);
         int mods = m.getModifiers();

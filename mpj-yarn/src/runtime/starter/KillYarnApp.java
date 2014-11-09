@@ -17,9 +17,8 @@ public class KillYarnApp extends Thread {
   public void run() {
     if (MPJYarnClient.isRunning) {
       try {
+          System.out.println("Killing Application Forcefully");
           appManager.killApplication(appId); 
-          System.out.println("Application Killed Forcefully");
-
       } catch (Exception exp) {
         System.err.println("Error when Killing Application");
         exp.printStackTrace();

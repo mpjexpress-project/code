@@ -242,6 +242,7 @@
                        </manifest>
     </jar>
     
+
     <!-- Yarn Wrapper Jar -->
     <jar destfile="${lib.dir}/mpjYarnWrapper.jar" basedir="src"
          includes="runtime/starter/MPJYarnWrapper.class
