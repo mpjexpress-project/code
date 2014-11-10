@@ -49,7 +49,7 @@ public class MPJYarnClient {
   private int SERVER_PORT = 0;
   private int TEMP_PORT = 0;
   private int DEBUG_PORT = 0;
-  static ArrayList<String> peers;
+  static String [] peers;
   static Vector<Socket> socketList;
   ServerSocket servSock = null;
   ServerSocket infoSock = null;
@@ -212,7 +212,7 @@ public class MPJYarnClient {
     }
     IOMessagesThread [] ioThreads = new IOMessagesThread[n];
 
-    peers = new ArrayList<String>();
+    peers = new String[n];
     socketList = new Vector<Socket>();
     int wport = 0;
     int rport = 0;
@@ -231,9 +231,10 @@ public class MPJYarnClient {
         e.printStackTrace();
       }
     }
+    
      // Loop to read port numbers from Wrapper.java processes
     // and to create WRAPPER_INFO (containing all IPs and ports)
-    peers.add("#Peer Information");
+    String WRAPPER_INFO ="#Peer Information";
     for(int i = n; i > 0; i--){
       try{
         sock = infoSock.accept();
@@ -244,22 +245,20 @@ public class MPJYarnClient {
           wport = in.readInt();
           rport = in.readInt();
           rank = in.readInt();
-          peers.add(";" + sock.getInetAddress().getHostAddress() +
-                    "@" + rport + "@" + wport + "@" + rank + "@" + DEBUG_PORT);
+          peers[rank]=";" + sock.getInetAddress().getHostAddress() +
+                    "@" + rport + "@" + wport + "@" + rank + "@" + DEBUG_PORT;
           socketList.add(sock);
         }
       }
       catch (Exception e){
         System.err.println(
-         "[MPJYarnClient.java]: Error accepting connection from peer socket..");
+         "[MPJYarnClient.java]: Error accepting connection from peer socket!");
         e.printStackTrace();
       }
     }
 
-    StringBuilder sb = new StringBuilder();
-    for (String str : peers)
-    {
-      sb.append(str);
+    for (int i = 0; i < n; i++){
+      WRAPPER_INFO += peers[i];
     }
     // Loop to broadcast WRAPPER_INFO to all Wrappers
     for(int i = n; i > 0; i--){
@@ -267,7 +266,7 @@ public class MPJYarnClient {
         sock = socketList.get(n - i);
         DataOutputStream out = new DataOutputStream(sock.getOutputStream());
 
-        out.writeUTF(sb.toString());
+        out.writeUTF(WRAPPER_INFO);
         out.flush();
 
         sock.close();
@@ -289,7 +288,6 @@ public class MPJYarnClient {
     for(int i=0;i<n;i++){
       ioThreads[i].join();
     }
-    
     System.out.println("\nApplication Statistics!");
     while (true) {
       appReport = yarnClient.getApplicationReport(appId);
