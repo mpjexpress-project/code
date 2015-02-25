@@ -72,6 +72,7 @@ public class MPJRun {
   final String DEFAULT_MACHINES_FILE_NAME = "machines";
   final int DEFAULT_PROTOCOL_SWITCH_LIMIT = 128 * 1024; // 128K
   private String CONF_FILE_CONTENTS="";
+  private String DEBUGGER_FILE_CONTENTS="";
   private String WRAPPER_INFO = "#Peer Information";
   private int mxBoardNum = 0;
   private int D_SER_PORT = 0;
@@ -274,9 +275,9 @@ public class MPJRun {
     else
       assignTasks();
 
-    /*if (ADEBUG) {
-      writeFile(CONF_FILE_CONTENTS + "\n");
-    }*/
+    if (ADEBUG) {
+      writeFile(DEBUGGER_FILE_CONTENTS + "\n");
+    }
 
      if (DEBUG && logger.isDebugEnabled()) {
         logger.debug("conf file contents " + CONF_FILE_CONTENTS);
@@ -706,6 +707,9 @@ public class MPJRun {
     CONF_FILE_CONTENTS += ";" + nprocs;
     CONF_FILE_CONTENTS += ";" + "#Protocol Switch Limit";
     CONF_FILE_CONTENTS += ";" + psl +";";
+    
+    //read write ports for CONF_FILE_CONTENTS is done in collectPortInfo()
+    DEBUGGER_FILE_CONTENTS = CONF_FILE_CONTENTS;
     /* PORT, IP information removed
     CONF_FILE_CONTENTS += ";"
         + "# Entry, HOST_NAME/IP@READPORT@WRITEPORT@RANK@DEBUGPORT";
@@ -731,24 +735,20 @@ public class MPJRun {
         //FK>> Port fetching has to be removed from here.
         // Cannot do direct replacement since at the moment, no wrapper 
         // running! Need to start wrapper before calling this
-/*      if (deviceName.equals("niodev")) {
-          Integer[] ports = getNextAvialablePorts((String) machineList.get(i));
-          int readPort = ports[0];
-          int writePort = ports[1];
+        if (deviceName.equals("niodev")) {
 
           // FK--> No more ports added to CONF file 
-          CONF_FILE_CONTENTS += ";"
+          DEBUGGER_FILE_CONTENTS += ";"
               + InetAddress.getByName((String) machineList.get(i))
-                  .getHostAddress() + "@" + readPort + "@" + writePort + "@"
-              + (rank++);
+                  .getHostAddress() + "@0@0@"+ (rank++);
          
         } 
-        else */
+        else 
         if (deviceName.equals("mxdev")) {
-          CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
+          DEBUGGER_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
               + mxBoardNum + "@" + (rank++);
         }
-        //CONF_FILE_CONTENTS += "@" + (DEBUG_PORT);
+        DEBUGGER_FILE_CONTENTS += "@" + (DEBUG_PORT);
 
         if (DEBUG && logger.isDebugEnabled()) {
           logger.debug("procPerMachineTable==>" + procsPerMachineTable);
@@ -789,24 +789,19 @@ public class MPJRun {
 
           for (int j = 0; j < (divisor + 1); j++) {
              // FK>> this also needs to be removed
-            /*if (deviceName.equals("niodev")) {
+            if (deviceName.equals("niodev")) {
 
-              Integer[] ports = getNextAvialablePorts((String) machineList
-                  .get(i));
-              int readPort = ports[0];
-              int writePort = ports[1];
 // FK -->> Adding of ports to conf file removed
-              CONF_FILE_CONTENTS += ";"
+              DEBUGGER_FILE_CONTENTS += ";"
                   + InetAddress.getByName((String) machineList.get(i))
-                      .getHostAddress() + "@" + readPort + "@" + writePort
-                  + "@" + (rank++);
+                      .getHostAddress() + "@0@0@" + (rank++);
 
             } 
-            else*/ if (deviceName.equals("mxdev")) {
-              CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
+            else if (deviceName.equals("mxdev")) {
+              DEBUGGER_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
                   + (mxBoardNum + j) + "@" + (rank++);
             }
-            //CONF_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
+            DEBUGGER_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
           }
         }
         else if (divisor > 0) {
@@ -819,23 +814,17 @@ public class MPJRun {
           }
 
           for (int j = 0; j < divisor; j++) {
-           /* if (deviceName.equals("niodev")) {
-              Integer[] ports = getNextAvialablePorts((String) machineList
-                  .get(i));
-              int readPort = ports[0];
-              int writePort = ports[1];
-/* FK -->> Ports removed from CONF file
-              CONF_FILE_CONTENTS += ";"
+            if (deviceName.equals("niodev")) {
+              DEBUGGER_FILE_CONTENTS += ";"
                   + InetAddress.getByName((String) machineList.get(i))
-                      .getHostAddress() + "@" + readPort + "@" + writePort
-                  + "@" + (rank++);
+                      .getHostAddress() + "@0@0@" + (rank++);
 
             } 
-            else*/ if (deviceName.equals("mxdev")) {
-              CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
+            else if (deviceName.equals("mxdev")) {
+              DEBUGGER_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
                   + (mxBoardNum + j) + "@" + (rank++);
             }
-            //CONF_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
+            DEBUGGER_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
           }
         }
       }
@@ -862,6 +851,8 @@ public class MPJRun {
     CONF_FILE_CONTENTS += ";" + localhostName;
     CONF_FILE_CONTENTS += ";" + "#Server Port";
     CONF_FILE_CONTENTS += ";" + Integer.toString(SERVER_PORT);
+
+    DEBUGGER_FILE_CONTENTS = CONF_FILE_CONTENTS;
     //    + "# Entry, HOST_NAME/IP@READPORT@WRITEPORT@NETID@DEBUGPORT";
     // One NIO Process per machine is being implemented, SMP Threads per
     // node will be decided in SMPDev
@@ -869,56 +860,16 @@ public class MPJRun {
       procsPerMachineTable.put(
           InetAddress.getByName((String) machineList.get(i)).getHostAddress(),
           new Integer(1));
-     /* Integer[] ports = getNextAvialablePorts((String) machineList.get(i));
-      int readPort = ports[0];
-      int writePort = ports[1];
-      CONF_FILE_CONTENTS += ";"
+      DEBUGGER_FILE_CONTENTS += ";"
           + InetAddress.getByName((String) machineList.get(i)).getHostAddress()
-          + "@" + readPort + "@" + writePort + "@" + (netID++);
-      CONF_FILE_CONTENTS += "@" + (DEBUG_PORT);*/
+          + "@0@0@" + (netID++);
+      DEBUGGER_FILE_CONTENTS += "@" + (DEBUG_PORT);
     }
 
     if (DEBUG && logger.isDebugEnabled()) {
       logger.debug("procPerMachineTable==>" + procsPerMachineTable);
     }
 
-  }
-
-  private Integer[] getNextAvialablePorts(String machineName) {
-
-    Integer[] ports = new Integer[2];
-
-    Socket portClient = null;
-    try {
-      portClient = new Socket(machineName, portManagerPort);
-      OutputStream outToServer = portClient.getOutputStream();
-      DataOutputStream out = new DataOutputStream(outToServer);
-      out.writeInt(1);
-      out.flush();
-      DataInputStream din = new DataInputStream(portClient.getInputStream());
-      ports[0] = din.readInt();
-      ports[1] = din.readInt();
-      out.writeInt(2);
-      out.flush();
-
-    }
-    catch (IOException e) {
-      System.out.println("Cannot connect to the daemon " + "at machine <"
-          + machineName + "> and port <" + portManagerPort + ">."
-          + "Please make sure that the machine is reachable "
-          + "and portmanager is running");
-    }
-    finally {
-      try {
-        if (!portClient.isClosed())
-          portClient.close();
-      }
-      catch (IOException e) {
-
-        e.printStackTrace();
-      }
-    }
-    return ports;
   }
 
   private void machinesSanityCheck() throws Exception {
