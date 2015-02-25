@@ -18,7 +18,6 @@ import java.net.*;
     String deviceName = null;
     String rank = null;
     String[] nargs = null;
-    String hostName = null;
     String serverName = null;
     int serverPort = 0;
     String portInfo;
@@ -34,8 +33,6 @@ import java.net.*;
 
       rank =args[6];
       try{
-        InetAddress localaddr = InetAddress.getLocalHost();
-        hostName = localaddr.getHostName();
         clientSock = new Socket(serverName, serverPort);
       }
       catch(UnknownHostException exp){
@@ -74,8 +71,10 @@ import java.net.*;
         for(int i=0; i < numArgs; i++){
           arvs[3+i]=args[9+i];
         }
+        InetAddress localaddr = InetAddress.getLocalHost();
+        String hostName = localaddr.getHostName();
 
-        System.out.println("["+hostName+"]: Starting process <"+rank+">");
+        System.out.println("Starting process <"+rank+"> on <"+hostName+">");
 
         Method m = c.getMethod("main", new Class[] { arvs.getClass() });
         m.setAccessible(true);
@@ -88,7 +87,7 @@ import java.net.*;
 
         m.invoke(null, new Object[] { arvs });
 
-        System.out.println("["+hostName+"]: Process <"+rank+"> completed");
+        System.out.println("Stopping process <"+rank+"> on <"+hostName+">");
         System.out.println("EXIT");
         try{
           clientSock.close();

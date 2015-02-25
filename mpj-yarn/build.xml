@@ -23,7 +23,11 @@
     <property name="java_home" value="${env.JAVA_HOME}"/>
     <!--HZ>> HADOOP HOME -->
     <property name="hadoop_home" value="${env.HADOOP_HOME}"/>
-    
+
+    <condition property="exists.hadoop">
+      <isset property="env.HADOOP_HOME"/>
+    </condition>
+
     <!-- <property name="mx_home" value="/usr/local/mx"/> 
     <property environment="env"/> -->
 
@@ -81,16 +85,36 @@
 
 
     <target name="compile" description="compiles mpj code"
-            depends="generateJava">
+            depends="generateJava"
+	    unless="exists.hadoop">
         
 	<javac srcdir="${src.dir}" 
 	classpath="lib/wrapper.jar:lib/org.mortbay.jetty.jar:
 		   lib/log4j-1.2.11.jar:lib/commons-cli-1.2.jar:
                    lib\commons-codec-1.8.jar:
+                   lib\commons-io-2.4.jar"
+        sourcepath="${src.dir}"
+        debug="true">
+     	  <exclude name="runtime/starter/MPJAppMaster.java"/>
+	  <exclude name="runtime/starter/MPJYarnClient.java"/>
+	  <exclude name="runtime/starter/MPJYarnWrapper/java"/>
+ 	  <exclude name="runtime/starter/KillYarnApp.java"/>
+	</javac>
+    </target>
+
+    <target name="compile-hadoop" description="compiling hadoop" 
+	    if="exists.hadoop">	
+        <javac srcdir="${src.dir}"
+        classpath="lib/wrapper.jar:lib/org.mortbay.jetty.jar:
+                   lib/log4j-1.2.11.jar:lib/commons-cli-1.2.jar:
+                   lib\commons-codec-1.8.jar:
                    lib\commons-io-2.4.jar:
-                   ${hadoop_home}/share/hadoop/yarn/hadoop-yarn-api-2.5.0.jar:
-                   ${hadoop_home}/share/hadoop/yarn/hadoop-yarn-client-2.5.0.jar                  :${hadoop_home}/share/hadoop/yarn/hadoop-yarn-common-2.5.0.jar                  :${hadoop_home}/share/hadoop/common/hadoop-common-2.5.0.jar:
-            ${hadoop_home}/share/hadoop/common/lib/hadoop-annotations-2.5.0.jar:            ${hadoop_home}/share/hadoop/tools/lib/commons-logging-1.1.3.jar"
+	     ${hadoop_home}/share/hadoop/yarn/hadoop-yarn-api-2.5.0.jar:
+             ${hadoop_home}/share/hadoop/yarn/hadoop-yarn-client-2.5.0.jar:
+	     ${hadoop_home}/share/hadoop/yarn/hadoop-yarn-common-2.5.0.jar:
+	     ${hadoop_home}/share/hadoop/common/hadoop-common-2.5.0.jar:
+	     ${hadoop_home}/share/hadoop/common/lib/hadoop-annotations-2.5.0.jar:
+             ${hadoop_home}/share/hadoop/tools/lib/commons-logging-1.1.3.jar"
         sourcepath="${src.dir}"
         debug="true"/>
     </target> 
@@ -216,15 +240,41 @@
 	  </manifest>  
     </jar>
     
+
+    <jar destfile="${lib.dir}/daemonmanager.jar" basedir="src"
+         includes="runtime/daemonmanager/*.class">
+                <manifest>
+                     <attribute name="Main-class" value="runtime.daemonmanager.MPJDaemonManager" />
+                        <attribute name="Class-path"
+                                   value="commons-cli-1.2.jar runtimecommon.jar"/>
+                </manifest>
+    </jar>
+
+    <jar destfile="${lib.dir}/runtimecommon.jar" basedir="src"
+         includes="runtime/common/*.class">
+                <manifest>
+                     <attribute name="Class-path"
+                                value="commons-cli-1.2.jar commons-codec-1.8.jar"/>
+                </manifest>
+    </jar>
+
+    </target>
+
+    <!-- Hadoop Jar Files -->
+    <target name="hadoop-jars" description="jar files for hadoop YARN runtime"
+            if="exists.hadoop">
+
+    <!-- User Code -->
     <jar destfile="${lib.dir}/Testing.jar" basedir="/export/home/hamza.zafar/mpjusr"
-         includes="Testing.class">
+         includes="HelloWorld.class">
          <manifest>
-         	<attribute name="Main-class" value="Testing"/>
+                <attribute name="Main-class" value="HelloWorld"/>
          </manifest>
     </jar>
 
+
     <!-- Yarn Client Jar -->         
-    <jar destfile="${lib.dir}/mpjYarnClient.jar" basedir="src"
+    <jar destfile="${lib.dir}/mpj-yarn-client.jar" basedir="src"
          includes="runtime/starter/MPJYarnClient.class 
                    runtime/starter/IOMessagesThread.class
                    runtime/starter/KillYarnApp.class">
@@ -234,7 +284,7 @@
     </jar>
 
     <!-- Application Master Jar -->
-    <jar destfile="${lib.dir}/mpjAppMaster.jar" basedir="src"
+    <jar destfile="${lib.dir}/mpj-app-master.jar" basedir="src"
          includes="runtime/starter/MPJAppMaster.class">
                  <manifest>
                        <attribute name="Main-class" 
@@ -244,7 +294,7 @@
     
 
     <!-- Yarn Wrapper Jar -->
-    <jar destfile="${lib.dir}/mpjYarnWrapper.jar" basedir="src"
+    <jar destfile="${lib.dir}/mpj-yarn-wrapper.jar" basedir="src"
          includes="runtime/starter/MPJYarnWrapper.class
 		   mpi/*.class 
                    mpjbuf/*.class 
@@ -263,24 +313,6 @@
                  </manifest>
     </jar>
   
-    <jar destfile="${lib.dir}/daemonmanager.jar" basedir="src"
-	 includes="runtime/daemonmanager/*.class">
-		<manifest>
-		     <attribute name="Main-class" value="runtime.daemonmanager.MPJDaemonManager" />    
-			<attribute name="Class-path" 
-    		  		   value="commons-cli-1.2.jar runtimecommon.jar"/> 
-		</manifest>  
-    </jar>	
-
-    <jar destfile="${lib.dir}/runtimecommon.jar" basedir="src"
-	 includes="runtime/common/*.class">
-	        <manifest>
-		     <attribute name="Class-path" 
-	              	        value="commons-cli-1.2.jar commons-codec-1.8.jar"/> 
-		</manifest>  
-    </jar>	
-     
-     
     </target>
 
     <target name="mxlib" description="generates native MX code">
@@ -385,7 +417,7 @@
 		</javadoc>
 	</target>
 
-    <target name="all" depends="compile,jars,clean"
+    <target name="all" depends="compile,compile-hadoop,jars,hadoop-jars,clean"
             description="All"/>
 
 </project>
