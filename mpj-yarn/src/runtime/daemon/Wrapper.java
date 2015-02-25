@@ -96,7 +96,7 @@ public class Wrapper extends Thread {
     c = Class.forName(className);
 
     try {
-      System.out.println("["+hostName+"]: Starting process <"+rank+">");
+      System.out.println("Starting process <"+rank+"> on <"+hostName+">");
 
       String arvs[] = new String[nargs.length + 3];
 
@@ -120,7 +120,7 @@ public class Wrapper extends Thread {
       
       m.invoke(null, new Object[] { arvs });
       
-      System.out.println("["+hostName+"]: Process <"+rank+"> completed");
+      System.out.println("Stopping Process <"+rank+"> on <"+hostName+">");
     }
     catch (Exception ioe) {
       System.err.println("["+hostName+"-Wrapper.java]: Multi-threaded starter: exception" + ioe.getMessage());

@@ -176,7 +176,7 @@ public class MPJRun {
 
       if (DEBUG && logger.isDebugEnabled()) {
         logger.debug("HADOOP HOME is set to: " + hadoopHomeDir);
-        logger.debug(mpjHomeDir+"/lib/mpjYarnClient.jar");
+        logger.debug(mpjHomeDir+"/lib/mpj-yarn-client.jar");
       }
 
 
@@ -184,7 +184,7 @@ public class MPJRun {
 
       commands.add(hadoopHomeDir+"/bin/hadoop");
       commands.add("jar");
-      commands.add(mpjHomeDir+"/lib/mpjYarnClient.jar");
+      commands.add(mpjHomeDir+"/lib/mpj-yarn-client.jar");
       commands.add(Integer.toString(nprocs));      // no. of containers
       commands.add(localhostName);                 // server name
       commands.add(Integer.toString(SERVER_PORT)); // server port
@@ -274,14 +274,13 @@ public class MPJRun {
     else
       assignTasks();
 
-    if (ADEBUG) {
+    /*if (ADEBUG) {
       writeFile(CONF_FILE_CONTENTS + "\n");
-    }
+    }*/
 
      if (DEBUG && logger.isDebugEnabled()) {
         logger.debug("conf file contents " + CONF_FILE_CONTENTS);
       }
-
     //FK--> directory where class is present
     urlArray = applicationClassPathEntry.getBytes();
 
@@ -1072,7 +1071,7 @@ public class MPJRun {
     // and to create WRAPPER_INFO (containing all IPs and ports)
     for(int i = nprocs; i > 0; i--){
       try{
-        sock = servSock.accept();
+        sock = servSock.accept(); 
         if(DEBUG && logger.isDebugEnabled()){
           logger.debug("Socket "+sock.getInetAddress().getHostName()+
                        " connected to share Rank and Ports");
@@ -1123,10 +1122,14 @@ public class MPJRun {
         e.printStackTrace();
       }
     }
+    //used by debugger
+    if (ADEBUG) {
+      writeFile(WRAPPER_INFO + "\n");
+    }
+
   }
 
   public static void main(String args[]) throws Exception {
-
     try {
       MPJRun client = new MPJRun(args);
     }

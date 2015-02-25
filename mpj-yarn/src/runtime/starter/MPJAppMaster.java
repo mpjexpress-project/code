@@ -61,8 +61,9 @@ public class MPJAppMaster {
 
     // number of container to be launched
     final int n = Integer.valueOf(args[0]);
-    System.out.println("Number of containers to Launch : "+n);
+    //System.out.println("Number of containers to Launch : "+n);
 
+    long B1 = System.currentTimeMillis();
     
     FileSystem fs = FileSystem.get(conf);
     Path wrapperDest = new Path(args[8]);
@@ -70,7 +71,7 @@ public class MPJAppMaster {
     
     Path userFileDest = new Path(args[9]);
     FileStatus destStatusClass = fs.getFileStatus(userFileDest); 
-
+    
     // Initialize AM <--> RM communication protocol
     AMRMClient<ContainerRequest> rmClient = AMRMClient.createAMRMClient();
     rmClient.init(conf);
@@ -80,18 +81,16 @@ public class MPJAppMaster {
     NMClient nmClient = NMClient.createNMClient();
     nmClient.init(conf);
     nmClient.start();
-
+    
     // Register with ResourceManager
-    System.out.println("registerApplicationMaster 0");
     rmClient.registerApplicationMaster("", 0, "");
-    	   
     // Priority for containers - priorities are intra-application
     Priority priority = Records.newRecord(Priority.class);
     priority.setPriority(0);
 
     // Resource requirements for containers
     Resource capability = Records.newRecord(Resource.class);
-    capability.setMemory(64);
+    capability.setMemory(512);
     capability.setVirtualCores(1);
 
     // Make container requests to ResourceManager
@@ -99,10 +98,10 @@ public class MPJAppMaster {
       ContainerRequest containerAsk =
         		new ContainerRequest(capability, null, null, priority);
       
-      System.out.println("Making container request " + i);
+      //System.out.println("Making container request " + i);
       rmClient.addContainerRequest(containerAsk);
     }	
-  
+    
     Map<String,LocalResource> localResources = 
 			 	new HashMap <String,LocalResource> ();
     // Creating Local Resource for Wrapper   
@@ -123,40 +122,42 @@ public class MPJAppMaster {
     userClass.setType(LocalResourceType.ARCHIVE);
     userClass.setVisibility(LocalResourceVisibility.APPLICATION);
 
-    localResources.put("MPJYarnWrapper.jar", wrapperJar);
-    localResources.put("HelloWorld.jar",userClass);
-
+    localResources.put("mpj-yarn-wrapper.jar", wrapperJar);
+    localResources.put("user-code.jar",userClass);
+    
     // Obtain allocated containers and launch 
     int allocatedContainers = 0;
     int completedContainers = 0;
-    	
-    while (allocatedContainers < n) {
-		
+    
+    List<Container> mpiContainers = new ArrayList<Container>();
+    List<ContainerLaunchContext> contexts = new 
+				          ArrayList<ContainerLaunchContext>();
+    while (allocatedContainers < n){
       AllocateResponse response = rmClient.allocate(0);
-      		
-      for (Container container : response.getAllocatedContainers()) {
-        	   
-        ++allocatedContainers;
-	System.out.println("Container at: " +container.getNodeHttpAddress()+
-        			              		      " Allocated !");
+      mpiContainers.addAll(response.getAllocatedContainers());
+      allocatedContainers = mpiContainers.size();
+      
+      if(allocatedContainers!=n){Thread.sleep(100);}
+    }
+    for (Container container : mpiContainers) {
+ 
+        ContainerLaunchContext ctx =
+                              Records.newRecord(ContainerLaunchContext.class);
 
-       	ContainerLaunchContext ctx = 
-			      Records.newRecord(ContainerLaunchContext.class);
-        
         List <String> commands = new ArrayList<String>();
-       
+
         commands.add(" $JAVA_HOME/bin/java");
-        commands.add(" -Xmx64M");
+        commands.add(" -Xmx512M");
         commands.add(" runtime.starter.MPJYarnWrapper");
         commands.add(" " + args[1]);  // server name
         commands.add(" " + args[2]);  // server port
         commands.add(" " + args[3]);  // device name
         commands.add(" " + args[4]);  // class name
         commands.add(" " + args[6]);  // protocol switch limit
-        commands.add(" " + args[0]);  // no. of containers 
+        commands.add(" " + args[0]);  // no. of containers
         commands.add(" " + Integer.toString(rank++)); // rank
         commands.add(" " + args[7]); //temp sock port to share rank and ports
-        commands.add(" " + args[10]); //number of args 
+        commands.add(" " + args[10]); //number of args
 
         int numArgs = Integer.parseInt(args[10]);
         if( numArgs > 0){
@@ -164,54 +165,41 @@ public class MPJAppMaster {
             commands.add(" "+ args[11+i]);
           }
         }
-        commands.add(" 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + 
+        commands.add(" 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR +
                                                                   "/stdout");
-        commands.add(" 2>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + 
+        commands.add(" 2>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR +
                                                                   "/stderr");
-       	
-        ctx.setCommands(commands);	
-	System.out.println("Launching container " + allocatedContainers);
 
-	// Set local resource for containers
-	ctx.setLocalResources(
-	        // Collections.singletonMap("mpjYarnWrapper.jar", wrapperJar));
-		localResources);
-      
-       	// Set environment for container
-       	Map<String, String> containerEnv = new HashMap<String, String>();
-       	setupEnv(containerEnv);
-       	ctx.setEnvironment(containerEnv);
+        ctx.setCommands(commands);
+        //System.out.println("Launching container " + allocatedContainers);
+
+        // Set local resource for containers
+        ctx.setLocalResources(localResources);
+
+        // Set environment for container
+        Map<String, String> containerEnv = new HashMap<String, String>();
+        setupEnv(containerEnv);
+        ctx.setEnvironment(containerEnv);
 
         // Time to start the container
-	nmClient.startContainer(container, ctx);
+        nmClient.startContainer(container, ctx);
 
-      }	
-      
-      for (ContainerStatus status : response.getCompletedContainersStatuses()) {
-        ++completedContainers;
-        System.out.println("Completed container " + completedContainers);
       }
 
-      Thread.sleep(100);
 
-    } // end While
-
-    // Now wait for containers to complete
     while (completedContainers < n) {
       AllocateResponse response = rmClient.allocate(completedContainers/n);
 
       for (ContainerStatus status : response.getCompletedContainersStatuses()){
         ++completedContainers;
-        System.out.println("Completed container " + completedContainers);
+//        System.out.println("Completed container " + completedContainers);
       }
 	
-      Thread.sleep(100);
+      if(completedContainers!=n){Thread.sleep(100);};
     }
-
     // Un-register with ResourceManager 
     rmClient.unregisterApplicationMaster(FinalApplicationStatus.SUCCEEDED, 
 								     "", "");
-  
   } //end run()
 
   private void setupEnv(Map<String, String> containerEnv) {

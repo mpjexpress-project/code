@@ -51,9 +51,6 @@ public class IOMessagesThread extends Thread {
   public IOMessagesThread(Socket clientSock) {
     this.clientSock = clientSock;
   }
-  public void setSock(Socket clientSock){
-    this.clientSock = clientSock;
-  }
 
   @Override
   public void run() {

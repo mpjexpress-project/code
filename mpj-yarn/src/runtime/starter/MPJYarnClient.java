@@ -86,21 +86,21 @@ public class MPJYarnClient {
       // Copy the application master jar to HDFS
       // Create a local resource to point to the destination jar path
       FileSystem fs = FileSystem.get(conf);
-      Path source = new Path(mpjHomeDir+"/lib/mpjAppMaster.jar");
+      Path source = new Path(mpjHomeDir+"/lib/mpj-app-master.jar");
 
-      String pathSuffix = "/mpjAppMaster.jar";
+      String pathSuffix = "/mpj-app-master.jar";
       Path dest = new Path(fs.getHomeDirectory(), pathSuffix);
       fs.copyFromLocalFile(false, true, source, dest);
       FileStatus destStatus = fs.getFileStatus(dest);
 
-      Path wrapperSource = new Path(mpjHomeDir+"/lib/mpjYarnWrapper.jar");
-      String wrapperSuffix = "/mpjYarnWrapper.jar";
+      Path wrapperSource = new Path(mpjHomeDir+"/lib/mpj-yarn-wrapper.jar");
+      String wrapperSuffix = "/mpj-yarn-wrapper.jar";
       Path wrapperDest = new Path(fs.getHomeDirectory(), wrapperSuffix);
       fs.copyFromLocalFile(false, true, wrapperSource, wrapperDest);
       
       //args[8] is User Jar Location
       Path userJar = new Path(args[8]);
-      String userJarSuffix = "/HelloWorld.jar";
+      String userJarSuffix = "/user-code.jar";
       Path userJarDest = new Path(fs.getHomeDirectory(),userJarSuffix);
       fs.copyFromLocalFile(false,true,userJar,userJarDest);
 
@@ -128,13 +128,14 @@ public class MPJYarnClient {
       // Create application via yarnClient
       YarnClientApplication app = yarnClient.createApplication();
 
+      long amTime = System.currentTimeMillis();
       // Set up the container launch context for the application master
       ContainerLaunchContext amContainer =
               Records.newRecord(ContainerLaunchContext.class);
 
       List <String> commands= new ArrayList<String>();
       commands.add("$JAVA_HOME/bin/java");
-      commands.add(" -Xmx256M");
+      commands.add(" -Xmx512M");
       commands.add(" runtime.starter.MPJAppMaster");
       commands.add(" "+String.valueOf(n));
       commands.add(" "+args[1]); //server name
@@ -171,7 +172,7 @@ public class MPJYarnClient {
     appMasterJar.setVisibility(LocalResourceVisibility.APPLICATION);
 
     amContainer.setLocalResources(
-          Collections.singletonMap("MPJAppMaster.jar", appMasterJar));
+          Collections.singletonMap("mpj-app-master.jar", appMasterJar));
 
     // Setup CLASSPATH for ApplicationMaster
     // Setting up the environment
@@ -180,7 +181,7 @@ public class MPJYarnClient {
     amContainer.setEnvironment(appMasterEnv);
                                                  // Set up resource type requirements for ApplicationMaster
     Resource capability = Records.newRecord(Resource.class);
-    capability.setMemory(256);
+    capability.setMemory(512);
     capability.setVirtualCores(1);
 
     // Finally, set-up ApplicationSubmissionContext for the application
@@ -210,6 +211,7 @@ public class MPJYarnClient {
       System.err.println("Error Submitting Application");
       exp.printStackTrace();
     }
+
     IOMessagesThread [] ioThreads = new IOMessagesThread[n];
 
     peers = new String[n];
@@ -288,6 +290,8 @@ public class MPJYarnClient {
     for(int i=0;i<n;i++){
       ioThreads[i].join();
     }
+    isRunning = true;
+    
     System.out.println("\nApplication Statistics!");
     while (true) {
       appReport = yarnClient.getApplicationReport(appId);
@@ -313,14 +317,14 @@ public class MPJYarnClient {
         System.out.println("State: "+appState);
         break;
       }
-      Thread.sleep(1000);
+      Thread.sleep(100);
     }
 
     System.out.println("Application ID: " + appId + "\n" +
                        "Application User: "+ appReport.getUser() + "\n" +
                        "RM Queue: "+appReport.getQueue() + "\n" +
 		       "Start Time: "+appReport.getStartTime() + "\n" +	
-                       "Finish Time: " + appReport.getFinishTime());
+                       "Finish Time: " + appReport.getFinishTime()); 
   }
 
   private void setupAppMasterEnv(Map<String, String> appMasterEnv) {
@@ -379,5 +383,4 @@ public class MPJYarnClient {
       MPJYarnClient client = new MPJYarnClient(args);
       client.run(args);
   }
-
 }
