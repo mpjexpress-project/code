@@ -276,8 +276,9 @@ public class MPJRun {
       assignTasks();
 
     if (ADEBUG) {
-      writeFile(CONF_FILE_CONTENTS + "\n");
-    }
+      writeFile(DEBUGGER_FILE_CONTENTS + "\n");
+    } 
+    System.out.println(DEBUGGER_FILE_CONTENTS + "\n");
 
      if (DEBUG && logger.isDebugEnabled()) {
         logger.debug("conf file contents " + CONF_FILE_CONTENTS);
@@ -707,17 +708,18 @@ public class MPJRun {
     // FK --> Make configuration file by adding contents one by one
     // first is the number of processes, then protocol switch, then ip/port
     // details of each host
-    CONF_FILE_CONTENTS = "#Number of Processes";
+    CONF_FILE_CONTENTS = "#temp line";
+    CONF_FILE_CONTENTS += ";" + "#Number of Processes";
     CONF_FILE_CONTENTS += ";" + nprocs;
     CONF_FILE_CONTENTS += ";" + "#Protocol Switch Limit";
-    CONF_FILE_CONTENTS += ";" + psl+";";
+    CONF_FILE_CONTENTS += ";" + psl;
+    
+    CONF_FILE_CONTENTS += ";"
+        + "#Entry, HOST_NAME/IP@READPORT@WRITEPORT@RANK@DEBUGPORT";
     
     //read write ports for CONF_FILE_CONTENTS is done in collectPortInfo()
-    DEBUGGER_FILE_CONTENTS = CONF_FILE_CONTENTS;
-   
-    //CONF_FILE_CONTENTS += ";"
-      //  + "# Entry, HOST_NAME/IP@READPORT@WRITEPORT@RANK@DEBUGPORT;";
-    
+    DEBUGGER_FILE_CONTENTS = CONF_FILE_CONTENTS;        
+
     /*
      * number of requested parallel processes are less than or equal to compute
      * nodes
@@ -752,7 +754,7 @@ public class MPJRun {
           CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
               + mxBoardNum + "@" + (rank++);
         }
-      //  CONF_FILE_CONTENTS += "@" + (DEBUG_PORT);
+         DEBUGGER_FILE_CONTENTS += "@" + (DEBUG_PORT);
 
         if (DEBUG && logger.isDebugEnabled()) {
           logger.debug("procPerMachineTable==>" + procsPerMachineTable);
@@ -805,7 +807,7 @@ public class MPJRun {
               CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
                   + (mxBoardNum + j) + "@" + (rank++);
             }
-    //        CONF_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
+            DEBUGGER_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
           }
         }
         else if (divisor > 0) {
@@ -828,7 +830,7 @@ public class MPJRun {
               CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
                   + (mxBoardNum + j) + "@" + (rank++);
             }
-      //      CONF_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
+              DEBUGGER_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
           }
         }
       }
@@ -847,17 +849,21 @@ public class MPJRun {
       networkProcesscount = noOfMachines;
     }
     int netID = 0;
+    CONF_FILE_CONTENTS = "#temp line";
     CONF_FILE_CONTENTS += ";" + "#Number of Processes";
     CONF_FILE_CONTENTS += ";" + networkProcesscount;
     CONF_FILE_CONTENTS += ";" + "#Protocol Switch Limit";
-    CONF_FILE_CONTENTS += ";" + psl;
+    CONF_FILE_CONTENTS += ";" + psl + ";";
+
+    DEBUGGER_FILE_CONTENTS = CONF_FILE_CONTENTS;
+
     CONF_FILE_CONTENTS += ";" + "#Server Name";
     CONF_FILE_CONTENTS += ";" + localhostName;
     CONF_FILE_CONTENTS += ";" + "#Server Port";
     CONF_FILE_CONTENTS += ";" + Integer.toString(SERVER_PORT);
 
-    DEBUGGER_FILE_CONTENTS = CONF_FILE_CONTENTS;
-    //    + "# Entry, HOST_NAME/IP@READPORT@WRITEPORT@NETID@DEBUGPORT";
+    DEBUGGER_FILE_CONTENTS +=
+                   "#Entry, HOST_NAME/IP@READPORT@WRITEPORT@NETID@DEBUGPORT";
     // One NIO Process per machine is being implemented, SMP Threads per
     // node will be decided in SMPDev
     for (int i = 0; i < networkProcesscount; i++) {
@@ -1077,10 +1083,6 @@ public class MPJRun {
         e.printStackTrace();
       }
     }
-    //used by debugger
-    if (ADEBUG) {
-      writeFile(WRAPPER_INFO + "\n");
-    }
 
   }
 
@@ -1093,3 +1095,4 @@ public class MPJRun {
     }
   }
 }
+
