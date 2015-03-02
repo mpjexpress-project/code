@@ -6,6 +6,7 @@ import java.net.ServerSocket;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.net.InetSocketAddress;
 import java.util.*;
 
 import org.apache.hadoop.conf.Configuration; //apache configuration
@@ -118,8 +119,8 @@ public class MPJYarnClient {
       // Creating a server socket for incoming connections
       try {
         servSock = new ServerSocket(SERVER_PORT);
-        TEMP_PORT = findPort();
-        infoSock = new ServerSocket(TEMP_PORT);
+        infoSock = new ServerSocket();
+        TEMP_PORT = findPort(infoSock);
       }
       catch (Exception e) {
         e.printStackTrace();
@@ -340,11 +341,10 @@ public class MPJYarnClient {
         Environment.CLASSPATH.name(),
         Environment.PWD.$() + File.separator + "*");
   }
-  private int findPort(){
+  private int findPort(ServerSocket sock){
     int minPort = 25000;
     int maxPort = 40000;
     int selectedPort;
-    ServerSocket sock = null;
 
     /* The loop generates a random port number, opens a socket on 
      * the generated port
@@ -355,23 +355,13 @@ public class MPJYarnClient {
       selectedPort = (rand.nextInt((maxPort - minPort) + 1) + minPort);
 
       try {
-        sock = new ServerSocket(selectedPort);
-        sock.setReuseAddress(true);
+        sock.bind(new InetSocketAddress(selectedPort));
       }
       catch (IOException e) {
         System.err.println("[MPJYarnClient.java]:- "+ selectedPort+
                   "]Port already in use. Checking for a new port..");
         continue;
       }
-
-      try {
-        sock.close();
-      }
-      catch (IOException e){
-        System.err.println("[:MPJYarnClient.java]: IOException"+
-                        " encountered in closing sockets: "+e.getMessage());
-        e.printStackTrace();
-        }
       break;
     }
 
