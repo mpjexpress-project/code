@@ -81,7 +81,7 @@ public class MXDevice implements Device {
     int psl = 0;
     try {
        StringTokenizer arguments = new StringTokenizer(args[1],";");
-      
+      System.out.println(args[1]); 
       while(arguments.hasMoreTokens()){
         String token = arguments.nextToken();
         if(token.startsWith("#Number of Processes")){
@@ -93,6 +93,9 @@ public class MXDevice implements Device {
         }
         else if(token.startsWith("#Protocol Switch Limit")){
           psl = new Integer(arguments.nextToken()).intValue();
+        }
+        else if(token.startsWith("#Entry,")||token.startsWith("#temp")){
+         // do nothing
         }
         else{
           StringTokenizer tokenizer = new StringTokenizer(token,"@");
