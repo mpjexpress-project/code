@@ -102,7 +102,7 @@ public class Wrapper extends Thread {
 
       arvs[0] = rank;
       if(!deviceName.equals("mxdev")){
-        arvs[1] = portInfo.concat("#Server Name;"+serverName+";#Server Port;"+
+        arvs[1] = portInfo.concat(";#Server Name;"+serverName+";#Server Port;"+
                                                                    serverPort);
       }
       else{

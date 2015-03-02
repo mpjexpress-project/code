@@ -418,7 +418,7 @@
 		</javadoc>
 	</target>
 
-    <target name="all" depends="compile,mxlib,compile-hadoop,jars,hadoop-jars,clean"
+    <target name="all" depends="compile,compile-hadoop,jars,hadoop-jars,clean"
             description="All"/>
 
 </project>
