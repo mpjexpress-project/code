@@ -80,8 +80,7 @@ public class MXDevice implements Device {
     int count = 0;
     int psl = 0;
     try {
-       StringTokenizer arguments = new StringTokenizer(args[1],";");
-      System.out.println(args[1]); 
+      StringTokenizer arguments = new StringTokenizer(args[1],";");
       while(arguments.hasMoreTokens()){
         String token = arguments.nextToken();
         if(token.startsWith("#Number of Processes")){
