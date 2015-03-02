@@ -278,8 +278,6 @@ public class MPJRun {
     if (ADEBUG) {
       writeFile(DEBUGGER_FILE_CONTENTS + "\n");
     } 
-    System.out.println(DEBUGGER_FILE_CONTENTS + "\n");
-
      if (DEBUG && logger.isDebugEnabled()) {
         logger.debug("conf file contents " + CONF_FILE_CONTENTS);
       }
