@@ -276,7 +276,7 @@ public class MPJRun {
       assignTasks();
 
     if (ADEBUG) {
-      writeFile(DEBUGGER_FILE_CONTENTS + "\n");
+      writeFile(CONF_FILE_CONTENTS + "\n");
     }
 
      if (DEBUG && logger.isDebugEnabled()) {
@@ -339,7 +339,11 @@ public class MPJRun {
     if (DEBUG && logger.isDebugEnabled()) {
       logger.debug("procsPerMachineTable " + procsPerMachineTable);
     }
-    collectPortInfo();
+    //mxdev does not needs the read/write ports 
+    //so skipping the port information sharing mechanism
+    if(!deviceName.equals("mxdev")){
+      collectPortInfo();
+    }
   }
 
   /*
@@ -706,14 +710,14 @@ public class MPJRun {
     CONF_FILE_CONTENTS = "#Number of Processes";
     CONF_FILE_CONTENTS += ";" + nprocs;
     CONF_FILE_CONTENTS += ";" + "#Protocol Switch Limit";
-    CONF_FILE_CONTENTS += ";" + psl +";";
+    CONF_FILE_CONTENTS += ";" + psl+";";
     
     //read write ports for CONF_FILE_CONTENTS is done in collectPortInfo()
     DEBUGGER_FILE_CONTENTS = CONF_FILE_CONTENTS;
-    /* PORT, IP information removed
-    CONF_FILE_CONTENTS += ";"
-        + "# Entry, HOST_NAME/IP@READPORT@WRITEPORT@RANK@DEBUGPORT";
-    */
+   
+    //CONF_FILE_CONTENTS += ";"
+      //  + "# Entry, HOST_NAME/IP@READPORT@WRITEPORT@RANK@DEBUGPORT;";
+    
     /*
      * number of requested parallel processes are less than or equal to compute
      * nodes
@@ -745,10 +749,10 @@ public class MPJRun {
         } 
         else 
         if (deviceName.equals("mxdev")) {
-          DEBUGGER_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
+          CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
               + mxBoardNum + "@" + (rank++);
         }
-        DEBUGGER_FILE_CONTENTS += "@" + (DEBUG_PORT);
+      //  CONF_FILE_CONTENTS += "@" + (DEBUG_PORT);
 
         if (DEBUG && logger.isDebugEnabled()) {
           logger.debug("procPerMachineTable==>" + procsPerMachineTable);
@@ -798,10 +802,10 @@ public class MPJRun {
 
             } 
             else if (deviceName.equals("mxdev")) {
-              DEBUGGER_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
+              CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
                   + (mxBoardNum + j) + "@" + (rank++);
             }
-            DEBUGGER_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
+    //        CONF_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
           }
         }
         else if (divisor > 0) {
@@ -821,10 +825,10 @@ public class MPJRun {
 
             } 
             else if (deviceName.equals("mxdev")) {
-              DEBUGGER_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
+              CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
                   + (mxBoardNum + j) + "@" + (rank++);
             }
-            DEBUGGER_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
+      //      CONF_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
           }
         }
       }

@@ -757,7 +757,6 @@ public class NIODevice implements Device {
     if (mpi.MPI.DEBUG && logger.isDebugEnabled()) {
       logger.info("Orignal string: "+ args[1]);
     }
-    
     while(arguments.hasMoreTokens()) {
       String token = arguments.nextToken();
       if(token.equals("#Number of Processes")) {

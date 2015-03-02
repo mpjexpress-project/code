@@ -101,15 +101,18 @@ public class Wrapper extends Thread {
       String arvs[] = new String[nargs.length + 3];
 
       arvs[0] = rank;
-      arvs[1] = portInfo.concat("#Server Name;"+serverName+";#Server Port;"+
-                                                             serverPort);
-
-      arvs[2] = deviceName;
+      if(!deviceName.equals("mxdev")){
+        arvs[1] = portInfo.concat("#Server Name;"+serverName+";#Server Port;"+
+                                                                   serverPort);
+      }
+      else{
+        arvs[1] = portInfo;
+      }
+        arvs[2] = deviceName;
 
       for (int i = 0; i < nargs.length; i++) {
 	arvs[i + 3] = nargs[i];
       }
-
       Method m = c.getMethod("main", new Class[] { arvs.getClass() });
       m.setAccessible(true);
       int mods = m.getModifiers();

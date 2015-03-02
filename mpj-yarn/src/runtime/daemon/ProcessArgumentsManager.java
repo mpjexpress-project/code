@@ -231,7 +231,6 @@ public class ProcessArgumentsManager {
 
     // Modifying argument processing for NIODevInit
     arguments[indx] = pTicket.getConfFileContents();
-
     indx++;
     arguments[indx] = Integer.toString(pTicket.getProcessCount());
     indx++;

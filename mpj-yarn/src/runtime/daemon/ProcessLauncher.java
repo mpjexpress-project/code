@@ -140,7 +140,6 @@ public class ProcessLauncher extends Thread {
 	  logger.debug("arguments[" + i + "] = " + arguments[i]);
 	}
       }
-
       // Process builder is used to launch the wrapper process
       ProcessBuilder pb = new ProcessBuilder(arguments);
       pb.directory(new File(pTicket.getWorkingDirectory()));

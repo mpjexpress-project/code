@@ -340,11 +340,12 @@
         <arg value="${mx_home}/include"/>
         <arg value="-L"/>
         <arg value="${mx_home}/lib"/>
+        <arg value="-fPIC"/>
         <arg value="-lmyriexpress"/>
       </exec>
 
       <move file="${mx.native.dir}/libmxdev.so" todir="${lib.dir}"/> 
-      <!--
+      <!-- 
       <delete>
         <fileset dir="${mx.native.dir}" includes="*.h"/>
       </delete>
@@ -417,7 +418,7 @@
 		</javadoc>
 	</target>
 
-    <target name="all" depends="compile,compile-hadoop,jars,hadoop-jars,clean"
+    <target name="all" depends="compile,mxlib,compile-hadoop,jars,hadoop-jars,clean"
             description="All"/>
 
 </project>
