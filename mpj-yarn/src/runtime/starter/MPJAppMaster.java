@@ -39,17 +39,36 @@ import org.apache.hadoop.yarn.util.Records;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-
-
+import java.net.*;
+import java.io.PrintStream;
 public class MPJAppMaster {
 
   Configuration conf = new YarnConfiguration();
   String mpjHomeDir;
+  private Socket appMasterSock;
   int rank = 0;
- 
-  public void run(String[] args) throws Exception {
+  private Log LOG = null;
   
+  public void run(String[] args) throws Exception {
+   try{ 
+     System.out.println(args[1]);
+     appMasterSock = new Socket(args[1],Integer.parseInt(args[2]));
+     System.setOut(new PrintStream(appMasterSock.getOutputStream(),true));
+     System.setErr(new PrintStream(appMasterSock.getOutputStream(),true));
+
+   }
+   catch(Exception exp){
+     exp.printStackTrace();
+   }
+   System.err.println("EROOOOOOOOOOOOOOR");
+   LOG = LogFactory.getLog(MPJAppMaster.class);
+   LOG.info("Application Master Started....");
+   LOG.debug("YOLO");
+   System.out.println(LOG.isInfoEnabled());
+   System.out.println("APPPPPPPPPPP");
     Map<String, String> map = System.getenv();
     mpjHomeDir = map.get("MPJ_HOME");
     
@@ -58,8 +77,6 @@ public class MPJAppMaster {
 						  "environment not found..");
     }
    
-
-    // number of container to be launched
     final int n = Integer.valueOf(args[0]);
     //System.out.println("Number of containers to Launch : "+n);
 
@@ -200,6 +217,7 @@ public class MPJAppMaster {
     // Un-register with ResourceManager 
     rmClient.unregisterApplicationMaster(FinalApplicationStatus.SUCCEEDED, 
 								     "", "");
+    System.out.println("EXIT");
   } //end run()
 
   private void setupEnv(Map<String, String> containerEnv) {

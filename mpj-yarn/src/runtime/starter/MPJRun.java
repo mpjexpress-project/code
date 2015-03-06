@@ -67,6 +67,8 @@ import runtime.common.MPJRuntimeException;
 import runtime.common.MPJUtil;
 import runtime.common.RTConstants;
 
+import java.lang.ProcessBuilder;
+
 public class MPJRun {
 
   final String DEFAULT_MACHINES_FILE_NAME = "machines";
@@ -201,8 +203,8 @@ public class MPJRun {
         commands.add(appArgs.get(i));               // application arguments
       }
 
-      java.lang.ProcessBuilder processBuilder =
-                                        new java.lang.ProcessBuilder(commands);
+      ProcessBuilder processBuilder = new ProcessBuilder(commands);
+      processBuilder.redirectErrorStream(true);
       java.lang.Process p = processBuilder.start();
 
       InputStream is = p.getInputStream();

@@ -27,8 +27,13 @@ import org.apache.hadoop.yarn.api.records.LocalResourceType;
 import org.apache.hadoop.yarn.api.records.LocalResourceVisibility;
 import org.apache.hadoop.yarn.api.records.Resource;
 import org.apache.hadoop.yarn.api.records.YarnApplicationState;
+import org.apache.hadoop.yarn.api.records.YarnClusterMetrics;
 import org.apache.hadoop.yarn.api.records.FinalApplicationStatus;
 import org.apache.hadoop.yarn.api.records.URL;
+import org.apache.hadoop.yarn.api.records.NodeReport;
+import org.apache.hadoop.yarn.api.records.NodeState;
+import org.apache.hadoop.yarn.api.records.QueueInfo;
+import org.apache.hadoop.yarn.api.protocolrecords.GetNewApplicationResponse;
 
 import org.apache.hadoop.yarn.client.api.YarnClient;
 import org.apache.hadoop.yarn.client.api.YarnClientApplication;
@@ -39,14 +44,17 @@ import org.apache.hadoop.yarn.util.Apps;
 import org.apache.hadoop.yarn.util.ConverterUtils;
 import org.apache.hadoop.yarn.util.Records;
 
-public class MPJYarnClient {
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+public class MPJYarnClient {
   //conf fetches information from yarn-site.xml and yarn-default.xml.
   Configuration conf = new YarnConfiguration();
   String mpjHomeDir;
 
   //Number of conatiners
   static int n;
+  private Log logger = null;
   private int SERVER_PORT = 0;
   private int TEMP_PORT = 0;
   private int DEBUG_PORT = 0;
@@ -62,13 +70,14 @@ public class MPJYarnClient {
 
   public MPJYarnClient(String[] args){
     //Set Number of containers..
+    logger = LogFactory.getLog(MPJYarnClient.class);
     n = Integer.parseInt(args[0]);
     DEBUG_PORT = Integer.parseInt(args[6]);
     SERVER_PORT = Integer.parseInt(args[2]);
   }
 
   public void run(String[] args) throws Exception {
-
+ 
       Map<String, String> map = System.getenv();
 
       try{
@@ -110,6 +119,22 @@ public class MPJYarnClient {
       yarnClient.init(conf);
       yarnClient.start();
 
+      YarnClusterMetrics metrics = yarnClient.getYarnClusterMetrics();
+      logger.info("\nNodes Information");
+      logger.info("Number of NodeManagers: "+metrics.getNumNodeManagers()+"\n");
+      
+      List<NodeReport> nodeReports = yarnClient.getNodeReports
+							(NodeState.RUNNING);
+      for(NodeReport n: nodeReports){
+        logger.info("NodeId: "+n.getNodeId());
+        logger.info("RackName: "+n.getRackName());
+        logger.info("Total Memory: "+n.getCapability().getMemory());
+        logger.info("Used Memory: "+n.getUsed().getMemory());
+        logger.info("Total vCores: "+n.getCapability().getVirtualCores());
+        logger.info("Used vCores: "+n.getUsed().getVirtualCores()+"\n");
+      }
+
+      
       System.out.println("\nCreating server socket at HOST "+
                         args[1]+" PORT "+
                         args[2]+" \nWaiting for "+
@@ -128,8 +153,14 @@ public class MPJYarnClient {
 
       // Create application via yarnClient
       YarnClientApplication app = yarnClient.createApplication();
+      GetNewApplicationResponse appResponse = app.getNewApplicationResponse();
 
-      long amTime = System.currentTimeMillis();
+      int maxMem = appResponse.getMaximumResourceCapability().getMemory();
+      logger.info("Max memory capability resources in cluster: "+maxMem);
+     
+      int maxVcores = appResponse.getMaximumResourceCapability().
+							getVirtualCores();
+      logger.info("Max vCores capability resources in cluster: "+maxVcores);
       // Set up the container launch context for the application master
       ContainerLaunchContext amContainer =
               Records.newRecord(ContainerLaunchContext.class);
@@ -163,170 +194,174 @@ public class MPJYarnClient {
 
       amContainer.setCommands(commands); //set commands
 
-    // Setup local Resource for ApplicationMaster
-    LocalResource appMasterJar = Records.newRecord(LocalResource.class);
+      // Setup local Resource for ApplicationMaster
+      LocalResource appMasterJar = Records.newRecord(LocalResource.class);
 
-    appMasterJar.setResource(ConverterUtils.getYarnUrlFromPath(dest));
-    appMasterJar.setSize(destStatus.getLen());
-    appMasterJar.setTimestamp(destStatus.getModificationTime());
-    appMasterJar.setType(LocalResourceType.ARCHIVE);
-    appMasterJar.setVisibility(LocalResourceVisibility.APPLICATION);
+      appMasterJar.setResource(ConverterUtils.getYarnUrlFromPath(dest));
+      appMasterJar.setSize(destStatus.getLen());
+      appMasterJar.setTimestamp(destStatus.getModificationTime());
+      appMasterJar.setType(LocalResourceType.ARCHIVE);
+      appMasterJar.setVisibility(LocalResourceVisibility.APPLICATION);
 
-    amContainer.setLocalResources(
-          Collections.singletonMap("mpj-app-master.jar", appMasterJar));
+      amContainer.setLocalResources(
+            Collections.singletonMap("mpj-app-master.jar", appMasterJar));
 
-    // Setup CLASSPATH for ApplicationMaster
-    // Setting up the environment
-    Map<String, String> appMasterEnv = new HashMap<String, String>();
-    setupAppMasterEnv(appMasterEnv);
-    amContainer.setEnvironment(appMasterEnv);
-                                                 // Set up resource type requirements for ApplicationMaster
-    Resource capability = Records.newRecord(Resource.class);
-    capability.setMemory(512);
-    capability.setVirtualCores(1);
+      // Setup CLASSPATH for ApplicationMaster
+      // Setting up the environment
+      Map<String, String> appMasterEnv = new HashMap<String, String>();
+      setupAppMasterEnv(appMasterEnv);
+      amContainer.setEnvironment(appMasterEnv);
+      
+      // Set up resource type requirements for ApplicationMaster
+      Resource capability = Records.newRecord(Resource.class);
+      capability.setMemory(512);
+      capability.setVirtualCores(1);
 
-    // Finally, set-up ApplicationSubmissionContext for the application
-    ApplicationSubmissionContext appContext =
-                                  app.getApplicationSubmissionContext();
+      // Finally, set-up ApplicationSubmissionContext for the application
+      ApplicationSubmissionContext appContext =
+                                    app.getApplicationSubmissionContext();
 
-    appContext.setApplicationName("MPJ-YARN");
-    appContext.setAMContainerSpec(amContainer);
-    appContext.setResource(capability);
-    appContext.setQueue("default"); // queue
+      appContext.setApplicationName("MPJ-YARN");
+      appContext.setAMContainerSpec(amContainer);
+      appContext.setResource(capability);
+      appContext.setQueue("default"); // queue
 
-    ApplicationId appId = appContext.getApplicationId();
+      ApplicationId appId = appContext.getApplicationId();
 
-    //Adding ShutDown Hook
-    Runtime.getRuntime().addShutdownHook(
-             new KillYarnApp(appId,yarnClient));
+      //Adding ShutDown Hook
+      Runtime.getRuntime().addShutdownHook(
+               new KillYarnApp(appId,yarnClient));
 
-    // Submit application
-    System.out.println("Submitting Application: " +
-                         appContext.getApplicationName()+"\n");
+      // Submit application
+      System.out.println("Submitting Application: " +
+                           appContext.getApplicationName()+"\n");
     
-    try{
+      try{
+        isRunning = true;
+        yarnClient.submitApplication(appContext);
+      }
+      catch(Exception exp){
+        System.err.println("Error Submitting Application");
+        exp.printStackTrace();
+      }
+
+      IOMessagesThread [] ioThreads = new IOMessagesThread[n+1];
+
+      peers = new String[n];
+      socketList = new Vector<Socket>();
+      int wport = 0;
+      int rport = 0;
+      int rank = 0;
+     
+      // start N + 1 IOThreads, N number of containers and 1 AppMaster container
+      for(int i = 0; i < (n+1); i++){
+        try{
+          sock = servSock.accept();
+
+          //start IO thread to read STDOUT and STDERR from wrappers
+          IOMessagesThread io = new IOMessagesThread(sock);
+          ioThreads[i] = io;
+          ioThreads[i].start();
+        }
+        catch (Exception e){
+          System.err.println("Error accepting connection from peer socket..");
+          e.printStackTrace();
+        }
+      } 
+    
+      // Loop to read port numbers from Wrapper.java processes
+      // and to create WRAPPER_INFO (containing all IPs and ports)
+      String WRAPPER_INFO ="#Peer Information";
+      for(int i = n; i > 0; i--){
+        try{
+          sock = infoSock.accept();
+
+          DataOutputStream out = new DataOutputStream(sock.getOutputStream());
+          DataInputStream in = new DataInputStream(sock.getInputStream());
+          if(in.readUTF().startsWith("Sending Info")){
+            wport = in.readInt();
+            rport = in.readInt();
+            rank = in.readInt();
+            peers[rank]=";" + sock.getInetAddress().getHostAddress() +
+                      "@" + rport + "@" + wport + "@" + rank + "@" + DEBUG_PORT;
+            socketList.add(sock);
+          }
+        }
+        catch (Exception e){
+          System.err.println("[MPJYarnClient.java]: Error accepting"+
+                                               " connection from peer socket!");
+          e.printStackTrace();
+        }
+      }
+
+      for (int i = 0; i < n; i++){
+        WRAPPER_INFO += peers[i];
+      }
+      // Loop to broadcast WRAPPER_INFO to all Wrappers
+      for(int i = n; i > 0; i--){
+        try{
+          sock = socketList.get(n - i);
+          DataOutputStream out = new DataOutputStream(sock.getOutputStream());
+
+          out.writeUTF(WRAPPER_INFO);
+          out.flush();
+
+          sock.close();
+        }
+        catch (Exception e){
+          System.err.println("[MPJYarnClient.java]: Error closing"+
+                                              " connection from peer socket..");
+          e.printStackTrace();
+        }
+      }
+
+      try{
+        infoSock.close();
+      }
+      catch(IOException exp){
+        exp.printStackTrace();
+      }
+
+      // wait for all IO Threads to complete 
+      for(int i=0;i<(n+1);i++){
+        ioThreads[i].join();
+      }
       isRunning = true;
-      yarnClient.submitApplication(appContext);
-    }
-    catch(Exception exp){
-      System.err.println("Error Submitting Application");
-      exp.printStackTrace();
-    }
-
-    IOMessagesThread [] ioThreads = new IOMessagesThread[n];
-
-    peers = new String[n];
-    socketList = new Vector<Socket>();
-    int wport = 0;
-    int rport = 0;
-    int rank = 0;
-    for(int i = 0; i < n; i++){
-      try{
-        sock = servSock.accept();
-
-        //start IO thread to read STDOUT and STDERR from wrappers
-        IOMessagesThread io = new IOMessagesThread(sock);
-        ioThreads[i] = io;
-        ioThreads[i].start();
-      }
-      catch (Exception e){
-        System.err.println("Error accepting connection from peer socket..");
-        e.printStackTrace();
-      }
-    }
     
-     // Loop to read port numbers from Wrapper.java processes
-    // and to create WRAPPER_INFO (containing all IPs and ports)
-    String WRAPPER_INFO ="#Peer Information";
-    for(int i = n; i > 0; i--){
-      try{
-        sock = infoSock.accept();
-
-        DataOutputStream out = new DataOutputStream(sock.getOutputStream());
-        DataInputStream in = new DataInputStream(sock.getInputStream());
-        if(in.readUTF().startsWith("Sending Info")){
-          wport = in.readInt();
-          rport = in.readInt();
-          rank = in.readInt();
-          peers[rank]=";" + sock.getInetAddress().getHostAddress() +
-                    "@" + rport + "@" + wport + "@" + rank + "@" + DEBUG_PORT;
-          socketList.add(sock);
+      System.out.println("\nApplication Statistics!");
+      while (true) {
+        appReport = yarnClient.getApplicationReport(appId);
+        appState = appReport.getYarnApplicationState();
+        fStatus = appReport.getFinalApplicationStatus();
+        if(appState == YarnApplicationState.FINISHED){
+          isRunning = false;
+          if(fStatus == FinalApplicationStatus.SUCCEEDED){
+            System.out.println("State: "+fStatus);
+          }
+          else{
+            System.out.println("State: "+fStatus);
+          }
+          break;
         }
-      }
-      catch (Exception e){
-        System.err.println(
-         "[MPJYarnClient.java]: Error accepting connection from peer socket!");
-        e.printStackTrace();
-      }
-    }
-
-    for (int i = 0; i < n; i++){
-      WRAPPER_INFO += peers[i];
-    }
-    // Loop to broadcast WRAPPER_INFO to all Wrappers
-    for(int i = n; i > 0; i--){
-      try{
-        sock = socketList.get(n - i);
-        DataOutputStream out = new DataOutputStream(sock.getOutputStream());
-
-        out.writeUTF(WRAPPER_INFO);
-        out.flush();
-
-        sock.close();
-      }
-      catch (Exception e){
-        System.err.println("[MPJYarnClient.java]: Error closing connection from peer socket..");
-        e.printStackTrace();
-      }
-    }
-
-    try{
-      infoSock.close();
-    }
-    catch(IOException exp){
-      exp.printStackTrace();
-    }
-
-    // wait for all IO Threads to complete 
-    for(int i=0;i<n;i++){
-      ioThreads[i].join();
-    }
-    isRunning = true;
-    
-    System.out.println("\nApplication Statistics!");
-    while (true) {
-      appReport = yarnClient.getApplicationReport(appId);
-      appState = appReport.getYarnApplicationState();
-      fStatus = appReport.getFinalApplicationStatus();
-      if(appState == YarnApplicationState.FINISHED){
-        isRunning = false;
-        if(fStatus == FinalApplicationStatus.SUCCEEDED){
-          System.out.println("State: "+fStatus);
+        else if(appState == YarnApplicationState.KILLED){
+          isRunning = false;
+          System.out.println("State: "+appState);
+          break;
         }
-        else{
-          System.out.println("State: "+fStatus);
+        else if(appState == YarnApplicationState.FAILED){
+          isRunning = false;
+          System.out.println("State: "+appState);
+          break;
         }
-        break;
+        Thread.sleep(100);
       }
-      else if(appState == YarnApplicationState.KILLED){
-        isRunning = false;
-        System.out.println("State: "+appState);
-        break;
-      }
-      else if(appState == YarnApplicationState.FAILED){
-        isRunning = false;
-        System.out.println("State: "+appState);
-        break;
-      }
-      Thread.sleep(100);
-    }
 
-    System.out.println("Application ID: " + appId + "\n" +
-                       "Application User: "+ appReport.getUser() + "\n" +
-                       "RM Queue: "+appReport.getQueue() + "\n" +
-		       "Start Time: "+appReport.getStartTime() + "\n" +	
-                       "Finish Time: " + appReport.getFinishTime()); 
-  }
+      System.out.println("Application ID: " + appId + "\n" +
+                         "Application User: "+ appReport.getUser() + "\n" +
+                         "RM Queue: "+appReport.getQueue() + "\n" +
+	       	         "Start Time: "+appReport.getStartTime() + "\n" +	
+                         "Finish Time: " + appReport.getFinishTime()); 
+    }
 
   private void setupAppMasterEnv(Map<String, String> appMasterEnv) {
 
