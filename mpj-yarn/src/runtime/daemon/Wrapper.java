@@ -29,7 +29,7 @@
 
 /*
  * File         : Wrapper.java 
- * Author       : Aamir Shafi, Bryan Carpenter, Farrukh Khan
+ * Author       : Aamir Shafi, Bryan Carpenter
  * Created      : Dec 12, 2004
  * Revision     : $Revision: 1.20 $
  * Updated      : Aug 27, 2014
@@ -102,11 +102,11 @@ public class Wrapper extends Thread {
 
       arvs[0] = rank;
       if(!deviceName.equals("mxdev")){
-        arvs[1] = portInfo.concat(";#Server Name;"+serverName+";#Server Port;"+
-                                                                   serverPort);
+        arvs[1] = portInfo.concat(";#Server Name;"+serverName+
+                                  ";#Server Port;"+serverPort);
       }
       else{
-        arvs[1] = portInfo;
+        arvs[1] = portInfo; 
       }
         arvs[2] = deviceName;
 
@@ -120,13 +120,13 @@ public class Wrapper extends Thread {
 	  || !Modifier.isPublic(mods)) {
 	throw new NoSuchMethodException("main");
       }
-      
       m.invoke(null, new Object[] { arvs });
       
       System.out.println("Stopping Process <"+rank+"> on <"+hostName+">");
     }
     catch (Exception ioe) {
-      System.err.println("["+hostName+"-Wrapper.java]: Multi-threaded starter: exception" + ioe.getMessage());
+      System.err.println("["+hostName+"-Wrapper.java]: Multi-threaded"+
+                         " starter: exception" + ioe.getMessage());
       ioe.printStackTrace();
     }
   }

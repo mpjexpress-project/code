@@ -28,11 +28,11 @@
  */
 /*
  * File         : MPJRun.java 
- * Author       : Aamir Shafi, Bryan Carpenter,Khurram Shahzad, Mohsan Jameel,
- *                Farrukh Khan
+ * Author       : Aamir Shafi, Bryan Carpenter,Khurram Shahzad,Hamza Zafar,
+ *                Mohsan Jameel, Farrukh Khan
  * Created      : Sun Dec 12 12:22:15 BST 2004
  * Revision     : $Revision: 1.35 $
- * Updated      : $Date: Wed Aug 27 20:55:53 PKT 2014$
+ * Updated      : $Date: Mon Mar 9 17:54:00 PKT 2015$
  */
 
 package runtime.starter;
@@ -68,13 +68,13 @@ import runtime.common.MPJUtil;
 import runtime.common.RTConstants;
 
 import java.lang.ProcessBuilder;
+import java.lang.Process;
 
 public class MPJRun {
 
   final String DEFAULT_MACHINES_FILE_NAME = "machines";
   final int DEFAULT_PROTOCOL_SWITCH_LIMIT = 128 * 1024; // 128K
   private String CONF_FILE_CONTENTS="";
-  private String DEBUGGER_FILE_CONTENTS="";
   private String WRAPPER_INFO = "#Peer Information";
   private int mxBoardNum = 0;
   private int D_SER_PORT = 0;
@@ -90,6 +90,15 @@ public class MPJRun {
   // Adding YARN related variables here
   private boolean isYarn = false;
   static String hadoopHomeDir = null;
+  private String amMem;
+  private String amCores;
+  private String containerMem;
+  private String containerCores;
+  private String yarnQueue;
+  private String appName;
+  private String amPriority;
+  private String mpjContainerPriority;
+  private String hdfsFolder;
 
   String machinesFile = DEFAULT_MACHINES_FILE_NAME;
   private int psl = DEFAULT_PROTOCOL_SWITCH_LIMIT;
@@ -117,7 +126,7 @@ public class MPJRun {
 
   private static String VERSION = "";
   private static int RUNNING_JAR_FILE = 2;
- private static int RUNNING_CLASS_FILE = 1;
+  private static int RUNNING_CLASS_FILE = 1;
   private boolean zippedSource = false;
   private String sourceFolder = "";
   int networkProcesscount = -1;
@@ -128,9 +137,6 @@ public class MPJRun {
   static final boolean DEBUG = true;
   private String logLevel = "OFF";
 
-  /**
-   * Every thing is being inside this constructor :-)
-   */
   public MPJRun(String args[]) throws Exception {
 
     java.util.logging.Logger logger1 = java.util.logging.Logger.getLogger("");
@@ -166,20 +172,22 @@ public class MPJRun {
     // Processing input
     processInput(args);
 
-    // HADOOP_HOME check here!!
+    // YARN runtime invoked here
     if(isYarn) {
+
+      System.out.println("MPJ Express (" + VERSION + ") is started in the "
+          + "Hadoop YARN configuration with " + deviceName);
 
       hadoopHomeDir = map.get("HADOOP_HOME");
       RTConstants.HADOOP_YARN_HOME = hadoopHomeDir;
 
       if (hadoopHomeDir == null) {
-        throw new MPJRuntimeException("FK>> YARN flag passed"+
-                                                " but HADOOP_HOME not set");
+        throw new MPJRuntimeException(" HADOOP_HOME not set");
       }
 
       if (DEBUG && logger.isDebugEnabled()) {
         logger.debug("HADOOP HOME is set to: " + hadoopHomeDir);
-        logger.debug(mpjHomeDir+"/lib/mpj-yarn-client.jar");
+        logger.debug("YARN Client jar: "+mpjHomeDir+"/lib/mpj-yarn-client.jar");
       }
 
 
@@ -188,24 +196,91 @@ public class MPJRun {
       commands.add(hadoopHomeDir+"/bin/hadoop");
       commands.add("jar");
       commands.add(mpjHomeDir+"/lib/mpj-yarn-client.jar");
+      commands.add("--np");
       commands.add(Integer.toString(nprocs));      // no. of containers
+      commands.add("--server");
       commands.add(localhostName);                 // server name
+      commands.add("--serverPort");
       commands.add(Integer.toString(SERVER_PORT)); // server port
+      commands.add("--dev");
       commands.add(deviceName);                    // device name
-      commands.add(appArgs.get(0));                     // class name
+      commands.add("--className");
+      commands.add(appArgs.get(0));                // class name
+      commands.add("--wdir");
       commands.add(wdir);                          // working directory
-      commands.add(Integer.toString(DEBUG_PORT));  // debug port
+      commands.add("--psl");
       commands.add(Integer.toString(psl));         // protocol switch limit
-      commands.add(applicationClassPathEntry);
-      commands.add(Integer.toString(appArgs.size()-1));  //number of args
+      commands.add("--jarPath");
+      commands.add(applicationClassPathEntry);     // user jar file path
+    
+      // application arguments
+      if(appArgs.size() > 1){
+        commands.add("--appArgs");
+        for(int i=1 ;i<appArgs.size(); i++){
+          commands.add(appArgs.get(i));            
+        }
+      }
 
-      for(int i=1 ;i<appArgs.size(); i++){
-        commands.add(appArgs.get(i));               // application arguments
+      // AM container memory
+      if(amMem != null){
+        commands.add("--amMem");
+        commands.add(amMem);                   
+      }
+
+      // AM container virtual cores
+      if(amCores !=null){
+        commands.add("--amCores");
+        commands.add(amCores);
+      }
+
+      // MPJ containers memory
+      if(containerMem != null){
+        commands.add("--containerMem");
+        commands.add(containerMem);  
+      }
+
+      // MPJ containers virtual cores
+      if(containerCores != null){
+        commands.add("--containerCores");
+        commands.add(containerCores);         
+      }
+
+      // YARN scheduler queue 
+      if(yarnQueue != null){
+        commands.add("--yarnQueue");
+        commands.add(yarnQueue);            
+      }
+
+      // YARN Application name
+      if(appName != null){
+        commands.add("--appName");
+        commands.add(appName);                 
+      }
+ 
+      // AM container priority
+      if(amPriority != null){
+        commands.add("--amPriority");
+        commands.add(amPriority);          
+      }
+ 
+      // MPJ containers priority
+      if(mpjContainerPriority != null){
+        commands.add("--mpjContainerPriority");
+        commands.add(mpjContainerPriority);    
+      }
+    
+      //hdfs folder where AM , Wrapper and User jar files will be uploaded
+      if(hdfsFolder != null){
+        commands.add("--hdfsFolder");
+        commands.add(hdfsFolder);
       }
 
       ProcessBuilder processBuilder = new ProcessBuilder(commands);
+     
+      // merge the stdout and stderr stream
       processBuilder.redirectErrorStream(true);
-      java.lang.Process p = processBuilder.start();
+     
+      Process p = processBuilder.start();
 
       InputStream is = p.getInputStream();
       InputStreamReader isr = new InputStreamReader(is);
@@ -214,35 +289,35 @@ public class MPJRun {
       String line;
 
       if (DEBUG && logger.isDebugEnabled()) {
-        logger.debug(" Output of running Command: "+
-                                    commands.toString()+"\n\n");
+        logger.debug("Hadoop Command: " + commands.toString());
       }
+      // print output of the process
       while ((line = br.readLine()) != null) {
-       System.out.println(line);
-       if (DEBUG && logger.isDebugEnabled())
+        System.out.println(line);
+        if (DEBUG && logger.isDebugEnabled()){
           logger.debug(line);
+        }
       }
 
       try {
         int exitValue = p.waitFor();
 
-        if (DEBUG && logger.isDebugEnabled())
-          logger.debug("\n\nExit Value is " + exitValue);
-
+        if (DEBUG && logger.isDebugEnabled()){
+          logger.debug("Exit Value is " + exitValue);
+          logger.debug("Shutting Down MPJ YARN runtime...");
+        }
       } catch (InterruptedException e) {
           e.printStackTrace();
       }
-
       return;
-    }
+    } // YARN runtime ends here
 
     // Check for MPJE configuration
-
     // Multicore mode
     if (deviceName.equals("multicore")) {
 
       System.out.println("MPJ Express (" + VERSION + ") is started in the "
-          + "multicore configuration");
+                                                + "multicore configuration");
       if (DEBUG && logger.isDebugEnabled()) {
         logger.debug("className " + className);
       }
@@ -258,12 +333,12 @@ public class MPJRun {
 
     }
     // Cluster mode
-    else {
-      System.out.println("MPJ Express (" + VERSION + ") is started in the "
-          + "cluster configuration with " + deviceName);
-    }
+   
+    System.out.println("MPJ Express (" + VERSION + ") is started in the "
+                            + "cluster configuration with " + deviceName);
+    
 
-    // Read the machine file
+    // Read the machine file and set machineList
     machineList = MPJUtil.readMachineFile(machinesFile);
     for (int i = machineList.size(); i > nprocs; i--) {
       machineList.remove(i - 1);
@@ -272,29 +347,33 @@ public class MPJRun {
     machinesSanityCheck();
 
     // Changed to incorporate hybrid device configuration
-    if (deviceName.equals("hybdev"))
+    if (deviceName.equals("hybdev")){
       assignTasksHyb();
-    else
+    }
+    else{
       assignTasks();
-
+    }
+    
+    // Write mpjdev.conf if debugger is enabled
     if (ADEBUG) {
-      writeFile(DEBUGGER_FILE_CONTENTS + "\n");
+      writeFile(CONF_FILE_CONTENTS + "\n");
     } 
      if (DEBUG && logger.isDebugEnabled()) {
         logger.debug("conf file contents " + CONF_FILE_CONTENTS);
       }
-    //FK--> directory where class is present
+    //directory where class is present
     urlArray = applicationClassPathEntry.getBytes();
 
-    // FK --> #6 Create a peer socket vector, connect to daemon on each
-    // machine and if connection is successful, save the socket reference
-    // inside this vector
+    /*
+     * Create a peer socket vector, connect to daemon on each
+     * machine and if connection is successful, save the socket reference
+     * inside this vector
+     */
     peerSockets = new Vector<Socket>();
     clientSocketInit();
 
     int peersStartingRank = 0;
 
-    // FK --> #7 This loop launches a new Wrapper process on each
     for (int j = 0; j < peerSockets.size(); j++) {
       Socket peerSock = peerSockets.get(j);
 
@@ -302,12 +381,6 @@ public class MPJRun {
         logger.debug("procsPerMachineTable " + procsPerMachineTable);
       }
 
-      /*
-       * FIXME:should we not be checking all IP addresses of remote machine?
-       * Does it make sense?
-       */
-      // FK>> KEEP this in mind while fetching ports from each Wrapper
-      // FK>> You may not need to transmit the hostname or IP
       String hAddress = peerSock.getInetAddress().getHostAddress();
       String hName = peerSock.getInetAddress().getHostName();
 
@@ -319,16 +392,12 @@ public class MPJRun {
 
       int nProcesses = nProcessesInt.intValue();
 
+      // Create xml ticket, pass it to each daemon which then launches
+      // wrapper.java
+
       if (deviceName.equals("hybdev")) {
-        pack(nProcesses, j, peerSock); // starting NETID of hybrid
-        // device should be adjusted
-        // according to node
-        // (NioProcessCount,
-        // StartingRank)
+        pack(nProcesses, j, peerSock);
       }
-      // FK-->> #8 Exact point of magic! pack() being called
-      // which is basically creating a xml ticket, passing it on to each
-      // daemon and launching wrapper.java
       else {
         pack(nProcesses, peersStartingRank, peerSock);
         peersStartingRank += nProcesses;
@@ -347,19 +416,13 @@ public class MPJRun {
     }
   }
 
-  /*
-
-   * Parses the input ...
-   */
+  // Parses the input ...
   private void processInput(String args[]) {
 
     if (args.length < 1) {
       printUsage();
       System.exit(0);
     }
-
-    // FK>> My debug statements for the code
-    //System.out.println("FK>> Total arguments:" + args.length);
 
     boolean parallelProgramNotYetEncountered = true;
 
@@ -369,7 +432,8 @@ public class MPJRun {
         try {
           nprocs = new Integer(args[i + 1]).intValue();
           if (nprocs < 1) {
-            System.out.println("Number of Processes should be equal to or greater than 1");
+            System.out.println("Number of Processes should be equal to"+
+					            " or greater than 1");
             System.out.println("exiting ...");
             System.exit(0);
           }
@@ -386,15 +450,64 @@ public class MPJRun {
         System.exit(0);
       }
 
-      // FK>> Adding check for YARN flag
       else if (args[i].equals("-yarn")) {
 
         isYarn = true;
 
-        if (DEBUG && logger.isDebugEnabled())
-          logger.debug("FK>> YARN Flag!");
+        if (DEBUG && logger.isDebugEnabled()){
+          logger.debug("YARN Runtime invoked");
+        }
+        
 
         RTConstants.HADOOP_YARN = "true";
+      }
+
+      else if (args[i].equals("-amMem")){
+        amMem = args[i + 1];
+        i++;
+      }
+
+      else if (args[i].equals("-amCores")){
+        amCores = args[i + 1];
+        i++;
+      }
+ 
+      else if (args[i].equals("-containerMem")){
+        containerMem = args[i + 1];
+        i++;
+      }
+
+      else if (args[i].equals("-containerCores")){
+        containerCores = args[i + 1];
+        i++;
+      }
+
+      else if (args[i].equals("-yarnQueue")){
+        yarnQueue = args[i + 1];
+        i++;
+      } 
+
+      else if (args[i].equals("-appName")){
+        appName = args[i + 1];
+        i++;
+      }
+
+      else if (args[i].equals("-amPriority")){
+        amPriority = args[i + 1];
+        i++;
+      }
+
+      else if (args[i].equals("-mpjContainerPriority")) {
+        mpjContainerPriority = args[i + 1];
+        i++;
+      }
+      
+      else if (args[i].equals("-hdfsFolder")){
+        hdfsFolder = args[i + 1];
+        if(!hdfsFolder.endsWith("/")){
+          hdfsFolder.concat("/");
+        }
+        i++;
       }
       else if (args[i].equals("-dport")) {
         D_SER_PORT = new Integer(args[i + 1]).intValue();
@@ -441,6 +554,7 @@ public class MPJRun {
         jvmArgs.add(args[i + 1]);
         i++;
       }
+
       else if (args[i].equals("-jar")) {
         File tFile = new File(args[i + 1]);
         String absJarPath = tFile.getAbsolutePath();
@@ -464,17 +578,21 @@ public class MPJRun {
         }
 
       }
+
       else if (args[i].equals("-src")) {
         this.zippedSource = true;
       }
+
       else if (args[i].equals("-debug")) {
         DEBUG_PORT = new Integer(args[i + 1]).intValue();
         i++;
         ADEBUG = true;
       }
+
       else if (args[i].equals("-profile")) {
         APROFILE = true;
       }
+
       else {
         // these are JVM options ..
         if (parallelProgramNotYetEncountered) {
@@ -492,15 +610,12 @@ public class MPJRun {
         else {
           appArgs.add(args[i]);
         }
-
       }
-
     }
 
     jArgs = jvmArgs.toArray(new String[0]);
     aArgs = appArgs.toArray(new String[0]);
 
-    // FK-->> Debug statements for logs
     if (DEBUG && logger.isDebugEnabled()) {
 
       logger.debug("###########################");
@@ -512,11 +627,20 @@ public class MPJRun {
       logger.debug("-psl: <" + psl + ">");
       logger.debug("jvmArgs.length: <" + jArgs.length + ">");
       logger.debug("className : <" + className + ">");
-      logger.debug("applicationClassPathEntry : <" + applicationClassPathEntry
-          + ">");
-      // FK>> Log statements for YARN
+      logger.debug("applicationClassPathEntry:"+
+					  " <"+applicationClassPathEntry+">");
+      // Logs for YARN
       logger.debug("-yarn: <" + isYarn + ">");
       logger.debug("$HADOOP_HOME: <" + hadoopHomeDir + ">");
+      logger.debug("-amMem: <" + amMem + ">");
+      logger.debug("-amCores: <" + amCores + ">");
+      logger.debug("-containerMem: <" + containerMem + ">");
+      logger.debug("-yarnQueue: <" + yarnQueue + ">");
+      logger.debug("-appName: <" + appName + ">");
+      logger.debug("-amPriority: <" + amPriority + ">");
+      logger.debug("-mpjContainerPriority: <" + mpjContainerPriority + ">");
+      logger.debug("-hdfsFolder: <" + hdfsFolder + ">");
+
 
       for (int i = 0; i < jArgs.length; i++) {
         if (DEBUG && logger.isDebugEnabled())
@@ -551,7 +675,7 @@ public class MPJRun {
    * Application arguments .. 10. networkDevice- niodev in case of Hybdrid 11.
    * ADEBUG- Flag for launching application in debug mode 12. APROFILE- Flag for
    * launching application in Profiling mode. 13. MasterNode - hostname of the
-   * machine running the MPJRun.java class. 14. MasterPort - port number at which
+   * machine running the MPJRun.java class. 14. MasterPort -port number at which
    * MPJRun.java is awaiting connections from the wrapper class.
    */
   private void pack(int nProcesses, int start_rank, Socket sockClient) {
@@ -565,7 +689,6 @@ public class MPJRun {
     // MasterNode information being appended to ticket
     ticket.setMasterNode(localhostName);
     ticket.setMasterPort(Integer.toString(SERVER_PORT));
-    // -------------
 
     ticket.setClassPath(new String(urlArray));
     ticket.setProcessCount(nProcesses);
@@ -613,7 +736,7 @@ public class MPJRun {
     if (APROFILE) {
       ticket.setProfiler(true);
     }
-    // FK-->> conversion into XML and then transmission over the network
+    // Conversion into XML and then transmission over the network
     String ticketString = ticket.ToXML().toXmlString();
     OutputStream outToServer = null;
     try {
@@ -698,16 +821,34 @@ public class MPJRun {
             + "\n Note: 'MPJ_HOME' variable must be set");
 
   }
-
+  /*
+   * In the previous release (0.43) of the MPJ Express runtime system, the 
+   *  mpjrun module was responsible for gathering the list of ports for all 
+   *  processes. It did so by contacting the daemon process running on each
+   *  compute node involved in execution of a parallel jobs.The task of the 
+   *  daemon process was to find an unused port and report its number back to
+   *  mpjrun. The mechanism for finding an unused port was to start from a 
+   *  specific port and open a server socket using it. If the attempt to 
+   *  create such a socket was successful, we assumed the port to be available.
+   *  Otherwise, daemon incremented the port number and repeated the step
+   *  of opening a server socket. As a consequence of this port selection 
+   *  at each daemon, the mpjrun module ended up having a list of ports 
+   *  against names and identities (ranks) of MPJ processes.
+   *
+   *  In the newer MPJ and YARN-based runtime system,the port selection 
+   *  procedure is now performed by the niodev communication (and not runtime
+   *  system) and the server socket is kept open throughout the execution of 
+   *  a parallel process. In the YARN-based version, the port information 
+   *  is aggregated by MPJYarnClient instead of mpjrun. The conf file now
+   *  specifies read and write port as 0, This is done to comply with the 
+   *  debugger project!
+   */
   private void assignTasks() throws Exception {
 
     int rank = 0;
 
     int noOfMachines = machineList.size();
 
-    // FK --> Make configuration file by adding contents one by one
-    // first is the number of processes, then protocol switch, then ip/port
-    // details of each host
     CONF_FILE_CONTENTS = "#temp line";
     CONF_FILE_CONTENTS += ";" + "#Number of Processes";
     CONF_FILE_CONTENTS += ";" + nprocs;
@@ -717,9 +858,6 @@ public class MPJRun {
     CONF_FILE_CONTENTS += ";"
         + "#Entry, HOST_NAME/IP@READPORT@WRITEPORT@RANK@DEBUGPORT";
     
-    //read write ports for CONF_FILE_CONTENTS is done in collectPortInfo()
-    DEBUGGER_FILE_CONTENTS = CONF_FILE_CONTENTS;        
-
     /*
      * number of requested parallel processes are less than or equal to compute
      * nodes
@@ -731,20 +869,19 @@ public class MPJRun {
             + " are less than than machines " + noOfMachines);
         logger.debug("Adding 1 processes to the first " + nprocs + " items");
       }
-    // FK--> Since the number of processes is less than machines, so
-    // allocate each machine a single process
+
+    /*
+     * Since the number of processes is less than machines, so
+     * allocate each machine a single process
+     */
       for (int i = 0; i < nprocs; i++) {
         procsPerMachineTable
             .put(InetAddress.getByName((String) machineList.get(i))
                 .getHostAddress(), new Integer(1));
 
-        //FK>> Port fetching has to be removed from here.
-        // Cannot do direct replacement since at the moment, no wrapper 
-        // running! Need to start wrapper before calling this
         if (deviceName.equals("niodev")) {
 
-          // FK--> No more ports added to CONF file 
-          DEBUGGER_FILE_CONTENTS += ";"
+          CONF_FILE_CONTENTS += ";"
               + InetAddress.getByName((String) machineList.get(i))
                   .getHostAddress() + "@0@0@"+ (rank++);
          
@@ -754,7 +891,7 @@ public class MPJRun {
           CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
               + mxBoardNum + "@" + (rank++);
         }
-         DEBUGGER_FILE_CONTENTS += "@" + (DEBUG_PORT);
+         CONF_FILE_CONTENTS += "@" + (DEBUG_PORT);
 
         if (DEBUG && logger.isDebugEnabled()) {
           logger.debug("procPerMachineTable==>" + procsPerMachineTable);
@@ -794,20 +931,17 @@ public class MPJRun {
           }
 
           for (int j = 0; j < (divisor + 1); j++) {
-             // FK>> this also needs to be removed
             if (deviceName.equals("niodev")) {
 
-// FK -->> Adding of ports to conf file removed
-              DEBUGGER_FILE_CONTENTS += ";"
+              CONF_FILE_CONTENTS += ";"
                   + InetAddress.getByName((String) machineList.get(i))
                       .getHostAddress() + "@0@0@" + (rank++);
-
             } 
             else if (deviceName.equals("mxdev")) {
               CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
                   + (mxBoardNum + j) + "@" + (rank++);
             }
-            DEBUGGER_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
+            CONF_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
           }
         }
         else if (divisor > 0) {
@@ -821,7 +955,7 @@ public class MPJRun {
 
           for (int j = 0; j < divisor; j++) {
             if (deviceName.equals("niodev")) {
-              DEBUGGER_FILE_CONTENTS += ";"
+              CONF_FILE_CONTENTS += ";"
                   + InetAddress.getByName((String) machineList.get(i))
                       .getHostAddress() + "@0@0@" + (rank++);
 
@@ -830,14 +964,14 @@ public class MPJRun {
               CONF_FILE_CONTENTS += ";" + (String) machineList.get(i) + "@"
                   + (mxBoardNum + j) + "@" + (rank++);
             }
-              DEBUGGER_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
+              CONF_FILE_CONTENTS += "@" + (DEBUG_PORT + j * 2);
           }
         }
       }
     }
   }
 
-  // ________________ HD _________________________
+  // Hybrid Device Assign Tasks
 
   private void assignTasksHyb() throws Exception {
 
@@ -855,25 +989,28 @@ public class MPJRun {
     CONF_FILE_CONTENTS += ";" + "#Protocol Switch Limit";
     CONF_FILE_CONTENTS += ";" + psl + ";";
 
-    DEBUGGER_FILE_CONTENTS = CONF_FILE_CONTENTS;
-
     CONF_FILE_CONTENTS += ";" + "#Server Name";
     CONF_FILE_CONTENTS += ";" + localhostName;
     CONF_FILE_CONTENTS += ";" + "#Server Port";
     CONF_FILE_CONTENTS += ";" + Integer.toString(SERVER_PORT);
 
-    DEBUGGER_FILE_CONTENTS +=
+    if(ADEBUG){
+      CONF_FILE_CONTENTS +=
                    "#Entry, HOST_NAME/IP@READPORT@WRITEPORT@NETID@DEBUGPORT";
+    }
+
     // One NIO Process per machine is being implemented, SMP Threads per
     // node will be decided in SMPDev
     for (int i = 0; i < networkProcesscount; i++) {
       procsPerMachineTable.put(
           InetAddress.getByName((String) machineList.get(i)).getHostAddress(),
           new Integer(1));
-      DEBUGGER_FILE_CONTENTS += ";"
+
+      CONF_FILE_CONTENTS += ";"
           + InetAddress.getByName((String) machineList.get(i)).getHostAddress()
           + "@0@0@" + (netID++);
-      DEBUGGER_FILE_CONTENTS += "@" + (DEBUG_PORT);
+ 
+      CONF_FILE_CONTENTS += "@" + (DEBUG_PORT);
     }
 
     if (DEBUG && logger.isDebugEnabled()) {
@@ -885,19 +1022,14 @@ public class MPJRun {
   private void machinesSanityCheck() throws Exception {
 
     for (int i = 0; i < machineList.size(); i++) {
-
       String host = (String) machineList.get(i);
-
       try {
         InetAddress add = InetAddress.getByName(host);
-
       }
       catch (Exception e) {
         throw new MPJRuntimeException(e);
       }
-
     }
-
   }
 
   private void readValuesFromMPJExpressConf() {
@@ -991,12 +1123,7 @@ public class MPJRun {
 
   }
 
-  /**
-  * #FK
-  * input: void 
-  * output: void
-  * description: collect ip, port information from all wrappers
-  **/
+   // collect and share port information from all wrapper's NIODevice
   private void collectPortInfo(){
     int rank = 0;
     int wport = 0;
@@ -1063,7 +1190,6 @@ public class MPJRun {
       WRAPPER_INFO += peers[i];
     }
 
-
     // Loop to broadcast WRAPPER_INFO to all Wrappers
     for(int i = nprocs; i > 0; i--){
       try{
@@ -1079,19 +1205,19 @@ public class MPJRun {
         sock.close();
       }
       catch (Exception e){
-        System.err.println("[MPJRun.java]: Error closing connection from peer socket..");
+        System.err.println("[MPJRun.java]: Error closing connection from "+
+                                                           "peer socket..");
         e.printStackTrace();
       }
     }
-
   }
 
   public static void main(String args[]) throws Exception {
     try {
       MPJRun client = new MPJRun(args);
     }
-    catch (Exception e) {
-      throw e;
+    catch (Exception exp) {
+      throw exp;
     }
   }
 }

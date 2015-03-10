@@ -33,6 +33,7 @@ import org.apache.hadoop.yarn.api.records.URL;
 import org.apache.hadoop.yarn.api.records.NodeReport;
 import org.apache.hadoop.yarn.api.records.NodeState;
 import org.apache.hadoop.yarn.api.records.QueueInfo;
+import org.apache.hadoop.yarn.api.records.Priority;
 import org.apache.hadoop.yarn.api.protocolrecords.GetNewApplicationResponse;
 
 import org.apache.hadoop.yarn.client.api.YarnClient;
@@ -47,17 +48,43 @@ import org.apache.hadoop.yarn.util.Records;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+
 public class MPJYarnClient {
   //conf fetches information from yarn-site.xml and yarn-default.xml.
-  Configuration conf = new YarnConfiguration();
+  Configuration conf;
   String mpjHomeDir;
 
   //Number of conatiners
-  static int n;
+  private int np;
+  private String serverName;
+  private int serverPort;
+  private String deviceName;
+  private String className;
+  private String workingDirectory;
+  private int psl;
+  private String jarPath;
+  private String [] appArgs;
+  private int amMem;
+  private int amCores;
+  private String containerMem;
+  private String containerCores;
+  private String yarnQueue;
+  private String appName;
+  private int amPriority;
+  private String  mpjContainerPriority; 
+  private String hdfsFolder;
+
+  private boolean debug;
+
   private Log logger = null;
   private int SERVER_PORT = 0;
   private int TEMP_PORT = 0;
-  private int DEBUG_PORT = 0;
   static String [] peers;
   static Vector<Socket> socketList;
   ServerSocket servSock = null;
@@ -68,15 +95,81 @@ public class MPJYarnClient {
   YarnApplicationState appState ;
   FinalApplicationStatus fStatus;
 
-  public MPJYarnClient(String[] args){
-    //Set Number of containers..
+  private  Options opts = null;
+  private  CommandLine cliParser = null;
+
+  public MPJYarnClient(){
     logger = LogFactory.getLog(MPJYarnClient.class);
-    n = Integer.parseInt(args[0]);
-    DEBUG_PORT = Integer.parseInt(args[6]);
-    SERVER_PORT = Integer.parseInt(args[2]);
+    conf = new YarnConfiguration();
+
+    opts = new Options();
+
+    opts.addOption("np",true,"Number of Processes");
+    opts.addOption("server",true,"Hostname required for Server Socket");
+    opts.addOption("serverPort",true,"Port required for Server Socket");
+    opts.addOption("dev",true,"Specifies the MPJ device name");
+    opts.addOption("className",true,"Main Class name");
+    opts.addOption("wdir",true,"Specifies the current working directory");
+    opts.addOption("psl",true,"Specifies the Protocol Switch Limit");
+    opts.addOption("jarPath",true,"Specifies the Path to user's Jar File");
+    opts.addOption("appArgs",true,"Specifies the User Application args");
+    opts.getOption("appArgs").setArgs(Option.UNLIMITED_VALUES);
+    opts.addOption("amMem",true,"Specifies AM container memory");
+    opts.addOption("amCores",true,"Specifies AM container virtual cores");
+    opts.addOption("containerMem",true,"Specifies mpj containers memory");
+    opts.addOption("containerCores",true,"Specifies mpj containers v-cores");
+    opts.addOption("yarnQueue",true,"Specifies the yarn queue");
+    opts.addOption("appName",true,"Specifies the application name");
+    opts.addOption("amPriority",true,"Specifies AM container priority");
+    opts.addOption("mpjContainerPriority",true,"Specifies the prioirty of" + 
+                                       "containers running MPI processes");
+    opts.addOption("hdfsFolder",true,"Specifies the HDFS folder where AM,"+
+                         "Wrapper and user code jar files will be uploaded");
+  }
+  
+  public void init(String [] args){
+    try{   
+      cliParser = new GnuParser().parse(opts, args);
+
+      np = Integer.parseInt(cliParser.getOptionValue("np"));
+      serverName = cliParser.getOptionValue("server");
+      serverPort = Integer.parseInt(cliParser.getOptionValue("serverPort"));
+      deviceName = cliParser.getOptionValue("dev");
+      className = cliParser.getOptionValue("className");
+      workingDirectory = cliParser.getOptionValue("wdir");
+      psl = Integer.parseInt(cliParser.getOptionValue("psl"));
+      jarPath = cliParser.getOptionValue("jarPath");
+      
+      amMem = Integer.parseInt(cliParser.getOptionValue("amMem","2048"));
+
+      amCores = Integer.parseInt(cliParser.getOptionValue("amCores","1"));
+
+      containerMem = cliParser.getOptionValue("containerMem","1024");
+ 
+      containerCores = cliParser.getOptionValue("containerCores","1");
+
+      yarnQueue = cliParser.getOptionValue("yarnQueue","default");
+
+      appName = cliParser.getOptionValue("appName","MPJ-YARN-Application");
+
+      amPriority = Integer.parseInt(cliParser.getOptionValue
+							("amPriority","0"));
+
+      mpjContainerPriority = cliParser.getOptionValue
+                                             ("mpjContainerPriority","0");
+      
+      hdfsFolder = cliParser.getOptionValue("hdfsFolder","/");
+
+      if(cliParser.hasOption("appArgs")){  
+        appArgs = cliParser.getOptionValues("appArgs");
+      }
+      
+    }catch(Exception  exp){
+      exp.printStackTrace();
+    }
   }
 
-  public void run(String[] args) throws Exception {
+  public void run() throws Exception {
  
       Map<String, String> map = System.getenv();
 
@@ -96,22 +189,24 @@ public class MPJYarnClient {
       // Copy the application master jar to HDFS
       // Create a local resource to point to the destination jar path
       FileSystem fs = FileSystem.get(conf);
-      Path source = new Path(mpjHomeDir+"/lib/mpj-app-master.jar");
 
-      String pathSuffix = "/mpj-app-master.jar";
-      Path dest = new Path(fs.getHomeDirectory(), pathSuffix);
+      Path source = new Path(mpjHomeDir+"/lib/mpj-app-master.jar");
+      String pathSuffix = hdfsFolder+"mpj-app-master.jar";
+      Path dest = new Path(fs.getHomeDirectory(), pathSuffix); 
+      logger.info("Uploading mpj-app-master.jar to: "+dest.toString());
       fs.copyFromLocalFile(false, true, source, dest);
       FileStatus destStatus = fs.getFileStatus(dest);
-
+     
       Path wrapperSource = new Path(mpjHomeDir+"/lib/mpj-yarn-wrapper.jar");
-      String wrapperSuffix = "/mpj-yarn-wrapper.jar";
+      String wrapperSuffix = hdfsFolder+"mpj-yarn-wrapper.jar";
       Path wrapperDest = new Path(fs.getHomeDirectory(), wrapperSuffix);
+      logger.info("Uploading mpj-yarn-wrapper.jar to: "+wrapperDest.toString());
       fs.copyFromLocalFile(false, true, wrapperSource, wrapperDest);
-      
-      //args[8] is User Jar Location
-      Path userJar = new Path(args[8]);
-      String userJarSuffix = "/user-code.jar";
+     
+      Path userJar = new Path(jarPath);
+      String userJarSuffix = hdfsFolder+"user-code.jar";
       Path userJarDest = new Path(fs.getHomeDirectory(),userJarSuffix);
+      logger.info("Uploading user-code.jar to: "+userJarDest.toString());
       fs.copyFromLocalFile(false,true,userJar,userJarDest);
 
       YarnConfiguration conf = new YarnConfiguration();
@@ -135,15 +230,13 @@ public class MPJYarnClient {
       }
 
       
-      System.out.println("\nCreating server socket at HOST "+
-                        args[1]+" PORT "+
-                        args[2]+" \nWaiting for "+
-                        n +" processes to connect...");
+      logger.info("\nCreating server socket at HOST "+serverName+" PORT "+
+                 serverPort+" \nWaiting for "+ np +" processes to connect...");
 
 
       // Creating a server socket for incoming connections
       try {
-        servSock = new ServerSocket(SERVER_PORT);
+        servSock = new ServerSocket(serverPort);
         infoSock = new ServerSocket();
         TEMP_PORT = findPort(infoSock);
       }
@@ -158,35 +251,64 @@ public class MPJYarnClient {
       int maxMem = appResponse.getMaximumResourceCapability().getMemory();
       logger.info("Max memory capability resources in cluster: "+maxMem);
      
+      if(amMem > maxMem){
+        amMem = maxMem;
+        logger.info("AM memory specified above threshold of cluster "+
+                    "Using maximum memory for AM container: "+amMem);
+      }
       int maxVcores = appResponse.getMaximumResourceCapability().
 							getVirtualCores();
       logger.info("Max vCores capability resources in cluster: "+maxVcores);
+
+      if(amCores > maxVcores){
+        amCores = maxVcores;
+        logger.info("AM virtual cores specified above threshold of cluster "+
+                    "Using maximum virtual cores for AM container: "+amCores);
+      }
+
       // Set up the container launch context for the application master
       ContainerLaunchContext amContainer =
               Records.newRecord(ContainerLaunchContext.class);
 
       List <String> commands= new ArrayList<String>();
       commands.add("$JAVA_HOME/bin/java");
-      commands.add(" -Xmx512M");
-      commands.add(" runtime.starter.MPJAppMaster");
-      commands.add(" "+String.valueOf(n));
-      commands.add(" "+args[1]); //server name
-      commands.add(" "+args[2]); //server port
-      commands.add(" "+args[3]); //device name
-      commands.add(" "+args[4]); //class name
-      commands.add(" "+args[5]); //wdir
-      commands.add(" "+args[7]); //protocol switch limit
-      commands.add(" "+String.valueOf(TEMP_PORT)); //for sharing ports & rank
-      commands.add(" "+wrapperDest.toString());//MPJYarnWrapper.jar HDFS path
-      commands.add(" "+userJarDest.toString());//User Jar File HDFS path
-      commands.add(" "+args[9]); //num of Args
-      int numArgs = Integer.parseInt(args[9]);
-      if(numArgs > 0){
-        for(int i=0; i < numArgs; i++){
-          commands.add(" "+args[10+i]);
+      commands.add("-Xmx"+amMem+"m");
+      commands.add("runtime.starter.MPJAppMaster");
+      commands.add("--np");
+      commands.add(String.valueOf(np));
+      commands.add("--serverName");
+      commands.add(serverName); //server name
+      commands.add("--ioServerPort");
+      commands.add(Integer.toString(serverPort)); //server port
+      commands.add("--deviceName");
+      commands.add(deviceName); //device name
+      commands.add("--className");
+      commands.add(className); //class name
+      commands.add("--wdir");
+      commands.add(workingDirectory); //wdir
+      commands.add("--psl");
+      commands.add(Integer.toString(psl)); //protocol switch limit
+      commands.add("--wireUpPort");
+      commands.add(String.valueOf(TEMP_PORT)); //for sharing ports & rank
+      commands.add("--wrapperPath");
+      commands.add(wrapperDest.toString());//MPJYarnWrapper.jar HDFS path
+      commands.add("--userJarPath");
+      commands.add(userJarDest.toString());//User Jar File HDFS path
+      commands.add("--mpjContainerPriority");
+      commands.add(mpjContainerPriority);// priority for mpj containers 
+      commands.add("--containerMem");
+      commands.add(containerMem);
+      commands.add("--containerCores");   
+      commands.add(containerCores);
+
+      if(appArgs != null){
+
+        commands.add("--appArgs");
+
+        for(int i=0; i < appArgs.length; i++){
+          commands.add(appArgs[i]);
         }
       }
-
       commands.add(" 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR +
                                                                 "/stdout");
       commands.add(" 2>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR +
@@ -214,18 +336,21 @@ public class MPJYarnClient {
       
       // Set up resource type requirements for ApplicationMaster
       Resource capability = Records.newRecord(Resource.class);
-      capability.setMemory(512);
-      capability.setVirtualCores(1);
-
+      capability.setMemory(amMem);
+      capability.setVirtualCores(amCores);
+      
       // Finally, set-up ApplicationSubmissionContext for the application
       ApplicationSubmissionContext appContext =
                                     app.getApplicationSubmissionContext();
 
-      appContext.setApplicationName("MPJ-YARN");
+      appContext.setApplicationName(appName);
       appContext.setAMContainerSpec(amContainer);
       appContext.setResource(capability);
-      appContext.setQueue("default"); // queue
-
+      appContext.setQueue(yarnQueue); // queue
+      
+      Priority priority = Priority.newInstance(amPriority);
+      appContext.setPriority(priority);
+ 
       ApplicationId appId = appContext.getApplicationId();
 
       //Adding ShutDown Hook
@@ -244,17 +369,18 @@ public class MPJYarnClient {
         System.err.println("Error Submitting Application");
         exp.printStackTrace();
       }
+      
+      // np = number of processes , + 1 for Application Master container
+      IOMessagesThread [] ioThreads = new IOMessagesThread[np+1];
 
-      IOMessagesThread [] ioThreads = new IOMessagesThread[n+1];
-
-      peers = new String[n];
+      peers = new String[np];
       socketList = new Vector<Socket>();
       int wport = 0;
       int rport = 0;
       int rank = 0;
      
-      // start N + 1 IOThreads, N number of containers and 1 AppMaster container
-      for(int i = 0; i < (n+1); i++){
+      // np + 1 IOThreads
+      for(int i = 0; i < (np+1); i++){
         try{
           sock = servSock.accept();
 
@@ -272,7 +398,7 @@ public class MPJYarnClient {
       // Loop to read port numbers from Wrapper.java processes
       // and to create WRAPPER_INFO (containing all IPs and ports)
       String WRAPPER_INFO ="#Peer Information";
-      for(int i = n; i > 0; i--){
+      for(int i = np; i > 0; i--){
         try{
           sock = infoSock.accept();
 
@@ -283,7 +409,7 @@ public class MPJYarnClient {
             rport = in.readInt();
             rank = in.readInt();
             peers[rank]=";" + sock.getInetAddress().getHostAddress() +
-                      "@" + rport + "@" + wport + "@" + rank + "@" + DEBUG_PORT;
+                      "@" + rport + "@" + wport + "@" + rank ;
             socketList.add(sock);
           }
         }
@@ -294,13 +420,13 @@ public class MPJYarnClient {
         }
       }
 
-      for (int i = 0; i < n; i++){
+      for (int i = 0; i < np; i++){
         WRAPPER_INFO += peers[i];
       }
       // Loop to broadcast WRAPPER_INFO to all Wrappers
-      for(int i = n; i > 0; i--){
+      for(int i = np; i > 0; i--){
         try{
-          sock = socketList.get(n - i);
+          sock = socketList.get(np - i);
           DataOutputStream out = new DataOutputStream(sock.getOutputStream());
 
           out.writeUTF(WRAPPER_INFO);
@@ -323,7 +449,7 @@ public class MPJYarnClient {
       }
 
       // wait for all IO Threads to complete 
-      for(int i=0;i<(n+1);i++){
+      for(int i=0;i<(np+1);i++){
         ioThreads[i].join();
       }
       isRunning = true;
@@ -355,7 +481,22 @@ public class MPJYarnClient {
         }
         Thread.sleep(100);
       }
+      
+      try{
+        logger.info("Cleaning the files from hdfs: ");
 
+        fs.delete(dest);
+        logger.info("1) "+dest.toString());
+
+        fs.delete(wrapperDest);
+        logger.info("2) "+wrapperDest.toString());
+
+        fs.delete(userJarDest);
+        logger.info("3) "+userJarDest.toString());
+      } 
+      catch(IOException exp){
+        exp.printStackTrace();
+      }
       System.out.println("Application ID: " + appId + "\n" +
                          "Application User: "+ appReport.getUser() + "\n" +
                          "RM Queue: "+appReport.getQueue() + "\n" +
@@ -403,9 +544,9 @@ public class MPJYarnClient {
     return selectedPort;
   }
 
-
   public static void main(String[] args) throws Exception {
-      MPJYarnClient client = new MPJYarnClient(args);
-      client.run(args);
+      MPJYarnClient client = new MPJYarnClient();
+      client.init(args);
+      client.run();
   }
 }
