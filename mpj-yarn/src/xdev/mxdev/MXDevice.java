@@ -77,40 +77,55 @@ public class MXDevice implements Device {
     RECV_OVERHEAD = getRecvOverhead();
     ConfigReader reader = null;  
 
-    int count = 0;
-    int psl = 0;
     try {
-      StringTokenizer arguments = new StringTokenizer(args[1],";");
-      while(arguments.hasMoreTokens()){
-        String token = arguments.nextToken();
-        if(token.startsWith("#Number of Processes")){
-          nprocs = new Integer(arguments.nextToken()).intValue();
-    
-          processNames = new String[nprocs];
-          ranks = new int[nprocs];
-          pids = new MXProcessID[nprocs];
-        }
-        else if(token.startsWith("#Protocol Switch Limit")){
-          psl = new Integer(arguments.nextToken()).intValue();
-        }
-        else if(token.startsWith("#Entry,")||token.startsWith("#temp")){
-         // do nothing
-        }
-        else{
-          StringTokenizer tokenizer = new StringTokenizer(token,"@");
-          while(tokenizer.hasMoreTokens()){
-            String machineToken = tokenizer.nextToken();
-            processNames[count]=machineToken;
-            processNames[count]=processNames[count]+":"+tokenizer.nextToken();
-            ranks[count] = (new Integer(tokenizer.nextToken())).intValue();
-            count++;
-          }
-        }
+      reader = new ConfigReader(args[1]);
+      nprocs = (new Integer(reader.readNoOfProc())).intValue();
+      int psl = (new Integer(reader.readIntAsString())).intValue();
+    }
+    catch (Exception config_error) {
+      throw new XDevException(config_error);
+    }
+
+    int count = 0;
+    processNames = new String[nprocs];
+    ranks = new int[nprocs]; 
+    pids = new MXProcessID[nprocs]; 
+
+    while (count < nprocs) {
+
+      String line = null;
+
+      try {
+        line = reader.readLine();
       }
+      catch (IOException ioe) {
+        throw new XDevException(ioe);
+      }
+
+      if (line == null || line.equals("") || line.equals("#")) {
+        continue;
+      }
+
+      line = line.trim();
+      StringTokenizer tokenizer = new StringTokenizer(line, "@");
+      processNames [count] = tokenizer.nextToken();
+      //processNames[count] = processNames[count]+":"+tokenizer.nextToken(); 
+      //processNames[count] = processNames[count]+":0";
+      processNames[count] = processNames[count]+":"+tokenizer.nextToken() ;
+      //tokenizer.nextToken(); //this will return the default port number
+                             //because the runtime does not know what 
+			     //to write in the conf file according to the
+			     //device that is being used ...may be make 
+			     //mx_board_num another entry ...
+			     //at the moment ..this is hard coded as you can
+			     //see above :0 ;-)
+      ranks[count] = (new Integer(tokenizer.nextToken())).intValue();
+      count++;
+
     }
-    catch (Exception exp) {
-      exp.printStackTrace();
-    }
+
+    reader.close();
+
     /* Make a tree structure */
     index = rank;
     root = 0;

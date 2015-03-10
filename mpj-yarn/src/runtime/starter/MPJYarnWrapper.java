@@ -8,44 +8,95 @@ import java.net.ServerSocket;
 import java.util.*;
 import java.net.*;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 
   public class MPJYarnWrapper {
 
-    public Socket clientSock = null;
-    int processes = 0;
-    String className = null;
-    Class c = null;
-    String deviceName = null;
-    String rank = null;
-    String[] nargs = null;
-    String serverName = null;
-    int serverPort = 0;
-    String portInfo;
+    private Socket clientSock;
+    private int np;
+    private String serverName;
+    private int ioServerPort;
+    private String wireUpPort;
+    private String deviceName;
+    private String className;
+    private Class c;
+    private String wdir;
+    private int psl;
+    private String rank;
+    private String[] appArgs;
+    private String portInfo;
+    private Options opts;
+    private CommandLine cliParser;
+   
+    public MPJYarnWrapper(){
+      opts = new Options();
 
-    public void run(String[] args){
-      serverName = args[0];
-      serverPort = Integer.parseInt(args[1]);
-      deviceName = args[2];
-      className = args[3];
-      portInfo ="#Number of Processes;"+args[5]+
-                ";#Protocol Switch Limit;"+args[4]+
-                ";#Server Name;"+serverName+";#Server Port;"+args[7];
+      opts.addOption("serverName",true,"Hostname where the stdout and stderr "+
+                                       "will be redirected");
+      opts.addOption("ioServerPort",true,"Port required for a socket"+
+                                                         " redirecting IO");
+      opts.addOption("deviceName",true,"Specifies the MPJ device name");
+      opts.addOption("className",true,"Main Class name");
+      opts.addOption("psl",true,"Protocol Switch Limit");
+      opts.addOption("np",true,"Number of Processes");
+      opts.addOption("rank",true,"Rank of the process, it is set by AM");
+      opts.addOption("wireUpPort",true,"Port required by NIODev to share"+
+                                       "wireup information");
+      opts.addOption("appArgs",true,"Specifies the User Application args");
+      opts.getOption("appArgs").setArgs(Option.UNLIMITED_VALUES);
 
-      rank =args[6];
+    }
+     
+    public void init(String [] args){
       try{
-        clientSock = new Socket(serverName, serverPort);
+         cliParser = new GnuParser().parse(opts, args);
+ 
+         np = Integer.parseInt(cliParser.getOptionValue("np"));
+         serverName = cliParser.getOptionValue("serverName");
+         ioServerPort =Integer.parseInt(cliParser.getOptionValue
+                                                            ("ioServerPort"));
+         wireUpPort = cliParser.getOptionValue("wireUpPort");
+         deviceName = cliParser.getOptionValue("deviceName");
+         className = cliParser.getOptionValue("className");
+         wdir = cliParser.getOptionValue("wdir");
+         psl = Integer.parseInt(cliParser.getOptionValue("psl"));
+         rank = cliParser.getOptionValue("rank");
+ 
+         if(cliParser.hasOption("appArgs")){
+           appArgs = cliParser.getOptionValues("appArgs");
+         }
+    
+         portInfo ="#Number of Processes;" + np +
+                  ";#Protocol Switch Limit;" + psl +
+                  ";#Server Name;" + serverName +
+                  ";#Server Port;"+ wireUpPort;
+       }
+       catch(Exception exp){
+         exp.printStackTrace();
+       }
+    }
+    public void run(){
+
+      try{
+        clientSock = new Socket(serverName, ioServerPort);
       }
       catch(UnknownHostException exp){
-        System.out.println("Unknown Host Exception, Host not found");
+        System.err.println("Unknown Host Exception, Host not found");
         exp.printStackTrace();
-      }catch(IOException exp){
+      }
+      catch(IOException exp){
         exp.printStackTrace(); 
       }
      
       // Redirecting Output Stream 
       try{
         System.setOut(new PrintStream(clientSock.getOutputStream(),true)); 
-        System.setErr(new PrintStream(clientSock.getOutputStream()));
+        System.setErr(new PrintStream(clientSock.getOutputStream(),true));
       }
       catch(IOException e){
        e.printStackTrace();
@@ -59,18 +110,21 @@ import java.net.*;
       }
       
       try {
-        String [] arvs;
-        int numArgs=Integer.parseInt(args[8]);
-
-        arvs = new String[3+numArgs];
-
+        String [] arvs = new String[3];
+        
+        if(appArgs!=null){
+          arvs = new String[3 + appArgs.length];
+        }
         arvs[0] = rank;
         arvs[1] = portInfo;
         arvs[2] = deviceName;
-	  
-        for(int i=0; i < numArgs; i++){
-          arvs[3+i]=args[9+i];
+	
+        if(appArgs !=null){  
+          for(int i=0; i < appArgs.length; i++){
+            arvs[3+i] = appArgs[i];
+          }
         }
+
         InetAddress localaddr = InetAddress.getLocalHost();
         String hostName = localaddr.getHostName();
 
@@ -88,7 +142,9 @@ import java.net.*;
         m.invoke(null, new Object[] { arvs });
 
         System.out.println("Stopping process <"+rank+"> on <"+hostName+">");
-        System.out.println("EXIT");
+
+        System.out.println("EXIT");//Stopping IOThread
+        
         try{
           clientSock.close();
         }
@@ -105,7 +161,8 @@ import java.net.*;
 
     public static void main(String args[]) throws Exception {
       MPJYarnWrapper wrapper = new MPJYarnWrapper();
-      wrapper.run(args); 
+      wrapper.init(args);
+      wrapper.run(); 
     }
   }
                                                                              

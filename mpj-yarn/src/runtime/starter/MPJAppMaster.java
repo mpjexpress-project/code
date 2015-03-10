@@ -20,6 +20,8 @@ import org.apache.hadoop.yarn.api.records.ContainerStatus;
 import org.apache.hadoop.yarn.api.records.LocalResource;
 import org.apache.hadoop.yarn.api.records.LocalResourceType;
 import org.apache.hadoop.yarn.api.records.LocalResourceVisibility;
+import org.apache.hadoop.yarn.api.protocolrecords.
+                                             RegisterApplicationMasterResponse;
 import org.apache.hadoop.yarn.api.records.Resource;
 import org.apache.hadoop.yarn.api.records.YarnApplicationState;
 import org.apache.hadoop.yarn.client.api.YarnClient;
@@ -44,49 +46,125 @@ import org.apache.commons.logging.LogFactory;
 
 import java.net.*;
 import java.io.PrintStream;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+
 public class MPJAppMaster {
 
-  Configuration conf = new YarnConfiguration();
-  String mpjHomeDir;
+  private Configuration conf;
+  private String mpjHomeDir;
   private Socket appMasterSock;
-  int rank = 0;
-  private Log LOG = null;
-  
-  public void run(String[] args) throws Exception {
-   try{ 
-     System.out.println(args[1]);
-     appMasterSock = new Socket(args[1],Integer.parseInt(args[2]));
-     System.setOut(new PrintStream(appMasterSock.getOutputStream(),true));
-     System.setErr(new PrintStream(appMasterSock.getOutputStream(),true));
+  private int rank;
+  private Options opts;
+  private CommandLine cliParser;
+  private int np;
+  private String serverName;
+  private int ioServerPort;
+  private String deviceName;
+  private String className;
+  private String wdir;
+  private String  psl;
+  private String wireUpPort;
+  private String wrapperPath;
+  private String userJarPath;
+  private String [] appArgs;
+  private int containerMem;
+  private int maxMem;
+  private int containerCores;
+  private int maxCores;
+  private int mpjContainerPriority;
+  private int allocatedContainers;
+  private int completedContainers;
+  private List<Container> mpiContainers = new ArrayList<Container>();
 
-   }
-   catch(Exception exp){
-     exp.printStackTrace();
-   }
-   System.err.println("EROOOOOOOOOOOOOOR");
-   LOG = LogFactory.getLog(MPJAppMaster.class);
-   LOG.info("Application Master Started....");
-   LOG.debug("YOLO");
-   System.out.println(LOG.isInfoEnabled());
-   System.out.println("APPPPPPPPPPP");
-    Map<String, String> map = System.getenv();
-    mpjHomeDir = map.get("MPJ_HOME");
+  public  MPJAppMaster(){
+     
+    conf = new YarnConfiguration();
+    opts = new Options();
+  
+    opts.addOption("np",true,"Number of Processes");
+    opts.addOption("serverName",true,"Hostname required for Server Socket");
+    opts.addOption("ioServerPort",true,"Port required for a socket"+
+                                                         " redirecting IO");
+    opts.addOption("wireUpPort",true,"Port forwarded to Wrappers for "+
+                                     "sharing read,write ports and ranks");
+    opts.addOption("deviceName",true,"Specifies the MPJ device name");
+    opts.addOption("className",true,"Main Class name");
+    opts.addOption("wdir",true,"Specifies the current working directory");
+    opts.addOption("psl",true,"Specifies the Protocol Switch Limit");
+    opts.addOption("wrapperPath",true,"Specifies the wrapper jar path in hdfs");
+    opts.addOption("userJarPath",true,"Specifies the user jar path in hdfs");
+    opts.addOption("appArgs",true,"Specifies the User Application args");
+    opts.getOption("appArgs").setArgs(Option.UNLIMITED_VALUES);
+    opts.addOption("containerMem",true,"Specifies mpj containers memory");
+    opts.addOption("containerCores",true,"Specifies mpj containers v-cores");
+    opts.addOption("mpjContainerPriority",true,"Specifies the prioirty of" +
+                                       "containers running MPI processes");
+
+  }
+
+  public void init(String [] args){
+    try{
+        Map<String, String> map = System.getenv();
+        mpjHomeDir = map.get("MPJ_HOME");
     
-    if (mpjHomeDir == null) {
-      throw new Exception("[MPJRun.java]:MPJ_HOME "+
-						  "environment not found..");
+        if (mpjHomeDir == null) {
+          throw new Exception("[MPJAppMaster.java]:MPJ_HOME "+
+                                                  "environment not found..");
+        }
+
+       cliParser = new GnuParser().parse(opts, args);
+ 
+       np = Integer.parseInt(cliParser.getOptionValue("np"));
+       serverName = cliParser.getOptionValue("serverName");
+       ioServerPort =Integer.parseInt(cliParser.getOptionValue("ioServerPort"));
+       wireUpPort = cliParser.getOptionValue("wireUpPort");
+       deviceName = cliParser.getOptionValue("deviceName");
+       className = cliParser.getOptionValue("className");
+       wdir = cliParser.getOptionValue("wdir");
+       psl = cliParser.getOptionValue("psl");
+       wrapperPath = cliParser.getOptionValue("wrapperPath");
+       userJarPath = cliParser.getOptionValue("userJarPath");
+
+       containerMem = Integer.parseInt(cliParser.getOptionValue
+                                                     ("containerMem","1024"));
+
+       containerCores = Integer.parseInt(cliParser.getOptionValue
+                                                     ("containerCores","1"));
+
+       mpjContainerPriority = Integer.parseInt(cliParser.getOptionValue
+						("mpjContainerPriority","0"));
+
+       if(cliParser.hasOption("appArgs")){
+         appArgs = cliParser.getOptionValues("appArgs");
+       }
+    }
+    catch(Exception exp){
+      exp.printStackTrace();
+    }
+  }
+  public void run() throws Exception {
+    try{ 
+      appMasterSock = new Socket(serverName,ioServerPort);
+   
+      //redirecting stdout and stderr
+      System.setOut(new PrintStream(appMasterSock.getOutputStream(),true));
+      System.setErr(new PrintStream(appMasterSock.getOutputStream(),true));
+    }
+    catch(Exception exp){
+      exp.printStackTrace();
     }
    
-    final int n = Integer.valueOf(args[0]);
-    //System.out.println("Number of containers to Launch : "+n);
-
-    long B1 = System.currentTimeMillis();
-    
     FileSystem fs = FileSystem.get(conf);
-    Path wrapperDest = new Path(args[8]);
+    Path wrapperDest = new Path(wrapperPath);
     FileStatus destStatus = fs.getFileStatus(wrapperDest);
     
-    Path userFileDest = new Path(args[9]);
+    Path userFileDest = new Path(userJarPath);
     FileStatus destStatusClass = fs.getFileStatus(userFileDest); 
     
     // Initialize AM <--> RM communication protocol
@@ -100,23 +178,34 @@ public class MPJAppMaster {
     nmClient.start();
     
     // Register with ResourceManager
-    rmClient.registerApplicationMaster("", 0, "");
+    RegisterApplicationMasterResponse registerResponse = 
+                              rmClient.registerApplicationMaster("", 0, "");
     // Priority for containers - priorities are intra-application
     Priority priority = Records.newRecord(Priority.class);
-    priority.setPriority(0);
+    priority.setPriority(mpjContainerPriority);
+
+    maxMem =registerResponse.getMaximumResourceCapability().getMemory();
+    if(containerMem > maxMem){
+      containerMem = maxMem;
+    }
+
+    maxCores =registerResponse.getMaximumResourceCapability().getVirtualCores();
+    if(containerCores > maxCores){
+      containerCores = maxCores;
+    }
 
     // Resource requirements for containers
     Resource capability = Records.newRecord(Resource.class);
-    capability.setMemory(512);
-    capability.setVirtualCores(1);
+    capability.setMemory(containerMem);
+    capability.setVirtualCores(containerCores);
 
     // Make container requests to ResourceManager
-    for (int i = 0; i < n; ++i) {
-      ContainerRequest containerAsk =
+    for (int i = 0; i < np; ++i) {
+      ContainerRequest containerReq =
         		new ContainerRequest(capability, null, null, priority);
       
       //System.out.println("Making container request " + i);
-      rmClient.addContainerRequest(containerAsk);
+      rmClient.addContainerRequest(containerReq);
     }	
     
     Map<String,LocalResource> localResources = 
@@ -142,20 +231,14 @@ public class MPJAppMaster {
     localResources.put("mpj-yarn-wrapper.jar", wrapperJar);
     localResources.put("user-code.jar",userClass);
     
-    // Obtain allocated containers and launch 
-    int allocatedContainers = 0;
-    int completedContainers = 0;
-    
-    List<Container> mpiContainers = new ArrayList<Container>();
-    List<ContainerLaunchContext> contexts = new 
-				          ArrayList<ContainerLaunchContext>();
-    while (allocatedContainers < n){
+    while (allocatedContainers < np){
       AllocateResponse response = rmClient.allocate(0);
       mpiContainers.addAll(response.getAllocatedContainers());
       allocatedContainers = mpiContainers.size();
       
-      if(allocatedContainers!=n){Thread.sleep(100);}
+      if(allocatedContainers!=np){Thread.sleep(100);}
     }
+
     for (Container container : mpiContainers) {
  
         ContainerLaunchContext ctx =
@@ -164,28 +247,33 @@ public class MPJAppMaster {
         List <String> commands = new ArrayList<String>();
 
         commands.add(" $JAVA_HOME/bin/java");
-        commands.add(" -Xmx512M");
+        commands.add(" -Xmx"+containerMem+"m");
         commands.add(" runtime.starter.MPJYarnWrapper");
-        commands.add(" " + args[1]);  // server name
-        commands.add(" " + args[2]);  // server port
-        commands.add(" " + args[3]);  // device name
-        commands.add(" " + args[4]);  // class name
-        commands.add(" " + args[6]);  // protocol switch limit
-        commands.add(" " + args[0]);  // no. of containers
+        commands.add("--serverName");
+        commands.add(serverName);          // server name
+        commands.add("--ioServerPort");
+        commands.add(Integer.toString(ioServerPort)); // IO server port
+        commands.add("--deviceName");
+        commands.add(deviceName);          // device name
+        commands.add("--className");
+        commands.add(className);           // class name
+        commands.add("--psl");
+        commands.add(psl);                 // protocol switch limit
+        commands.add("--np");
+        commands.add(Integer.toString(np));   // no. of containers
+        commands.add("--rank");
         commands.add(" " + Integer.toString(rank++)); // rank
-        commands.add(" " + args[7]); //temp sock port to share rank and ports
-        commands.add(" " + args[10]); //number of args
+ 
+        //temp sock port to share rank and ports
+        commands.add("--wireUpPort");
+        commands.add(wireUpPort);
 
-        int numArgs = Integer.parseInt(args[10]);
-        if( numArgs > 0){
-          for(int i = 0; i < numArgs; i++){
-            commands.add(" "+ args[11+i]);
+        if( appArgs != null){
+          commands.add("--appArgs");
+          for(int i = 0; i < appArgs.length; i++){
+            commands.add(appArgs[i]);
           }
         }
-        commands.add(" 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR +
-                                                                  "/stdout");
-        commands.add(" 2>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR +
-                                                                  "/stderr");
 
         ctx.setCommands(commands);
         //System.out.println("Launching container " + allocatedContainers);
@@ -204,21 +292,23 @@ public class MPJAppMaster {
       }
 
 
-    while (completedContainers < n) {
-      AllocateResponse response = rmClient.allocate(completedContainers/n);
+    while (completedContainers < np) {
+      // argument to allocate() is the progress indicator
+      AllocateResponse response = rmClient.allocate(completedContainers/np);
 
       for (ContainerStatus status : response.getCompletedContainersStatuses()){
         ++completedContainers;
 //        System.out.println("Completed container " + completedContainers);
       }
 	
-      if(completedContainers!=n){Thread.sleep(100);};
+      if(completedContainers!=np){Thread.sleep(100);};
     }
     // Un-register with ResourceManager 
     rmClient.unregisterApplicationMaster(FinalApplicationStatus.SUCCEEDED, 
 								     "", "");
+    //shutDown AppMaster IO
     System.out.println("EXIT");
-  } //end run()
+  }
 
   private void setupEnv(Map<String, String> containerEnv) {
     for (String c : conf.getStrings(
@@ -233,13 +323,17 @@ public class MPJAppMaster {
     Apps.addToEnvironment(containerEnv,
                           Environment.CLASSPATH.name(),
                           Environment.PWD.$() + File.separator + "*");
-  } //end setupEnv()
+  }
 
   
 
   public static void main(String[] args) throws Exception {
+    for(String x: args){
+      System.out.println(x);
+    }
     MPJAppMaster am =new MPJAppMaster();
-    am.run(args);
+    am.init(args);
+    am.run();
   }
 
-}//end class
+}

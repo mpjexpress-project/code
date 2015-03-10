@@ -123,8 +123,8 @@ public class MPJDaemon {
         logger.debug("Starting PortManager thread .. ");
 
     // Invoking port manager
-    pManager = new PortManagerThread(portManagerPort);
-    pManager.start();
+      pManager = new PortManagerThread(portManagerPort);
+      pManager.start();
 
     if (DEBUG && logger.isDebugEnabled())
         logger.debug("Starting ConnectionManager thread .. ");
@@ -165,7 +165,6 @@ public class MPJDaemon {
     }
   }
 
-  //WHY servSockets HashMap?
   private void serverSocketInit() {
     if (DEBUG && logger.isDebugEnabled()) {
       logger.debug("serverSocketInit called .. ");
