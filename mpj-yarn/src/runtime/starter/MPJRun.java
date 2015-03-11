@@ -354,13 +354,6 @@ public class MPJRun {
       assignTasks();
     }
     
-    // Write mpjdev.conf if debugger is enabled
-    if (ADEBUG) {
-      writeFile(CONF_FILE_CONTENTS + "\n");
-    } 
-     if (DEBUG && logger.isDebugEnabled()) {
-        logger.debug("conf file contents " + CONF_FILE_CONTENTS);
-      }
     //directory where class is present
     urlArray = applicationClassPathEntry.getBytes();
 
@@ -505,7 +498,7 @@ public class MPJRun {
       else if (args[i].equals("-hdfsFolder")){
         hdfsFolder = args[i + 1];
         if(!hdfsFolder.endsWith("/")){
-          hdfsFolder.concat("/");
+          hdfsFolder = hdfsFolder+"/";
         }
         i++;
       }
@@ -969,6 +962,14 @@ public class MPJRun {
         }
       }
     }
+    // Write mpjdev.conf if debugger is enabled
+    if (ADEBUG) {
+      writeFile(CONF_FILE_CONTENTS + "\n");
+    }
+    if (DEBUG && logger.isDebugEnabled()) {
+      logger.debug("conf file contents " + CONF_FILE_CONTENTS);
+    }
+
   }
 
   // Hybrid Device Assign Tasks
@@ -983,11 +984,15 @@ public class MPJRun {
       networkProcesscount = noOfMachines;
     }
     int netID = 0;
+    String DEBUGGER_FILE_CONTENTS = "";
+
     CONF_FILE_CONTENTS = "#temp line";
     CONF_FILE_CONTENTS += ";" + "#Number of Processes";
     CONF_FILE_CONTENTS += ";" + networkProcesscount;
     CONF_FILE_CONTENTS += ";" + "#Protocol Switch Limit";
     CONF_FILE_CONTENTS += ";" + psl + ";";
+    
+    DEBUGGER_FILE_CONTENTS = CONF_FILE_CONTENTS;
 
     CONF_FILE_CONTENTS += ";" + "#Server Name";
     CONF_FILE_CONTENTS += ";" + localhostName;
@@ -995,7 +1000,7 @@ public class MPJRun {
     CONF_FILE_CONTENTS += ";" + Integer.toString(SERVER_PORT);
 
     if(ADEBUG){
-      CONF_FILE_CONTENTS +=
+      DEBUGGER_FILE_CONTENTS +=
                    "#Entry, HOST_NAME/IP@READPORT@WRITEPORT@NETID@DEBUGPORT";
     }
 
@@ -1006,15 +1011,22 @@ public class MPJRun {
           InetAddress.getByName((String) machineList.get(i)).getHostAddress(),
           new Integer(1));
 
-      CONF_FILE_CONTENTS += ";"
+      DEBUGGER_FILE_CONTENTS += ";"
           + InetAddress.getByName((String) machineList.get(i)).getHostAddress()
           + "@0@0@" + (netID++);
  
-      CONF_FILE_CONTENTS += "@" + (DEBUG_PORT);
+      DEBUGGER_FILE_CONTENTS += "@" + (DEBUG_PORT);
     }
 
     if (DEBUG && logger.isDebugEnabled()) {
       logger.debug("procPerMachineTable==>" + procsPerMachineTable);
+    }
+     // Write mpjdev.conf if debugger is enabled
+    if (ADEBUG) {
+      writeFile(DEBUGGER_FILE_CONTENTS + "\n");
+    }
+    if (DEBUG && logger.isDebugEnabled()) {
+       logger.debug("debugger file contents " + DEBUGGER_FILE_CONTENTS);
     }
 
   }
