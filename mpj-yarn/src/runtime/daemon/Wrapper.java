@@ -81,9 +81,17 @@ public class Wrapper extends Thread {
     InetAddress localaddr = InetAddress.getLocalHost();
     hostName = localaddr.getHostName();
 
+    deviceName = args[2];
+    /* incase of mxdev the location of mpjdev.conf file is passed
+     * else the complete conf file string is passed
+     * spaces in conf file contents were replaced by new line char
+     * by tau_java.
+     */
+    if(!deviceName.equals("mxdev")){
+      args[0]=args[0].replace('|',' ');
+    }
     portInfo = args[0];
     processes = (new Integer(args[1])).intValue();
-    deviceName = args[2];
     serverName = args[3];
     serverPort = Integer.parseInt(args[4]);
     rank = args[5];
