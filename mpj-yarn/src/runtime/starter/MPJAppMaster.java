@@ -1,3 +1,35 @@
+/*
+ The MIT License
+
+ Copyright (c) 2005 - 2014
+   1. Distributed Systems Group, University of Portsmouth (2014)
+   2. Aamir Shafi (2005 - 2014)
+   3. Bryan Carpenter (2005 - 2014)
+   4. Mark Baker (2005 - 2014)
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ "Software"), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be included
+ in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+ NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+ THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+/*
+ * File         : MPJAppMaster.java 
+ * Author       : Hamza Zafar
+ */
 
 package runtime.starter;
 
@@ -73,6 +105,7 @@ public class MPJAppMaster {
   private String wrapperPath;
   private String userJarPath;
   private String [] appArgs;
+  private boolean debugYarn = false;
   private int containerMem;
   private int maxMem;
   private int containerCores;
@@ -105,6 +138,7 @@ public class MPJAppMaster {
     opts.addOption("containerCores",true,"Specifies mpj containers v-cores");
     opts.addOption("mpjContainerPriority",true,"Specifies the prioirty of" +
                                        "containers running MPI processes");
+    opts.addOption("debugYarn",false,"Specifies the debug flag");
 
   }
 
@@ -142,6 +176,10 @@ public class MPJAppMaster {
 
        if(cliParser.hasOption("appArgs")){
          appArgs = cliParser.getOptionValues("appArgs");
+       }
+   
+       if(cliParser.hasOption("debugYarn")){
+         debugYarn = true;
        }
     }
     catch(Exception exp){
@@ -185,12 +223,30 @@ public class MPJAppMaster {
     priority.setPriority(mpjContainerPriority);
 
     maxMem =registerResponse.getMaximumResourceCapability().getMemory();
+  
+    if(debugYarn){
+      System.out.println("[MPJAppMaster]: Max memory capability resources "+
+			                              "in cluster: "+maxMem);
+    }
+
     if(containerMem > maxMem){
+      System.out.println("[MPJAppMaster]: container  memory specified above "+
+                            "threshold of cluster! Using maximum memory for "+
+                                                 "containers: "+containerMem);
       containerMem = maxMem;
     }
 
-    maxCores =registerResponse.getMaximumResourceCapability().getVirtualCores();
+    maxCores=registerResponse.getMaximumResourceCapability().getVirtualCores();
+
+    if(debugYarn){
+      System.out.println("[MPJAppMaster]: Max v-cores capability resources "+
+                                                      "in cluster: "+maxCores);
+    }
+
     if(containerCores > maxCores){
+     System.out.println("[MPJAppMaster]: virtual cores specified above "+
+                            "threshold of cluster! Using maximum v-cores for "+
+                                                 "containers: "+containerCores);
       containerCores = maxCores;
     }
 
@@ -204,7 +260,6 @@ public class MPJAppMaster {
       ContainerRequest containerReq =
         		new ContainerRequest(capability, null, null, priority);
       
-      //System.out.println("Making container request " + i);
       rmClient.addContainerRequest(containerReq);
     }	
     
@@ -238,7 +293,12 @@ public class MPJAppMaster {
       
       if(allocatedContainers!=np){Thread.sleep(100);}
     }
-
+ 
+    if(debugYarn){
+      System.out.println("[MPJAppMaster] :launching "+allocatedContainers+
+                                                             " containers");
+    }
+ 
     for (Container container : mpiContainers) {
  
         ContainerLaunchContext ctx =
@@ -276,7 +336,6 @@ public class MPJAppMaster {
         }
 
         ctx.setCommands(commands);
-        //System.out.println("Launching container " + allocatedContainers);
 
         // Set local resource for containers
         ctx.setLocalResources(localResources);
@@ -297,8 +356,16 @@ public class MPJAppMaster {
       AllocateResponse response = rmClient.allocate(completedContainers/np);
 
       for (ContainerStatus status : response.getCompletedContainersStatuses()){
+        if(debugYarn){
+          System.out.println("\n[MPJAppMaster] :Container Id - "+
+                                                     status.getContainerId());
+          System.out.println("[MPJAppMaster] :Container State - "+
+                                                status.getState().toString());
+          System.out.println("[MPJAppMaster] :Container Diagnostics - "+
+                                                status.getDiagnostics());
+
+         }
         ++completedContainers;
-//        System.out.println("Completed container " + completedContainers);
       }
 	
       if(completedContainers!=np){Thread.sleep(100);};

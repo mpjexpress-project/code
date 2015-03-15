@@ -89,6 +89,7 @@ public class MPJRun {
 
   // Adding YARN related variables here
   private boolean isYarn = false;
+  private boolean debugYarn = false;
   static String hadoopHomeDir = null;
   private String amMem;
   private String amCores;
@@ -275,6 +276,11 @@ public class MPJRun {
         commands.add(hdfsFolder);
       }
 
+      //debugYarn flag
+      if(debugYarn == true){
+        commands.add("--debugYarn");
+      }
+
       ProcessBuilder processBuilder = new ProcessBuilder(commands);
      
       // merge the stdout and stderr stream
@@ -453,6 +459,9 @@ public class MPJRun {
         
 
         RTConstants.HADOOP_YARN = "true";
+      }
+      else if(args[i].equals("-debugYarn")){
+        debugYarn = true;
       }
 
       else if (args[i].equals("-amMem")){
