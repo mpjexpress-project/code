@@ -1,3 +1,35 @@
+/*
+ The MIT License
+
+ Copyright (c) 2005 - 2014
+   1. Distributed Systems Group, University of Portsmouth (2014)
+   2. Aamir Shafi (2005 - 2014)
+   3. Bryan Carpenter (2005 - 2014)
+   4. Mark Baker (2005 - 2014)
+
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ "Software"), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be included
+ in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+ NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+ THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+/*
+ * File         : MPJYarnClient.java 
+ * Author       : Hamza Zafar
+ */
 
 package runtime.starter;
 
@@ -35,12 +67,9 @@ import org.apache.hadoop.yarn.api.records.NodeState;
 import org.apache.hadoop.yarn.api.records.QueueInfo;
 import org.apache.hadoop.yarn.api.records.Priority;
 import org.apache.hadoop.yarn.api.protocolrecords.GetNewApplicationResponse;
-
 import org.apache.hadoop.yarn.client.api.YarnClient;
 import org.apache.hadoop.yarn.client.api.YarnClientApplication;
-
 import org.apache.hadoop.yarn.conf.YarnConfiguration; //YARN configuration
-
 import org.apache.hadoop.yarn.util.Apps;
 import org.apache.hadoop.yarn.util.ConverterUtils;
 import org.apache.hadoop.yarn.util.Records;
@@ -79,22 +108,19 @@ public class MPJYarnClient {
   private int amPriority;
   private String  mpjContainerPriority; 
   private String hdfsFolder;
-
-  private boolean debug;
-
+  private boolean debugYarn = false;
   private Log logger = null;
   private int SERVER_PORT = 0;
   private int TEMP_PORT = 0;
-  static String [] peers;
-  static Vector<Socket> socketList;
-  ServerSocket servSock = null;
-  ServerSocket infoSock = null;
-  Socket sock = null;
+  private String [] peers;
+  private Vector<Socket> socketList;
+  private ServerSocket servSock = null;
+  private ServerSocket infoSock = null;
+  private Socket sock = null;
   public static boolean isRunning = false;
-  ApplicationReport appReport ;
-  YarnApplicationState appState ;
-  FinalApplicationStatus fStatus;
-
+  private ApplicationReport appReport ;
+  private YarnApplicationState appState ;
+  private FinalApplicationStatus fStatus;
   private  Options opts = null;
   private  CommandLine cliParser = null;
 
@@ -125,6 +151,7 @@ public class MPJYarnClient {
                                        "containers running MPI processes");
     opts.addOption("hdfsFolder",true,"Specifies the HDFS folder where AM,"+
                          "Wrapper and user code jar files will be uploaded");
+    opts.addOption("debugYarn",false,"Specifies the debug flag");
   }
   
   public void init(String [] args){
@@ -132,12 +159,19 @@ public class MPJYarnClient {
       cliParser = new GnuParser().parse(opts, args);
 
       np = Integer.parseInt(cliParser.getOptionValue("np"));
+
       serverName = cliParser.getOptionValue("server");
+
       serverPort = Integer.parseInt(cliParser.getOptionValue("serverPort"));
+
       deviceName = cliParser.getOptionValue("dev");
+
       className = cliParser.getOptionValue("className");
+
       workingDirectory = cliParser.getOptionValue("wdir");
+
       psl = Integer.parseInt(cliParser.getOptionValue("psl"));
+
       jarPath = cliParser.getOptionValue("jarPath");
       
       amMem = Integer.parseInt(cliParser.getOptionValue("amMem","2048"));
@@ -164,6 +198,9 @@ public class MPJYarnClient {
         appArgs = cliParser.getOptionValues("appArgs");
       }
       
+      if(cliParser.hasOption("debugYarn")){
+        debugYarn = true;
+      }
     }catch(Exception  exp){
       exp.printStackTrace();
     }
@@ -192,21 +229,34 @@ public class MPJYarnClient {
 
       Path source = new Path(mpjHomeDir+"/lib/mpj-app-master.jar");
       String pathSuffix = hdfsFolder+"mpj-app-master.jar";
-      Path dest = new Path(fs.getHomeDirectory(), pathSuffix); 
-      logger.info("Uploading mpj-app-master.jar to: "+dest.toString());
+      Path dest = new Path(fs.getHomeDirectory(), pathSuffix);
+    
+      if(debugYarn){ 
+        logger.info("Uploading mpj-app-master.jar to: "+dest.toString());
+      }
+
       fs.copyFromLocalFile(false, true, source, dest);
       FileStatus destStatus = fs.getFileStatus(dest);
      
       Path wrapperSource = new Path(mpjHomeDir+"/lib/mpj-yarn-wrapper.jar");
       String wrapperSuffix = hdfsFolder+"mpj-yarn-wrapper.jar";
       Path wrapperDest = new Path(fs.getHomeDirectory(), wrapperSuffix);
-      logger.info("Uploading mpj-yarn-wrapper.jar to: "+wrapperDest.toString());
+    
+      if(debugYarn){
+        logger.info("Uploading mpj-yarn-wrapper.jar to: "+
+                                                     wrapperDest.toString());
+      }
+
       fs.copyFromLocalFile(false, true, wrapperSource, wrapperDest);
      
       Path userJar = new Path(jarPath);
       String userJarSuffix = hdfsFolder+"user-code.jar";
       Path userJarDest = new Path(fs.getHomeDirectory(),userJarSuffix);
+
+      if(debugYarn){
       logger.info("Uploading user-code.jar to: "+userJarDest.toString());
+      }
+
       fs.copyFromLocalFile(false,true,userJar,userJarDest);
 
       YarnConfiguration conf = new YarnConfiguration();
@@ -214,23 +264,24 @@ public class MPJYarnClient {
       yarnClient.init(conf);
       yarnClient.start();
 
-      YarnClusterMetrics metrics = yarnClient.getYarnClusterMetrics();
-      logger.info("\nNodes Information");
-      logger.info("Number of NodeManagers: "+metrics.getNumNodeManagers()+"\n");
+      if(debugYarn){
+        YarnClusterMetrics metrics = yarnClient.getYarnClusterMetrics();
+        logger.info("\nNodes Information");
+        logger.info("Number of NM: "+metrics.getNumNodeManagers()+"\n");
       
-      List<NodeReport> nodeReports = yarnClient.getNodeReports
+        List<NodeReport> nodeReports = yarnClient.getNodeReports
 							(NodeState.RUNNING);
-      for(NodeReport n: nodeReports){
-        logger.info("NodeId: "+n.getNodeId());
-        logger.info("RackName: "+n.getRackName());
-        logger.info("Total Memory: "+n.getCapability().getMemory());
-        logger.info("Used Memory: "+n.getUsed().getMemory());
-        logger.info("Total vCores: "+n.getCapability().getVirtualCores());
-        logger.info("Used vCores: "+n.getUsed().getVirtualCores()+"\n");
+        for(NodeReport n: nodeReports){
+          logger.info("NodeId: "+n.getNodeId());
+          logger.info("RackName: "+n.getRackName());
+          logger.info("Total Memory: "+n.getCapability().getMemory());
+          logger.info("Used Memory: "+n.getUsed().getMemory());
+          logger.info("Total vCores: "+n.getCapability().getVirtualCores());
+          logger.info("Used vCores: "+n.getUsed().getVirtualCores()+"\n");
+        }
       }
-
       
-      logger.info("\nCreating server socket at HOST "+serverName+" PORT "+
+      logger.info("Creating server socket at HOST "+serverName+" PORT "+
                  serverPort+" \nWaiting for "+ np +" processes to connect...");
 
 
@@ -249,8 +300,11 @@ public class MPJYarnClient {
       GetNewApplicationResponse appResponse = app.getNewApplicationResponse();
 
       int maxMem = appResponse.getMaximumResourceCapability().getMemory();
-      logger.info("Max memory capability resources in cluster: "+maxMem);
-     
+      
+      if(debugYarn){
+        logger.info("Max memory capability resources in cluster: "+maxMem);
+      }
+
       if(amMem > maxMem){
         amMem = maxMem;
         logger.info("AM memory specified above threshold of cluster "+
@@ -258,7 +312,10 @@ public class MPJYarnClient {
       }
       int maxVcores = appResponse.getMaximumResourceCapability().
 							getVirtualCores();
-      logger.info("Max vCores capability resources in cluster: "+maxVcores);
+ 
+      if(debugYarn){ 
+        logger.info("Max vCores capability resources in cluster: "+maxVcores);
+      }
 
       if(amCores > maxVcores){
         amCores = maxVcores;
@@ -300,6 +357,10 @@ public class MPJYarnClient {
       commands.add(containerMem);
       commands.add("--containerCores");   
       commands.add(containerCores);
+      
+      if(debugYarn){
+        commands.add("--debugYarn");
+      }
 
       if(appArgs != null){
 
@@ -309,10 +370,6 @@ public class MPJYarnClient {
           commands.add(appArgs[i]);
         }
       }
-      commands.add(" 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR +
-                                                                "/stdout");
-      commands.add(" 2>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR +
-                                                                "/stderr");
 
       amContainer.setCommands(commands); //set commands
 
@@ -483,16 +540,17 @@ public class MPJYarnClient {
       }
       
       try{
-        logger.info("Cleaning the files from hdfs: ");
+
+        if(debugYarn){
+          logger.info("Cleaning the files from hdfs: ");
+          logger.info("1) "+dest.toString());
+          logger.info("2) "+wrapperDest.toString());
+          logger.info("3) "+userJarDest.toString());
+        }
 
         fs.delete(dest);
-        logger.info("1) "+dest.toString());
-
         fs.delete(wrapperDest);
-        logger.info("2) "+wrapperDest.toString());
-
         fs.delete(userJarDest);
-        logger.info("3) "+userJarDest.toString());
       } 
       catch(IOException exp){
         exp.printStackTrace();
