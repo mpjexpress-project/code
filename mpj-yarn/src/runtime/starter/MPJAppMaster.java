@@ -89,7 +89,6 @@ import org.apache.commons.cli.ParseException;
 public class MPJAppMaster {
 
   private Configuration conf;
-  private String mpjHomeDir;
   private Socket appMasterSock;
   private int rank;
   private Options opts;
@@ -144,13 +143,6 @@ public class MPJAppMaster {
 
   public void init(String [] args){
     try{
-        Map<String, String> map = System.getenv();
-        mpjHomeDir = map.get("MPJ_HOME");
-    
-        if (mpjHomeDir == null) {
-          throw new Exception("[MPJAppMaster.java]:MPJ_HOME "+
-                                                  "environment not found..");
-        }
 
        cliParser = new GnuParser().parse(opts, args);
  
@@ -295,7 +287,7 @@ public class MPJAppMaster {
     }
  
     if(debugYarn){
-      System.out.println("[MPJAppMaster] :launching "+allocatedContainers+
+      System.out.println("[MPJAppMaster]: launching "+allocatedContainers+
                                                              " containers");
     }
  
@@ -357,11 +349,11 @@ public class MPJAppMaster {
 
       for (ContainerStatus status : response.getCompletedContainersStatuses()){
         if(debugYarn){
-          System.out.println("\n[MPJAppMaster] :Container Id - "+
+          System.out.println("\n[MPJAppMaster]: Container Id - "+
                                                      status.getContainerId());
-          System.out.println("[MPJAppMaster] :Container State - "+
+          System.out.println("[MPJAppMaster]: Container State - "+
                                                 status.getState().toString());
-          System.out.println("[MPJAppMaster] :Container Diagnostics - "+
+          System.out.println("[MPJAppMaster]: Container Diagnostics - "+
                                                 status.getDiagnostics());
 
          }
