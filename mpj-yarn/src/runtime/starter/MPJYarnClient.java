@@ -84,6 +84,8 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import org.apache.hadoop.fs.BlockLocation;
+
 public class MPJYarnClient {
   //conf fetches information from yarn-site.xml and yarn-default.xml.
   Configuration conf;
@@ -226,7 +228,19 @@ public class MPJYarnClient {
       // Copy the application master jar to HDFS
       // Create a local resource to point to the destination jar path
       FileSystem fs = FileSystem.get(conf);
-
+/*
+      Path dataset = new Path(fs.getHomeDirectory(),"/dataset");
+      FileStatus datasetFile = fs.getFileStatus(dataset);
+     
+      BlockLocation myBlocks [] = fs.getFileBlockLocations(datasetFile,0,datasetFile.getLen());
+      for(BlockLocation b : myBlocks){
+        System.out.println("\n--------------------");
+        System.out.println("Length "+b.getLength());
+        for(String host : b.getHosts()){
+          System.out.println("host "+host);
+        }
+      }
+*/
       Path source = new Path(mpjHomeDir+"/lib/mpj-app-master.jar");
       String pathSuffix = hdfsFolder+"mpj-app-master.jar";
       Path dest = new Path(fs.getHomeDirectory(), pathSuffix);
